@@ -15,7 +15,7 @@ export const VideoCard = ({ video, isDummy = false, reportId }: VideoCardProps) 
     const [open, setOpen] = useState(false)
 
     const handleVideoClick = () => {
-        if (isDummy) navigate(`/report/dummy/${reportId}`)
+        if (isDummy) navigate(`/report/demo/${reportId}`)
         else setOpen(true)
     }
 
