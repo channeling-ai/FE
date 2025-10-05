@@ -22,7 +22,7 @@ export const NavbarTablet = () => {
     useEffect(() => setIsOpen(false), [location])
 
     return (
-        <div className="hidden tablet:block desktop:hidden">
+        <nav className="hidden tablet:block desktop:hidden">
             {/* 사이드 바 오버레이 */}
             {isOpen && (
                 <div onClick={toggleMenu} className="cursor-pointer fixed inset-0 bg-neutral-black-opacity50 z-20" />
@@ -64,6 +64,6 @@ export const NavbarTablet = () => {
 
             {/* + 버튼 유튜브 URL 입력 모달 */}
             {showUrlModal && <UrlInputModal onClose={handlePlusClick} />}
-        </div>
+        </nav>
     )
 }

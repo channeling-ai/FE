@@ -1,4 +1,4 @@
-import type { PropsWithChildren } from 'react'
+import { useId, type PropsWithChildren } from 'react'
 
 interface TitledSectionProps {
     title: string
@@ -6,16 +6,13 @@ interface TitledSectionProps {
 }
 
 export const TitledSection = ({ title, children }: PropsWithChildren<TitledSectionProps>) => {
+    const headingId = useId()
+
     return (
-        <section className="w-full space-y-4">
-            <h1
-                className="
-                    whitespace-nowrap text-start 
-                    font-title-20b
-                "
-            >
+        <section aria-labelledby={headingId} className="w-full space-y-4">
+            <h2 id={headingId} className="whitespace-nowrap text-start font-title-20b">
                 {title}
-            </h1>
+            </h2>
             <div>{children}</div>
         </section>
     )

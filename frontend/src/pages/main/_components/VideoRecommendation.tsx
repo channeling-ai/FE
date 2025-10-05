@@ -9,7 +9,7 @@ interface VideoRecommendationProps {
 
 export const VideoRecommendation = ({ label, videoData, isDummy = false }: VideoRecommendationProps) => {
     return (
-        <div className="space-y-4">
+        <section className="space-y-4">
             <div className="flex flex-row items-center gap-2">
                 <span className="px-2 py-1 rounded-2xl border border-gray-900 font-body-16r">Report</span>
                 <h2 className="font-title-20b">{label}</h2>
@@ -20,6 +20,6 @@ export const VideoRecommendation = ({ label, videoData, isDummy = false }: Video
                     <VideoCard key={video.videoId} video={video} isDummy={isDummy} reportId={idx + 1} />
                 ))}
             </div>
-        </div>
+        </section>
     )
 }

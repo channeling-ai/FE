@@ -48,7 +48,7 @@ export const NavbarDesktop = () => {
     }, [isAuth])
 
     return (
-        <div className="hidden desktop:block">
+        <nav className="hidden desktop:block">
             <div className="fixed top-0 left-0 flex flex-col items-center w-20 h-full px-4 py-9 gap-[88px] bg-gray-100">
                 <Link to="/">
                     <ChannelingLogo />
@@ -69,6 +69,6 @@ export const NavbarDesktop = () => {
             )}
 
             {showUrlModal && <UrlInputModal onClose={handlePlusClick} />}
-        </div>
+        </nav>
     )
 }
