@@ -68,7 +68,7 @@ export default function ReportPage() {
     const handleResetTab = () => setActiveTab(TABS[0])
 
     return (
-        <>
+        <article>
             <div className="px-6 tablet:px-[76px] py-10 desktop:py-20 space-y-10">
                 {isPending ? <VideoSummarySkeleton /> : <VideoSummary data={videoData} />}
                 <Tabs tabs={TABS} activeTab={activeTab} onChangeTab={setActiveTab} />
@@ -101,6 +101,6 @@ export default function ReportPage() {
                 // 2순위: 생성 중 모달
                 <GeneratingModal />
             ) : null}
-        </>
+        </article>
     )
 }

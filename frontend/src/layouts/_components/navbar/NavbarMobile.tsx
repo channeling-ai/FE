@@ -23,7 +23,7 @@ export const NavbarMobile = () => {
     useEffect(() => setIsOpen(false), [location])
 
     return (
-        <div className="block tablet:hidden">
+        <nav className="block tablet:hidden">
             {/* 사이드 바 오버레이 */}
             {isOpen && (
                 <div onClick={toggleMenu} className="cursor-pointer fixed inset-0 bg-neutral-black-opacity50 z-20" />
@@ -65,6 +65,6 @@ export const NavbarMobile = () => {
 
             {/* + 버튼 유튜브 URL 입력 모달 */}
             {showUrlModal && <UrlInputModal onClose={handlePlusClick} />}
-        </div>
+        </nav>
     )
 }

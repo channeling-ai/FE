@@ -1,0 +1,10 @@
+User-agent: *
+
+Disallow: /my/
+Disallow: /library/
+Disallow: /auth/
+
+Allow: /report/demo/
+Disallow: /report/
+
+Sitemap: https://channeling.it.com/sitemap.xml

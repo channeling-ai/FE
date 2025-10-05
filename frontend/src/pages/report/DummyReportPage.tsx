@@ -27,13 +27,13 @@ export default function DummyReportPage() {
     const handleGuestModalClick = () => setIsOpenGuestModal(!isOpenGuestModal)
 
     return (
-        <>
+        <article>
             <div className="px-6 tablet:px-[76px] py-10 desktop:py-20 space-y-10">
                 <VideoSummary data={videoData} />
                 <Tabs tabs={TABS} activeTab={activeTab} onChangeTab={setActiveTab} />
             </div>
 
             {isOpenGuestModal && <GuestModal onClose={handleGuestModalClick} />}
-        </>
+        </article>
     )
 }

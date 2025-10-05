@@ -15,7 +15,7 @@ export const VideoCard = ({ video, isDummy = false, reportId }: VideoCardProps) 
     const [open, setOpen] = useState(false)
 
     const handleVideoClick = () => {
-        if (isDummy) navigate(`/report/dummy/${reportId}`)
+        if (isDummy) navigate(`/report/demo/${reportId}`)
         else setOpen(true)
     }
 
@@ -26,13 +26,21 @@ export const VideoCard = ({ video, isDummy = false, reportId }: VideoCardProps) 
         >
             {/* 영상 썸네일 이미지 */}
             <div className="w-[288px] aspect-[16/9] tablet:w-[282px] tablet:aspect-[141/79] rounded-lg overflow-hidden">
-                <img src={video.videoThumbnailUrl} className="w-full h-full object-cover" />
+                <img
+                    src={video.videoThumbnailUrl}
+                    alt={`${video.channelName} 채널의 추천 영상 썸네일`}
+                    className="w-full h-full object-cover"
+                />
             </div>
 
             <div className="flex flex-row w-full gap-2">
                 {/* 채널 프로필 이미지 */}
                 <div className="w-10 h-10 rounded-full overflow-hidden shrink-0">
-                    <img src={video.channelImage} className="w-full h-full object-cover" />
+                    <img
+                        src={video.channelImage}
+                        alt={`${video.channelName} 채널의 프로필`}
+                        className="w-full h-full object-cover"
+                    />
                 </div>
 
                 {/* 영상 메타 데이터 */}
