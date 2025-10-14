@@ -12,7 +12,7 @@ const Metadata = ({ metaKey, vars = {} }: MetadataProps) => {
         return null
     }
 
-    const replaceVars = (text: string) => text.replace(/\\[\s*(.*?)\s*\\]/g, (_, key) => vars[key] ?? '')
+    const replaceVars = (text: string) => text.replace(/\[\s*(.*?)\s*\]/g, (_, key) => vars[key] ?? '')
 
     const title = replaceVars(metaInfo.title)
     const description = replaceVars(metaInfo.description)

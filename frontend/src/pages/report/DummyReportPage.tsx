@@ -30,7 +30,7 @@ export default function DummyReportPage() {
 
     return (
         <article>
-            <Metadata metaKey={META_KEY.REPORT} vars={{ '영상 제목': videoData.videoTitle }} />
+            {videoData && <Metadata metaKey={META_KEY.REPORT} vars={{ '영상 제목': videoData.videoTitle }} />}
 
             <div className="px-6 tablet:px-[76px] py-10 desktop:py-20 space-y-10">
                 <VideoSummary data={videoData} />
