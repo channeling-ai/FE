@@ -8,3 +8,8 @@ export type CommonResponse<T> = {
     message: string
     result: T
 }
+
+export interface MetaInfo {
+    title: string
+    description: string
+}

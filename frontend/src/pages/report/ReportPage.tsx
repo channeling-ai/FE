@@ -1,14 +1,16 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
+import Metadata from '../../components/Metadata'
 import Refresh from '../../assets/icons/refresh_2.svg?react'
 import Tabs from '../../components/Tabs'
 import { TabOverview, TabAnalysis, TabIdea, UpdateModal, VideoSummary, GenerateErrorModal } from './_components'
+import { GeneratingModal } from './_components/GeneratingModal'
 import { VideoSummarySkeleton } from './_components/VideoSummarySkeleton'
 import useGetVideoData from '../../hooks/report/useGetVideoData'
 import { useReportStore } from '../../stores/reportStore'
 import { useGetInitialReportStatus, usePollReportStatus } from '../../hooks/report/usePollReportStatus'
-import { GeneratingModal } from './_components/GeneratingModal'
+import { META_KEY } from '../../constants/metaConfig'
 
 export default function ReportPage() {
     const navigate = useNavigate()
@@ -69,6 +71,8 @@ export default function ReportPage() {
 
     return (
         <article>
+            {videoData && <Metadata metaKey={META_KEY.REPORT} vars={{ '영상 제목': videoData.videoTitle }} />}
+
             <div className="px-6 tablet:px-[76px] py-10 desktop:py-20 space-y-10">
                 {isPending ? <VideoSummarySkeleton /> : <VideoSummary data={videoData} />}
                 <Tabs tabs={TABS} activeTab={activeTab} onChangeTab={setActiveTab} />

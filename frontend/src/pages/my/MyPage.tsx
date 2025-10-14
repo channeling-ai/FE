@@ -18,6 +18,8 @@ import { mapResponseToProfile } from '../../lib/mappers/profile/mapResponseToPro
 import { mapResponseToConcept } from '../../lib/mappers/profile/mapResponseToConcept'
 import { mapResponseToStatCard } from '../../lib/mappers/profile/mapResponsetoStatCard'
 import Videolist from './_components/videolist'
+import Metadata from '../../components/Metadata'
+import { META_KEY } from '../../constants/metaConfig'
 
 const statsMeta = [
     { key: 'views', title: '조회수' },
@@ -68,6 +70,8 @@ export default function Mypage() {
 
     return (
         <>
+            <Metadata metaKey={META_KEY.MY} />
+
             <div className="w-full desktop:px-[76px] px-6 tablet:px-[90px] desktop:pt-[80px] pt-[40px] ">
                 <div className="flex flex-col w-full gap-[40px] items-start ">
                     <div className="flex flex-col desktop:flex-row w-full justify-between items-start space-y-6 ">
