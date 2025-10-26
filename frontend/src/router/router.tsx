@@ -8,6 +8,7 @@ import MyPage from '../pages/my/MyPage'
 import GoogleLoginRedirectPage from '../pages/auth/GoogleRedirectPage'
 import NotFoundPage from '../pages/NotFound'
 import ProtectedRoute from './ProtectedRoute'
+import IdeaPage from '../pages/idea/IdeaPage'
 
 export const router = createBrowserRouter([
     {
@@ -43,6 +44,14 @@ export const router = createBrowserRouter([
                 element: (
                     <ProtectedRoute>
                         <LibraryPage />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: '/idea',
+                element: (
+                    <ProtectedRoute>
+                        <IdeaPage />
                     </ProtectedRoute>
                 ),
             },

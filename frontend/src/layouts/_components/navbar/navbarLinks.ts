@@ -1,11 +1,14 @@
 import HomeIcon from '../../../assets/icons/home.svg'
+import IdeaIcon from '../../../assets/icons/idea.svg'
 import PlusIcon from '../../../assets/icons/plus.svg'
 import MyChannelIcon from '../../../assets/icons/mychannel.svg'
 import StoreIcon from '../../../assets/icons/store.svg'
 import HomeWhiteIcon from '../../../assets/icons/home_hover.svg'
+import IdeaWhiteIcon from '../../../assets/icons/idea_hover.svg'
 import MyChannelWhiteIcon from '../../../assets/icons/mychannel_hover.svg'
 import StoreWhiteIcon from '../../../assets/icons/store_hover.svg'
 import HomeRedIcon from '../../../assets/icons/home_active.svg'
+import IdeaRedIcon from '../../../assets/icons/idea_active.svg'
 import MyChannelRedIcon from '../../../assets/icons/mychannel_active.svg'
 import StoreRedIcon from '../../../assets/icons/store_active.svg'
 import LoginIcon from '../../../assets/icons/login.svg'
@@ -39,6 +42,15 @@ export const NAVIGATE_LINKS: LinkItem[] = [
         activeIcon: HomeRedIcon,
         alt: '홈 아이콘',
         label: '홈',
+        isCircle: false,
+    },
+    {
+        to: '/idea',
+        defaultIcon: IdeaIcon,
+        hoverIcon: IdeaWhiteIcon,
+        activeIcon: IdeaRedIcon,
+        alt: '아이디어 아이콘',
+        label: '아이디어',
         isCircle: false,
     },
     {
