@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 
 import Metadata from '../../components/Metadata'
 import Tabs from '../../components/Tabs'
-import { TabOverview, TabAnalysis, TabIdea, GuestModal, VideoSummary } from './_components'
+import { TabOverview, TabAnalysis, GuestModal, VideoSummary } from './_components'
 import { META_KEY } from '../../constants/metaConfig'
 import { DUMMY_VIDEO_DATA } from './dummy'
 
@@ -16,7 +16,6 @@ export default function DummyReportPage() {
         () => [
             { index: 0, label: '개요', component: <TabOverview reportId={reportId} isDummy={isDummy} /> },
             { index: 1, label: '분석', component: <TabAnalysis reportId={reportId} isDummy={isDummy} /> },
-            { index: 2, label: '아이디어', component: <TabIdea reportId={reportId} isDummy={isDummy} /> },
         ],
         [reportId, isDummy]
     )
