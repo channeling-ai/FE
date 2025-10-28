@@ -1,7 +1,7 @@
-import { formatRelativeTime } from '../../../../utils/format'
-import { TitledSection } from '../../../../components/TitledSection'
-import ScoreUp from '../../../../assets/icons/up.svg?react'
-import type { IdeaDataProps, Trend } from '../../../../types/report/all'
+import { formatRelativeTime } from '../../../utils/format'
+import { TitledSection } from '../../report/_components'
+import ScoreUp from '../../../assets/icons/up.svg?react'
+import type { IdeaDataProps, Trend } from '../../../types/report/all'
 
 export const TrendKeywords = ({ data }: IdeaDataProps) => {
     const { trend } = data

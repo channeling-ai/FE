@@ -1,4 +1,4 @@
-import { TitledSection } from '../TitledSection'
+import { TitledSection } from '../../../../components/TitledSection'
 import type { AnalysisDataProps } from '../../../../types/report/all'
 import { MarkdownBox } from '../../../../components/MarkdownBox'
 

@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { TitledSection } from '../TitledSection'
+import { TitledSection } from '../../../../components/TitledSection'
 import { DoughnutChart } from '../../../../components/chart'
 import useGetReportComments from '../../../../hooks/report/useGetReportComments'
 import { COMMENT_TYPE, type Comment, type CommentType } from '../../../../types/report/comment'
