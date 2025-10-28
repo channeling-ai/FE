@@ -4,7 +4,7 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import Metadata from '../../components/Metadata'
 import Refresh from '../../assets/icons/refresh_2.svg?react'
 import Tabs from '../../components/Tabs'
-import { TabOverview, TabAnalysis, TabIdea, UpdateModal, VideoSummary, GenerateErrorModal } from './_components'
+import { TabOverview, TabAnalysis, UpdateModal, VideoSummary, GenerateErrorModal } from './_components'
 import { GeneratingModal } from './_components/GeneratingModal'
 import { VideoSummarySkeleton } from './_components/VideoSummarySkeleton'
 import useGetVideoData from '../../hooks/report/useGetVideoData'
@@ -35,8 +35,8 @@ export default function ReportPage() {
     // ✅ 리포트 생성에 실패한 경우
     const isKnownToHaveFailed = useMemo(() => {
         if (!currentReportStatus) return false
-        const { overviewStatus, analysisStatus, ideaStatus } = currentReportStatus
-        return overviewStatus === 'FAILED' || analysisStatus === 'FAILED' || ideaStatus === 'FAILED'
+        const { overviewStatus, analysisStatus } = currentReportStatus
+        return overviewStatus === 'FAILED' || analysisStatus === 'FAILED'
     }, [currentReportStatus])
 
     const isInvalidOrDeleted = isInvalidReportError
@@ -51,7 +51,6 @@ export default function ReportPage() {
         () => [
             { index: 0, label: '개요', component: <TabOverview reportId={reportId} /> },
             { index: 1, label: '분석', component: <TabAnalysis reportId={reportId} /> },
-            { index: 2, label: '아이디어', component: <TabIdea reportId={reportId} /> },
         ],
         [reportId]
     )
