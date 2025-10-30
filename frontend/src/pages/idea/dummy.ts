@@ -7,7 +7,8 @@ export const dummyTrendData: IdeaDataProps = {
             {
                 ideaId: 101,
                 title: 'AI 영상 트렌드 분석',
-                content: '최근 AI 기반 영상 편집 툴과 자동 자막 생성 기술이 빠르게 확산되고 있습니다.',
+                content:
+                    '코케트(Coquette) 패션은 프랑스어로 ‘요염한 여성’을 의미하는 단어에서 유래한 스타일로, 최근 SNS와 런웨이에서 큰 인기를 끌고 있는 여성성과 소녀 감성을 극대화한 패션 트렌드입니다.',
                 hashTag: '["AI", "영상편집", "트렌드"]',
                 isBookMarked: false,
             },

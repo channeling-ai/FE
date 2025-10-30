@@ -6,7 +6,7 @@ import type { IdeaDataProps } from '../../../types/report/all'
 import type { Idea } from '../../../types/idea'
 import usePatchIdeaBookmark from '../../../hooks/idea/usePatchIdeaBookmark'
 import Spinner from '../../../assets/loading/spinner.svg?react'
-import { Skeleton } from './Skeleton'
+import { Skeleton } from './GeneratingSkeleton'
 
 export const ContentsIdea = ({ data, isDummy = false }: IdeaDataProps & { isDummy?: boolean }) => {
     const { idea: ideas } = data
