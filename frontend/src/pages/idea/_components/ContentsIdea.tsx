@@ -28,7 +28,7 @@ export const ContentsIdea = ({ data, isDummy = false }: IdeaDataProps & { isDumm
                 </TitledSection>
             )}
             {isIdeaGenerating && (
-                <div className="flex flex-col w-[1200px] items-start gap-4">
+                <div className="flex flex-col w-full max-w-[1200px] items-start gap-4">
                     <div className="flex h-7 items-center gap-2">
                         <Spinner className="animate-spin w-6 h-6" />
                         <div className="font-body-16m text-white">
@@ -60,7 +60,7 @@ const IdeaBox = memo(({ idea, isDummy = false }: { idea: Idea; isDummy?: boolean
     }, [idea.hashTag])
 
     return (
-        <div className="relative p-6 space-y-4 w-[1200px] items-start  rounded-lg border border-gray-200 bg-surface-elevate-l1">
+        <div className="relative p-6 space-y-4 w-full max-w-[1200px] items-start  rounded-lg border border-gray-200 bg-surface-elevate-l1">
             <div className="flex flex-row gap-4">
                 <h3 className="flex-1 line-clamp-1 font-title-20b">{idea.title}</h3>
 
