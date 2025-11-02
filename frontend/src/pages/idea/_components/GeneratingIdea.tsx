@@ -115,7 +115,7 @@ export const GeneratingIdea = () => {
                     onChange={(value) => setAdditionalInfo(value)}
                     title="추가 입력 사항"
                     placeholder="어떤 점을 강조하고 싶으신가요? (예: 쉬운 설명, 유머, 영상미)"
-                    initialRows={4}
+                    initialRows={5}
                     limitLength={300}
                     classOfTextarea="h-[136px]"
                 />
