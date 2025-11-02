@@ -1,13 +1,12 @@
-import type { RecommededVideos } from '../../../types/main'
-import { VideoCard } from './VideoCard'
+import type { NormalizedVideo } from '../../../types/main'
+import { MyVideoCard } from './MyVideoCard'
 
-interface VideoRecommendationProps {
+interface MyVideoRecommendationProps {
     label: string
-    videoData: RecommededVideos
-    isDummy?: boolean
+    videos: NormalizedVideo[]
 }
 
-export const VideoRecommendation = ({ label, videoData, isDummy = false }: VideoRecommendationProps) => {
+export const MyVideoRecommendation = ({ label, videos }: MyVideoRecommendationProps) => {
     return (
         <section className="space-y-4">
             <div className="flex flex-row items-center gap-2">
@@ -16,8 +15,8 @@ export const VideoRecommendation = ({ label, videoData, isDummy = false }: Video
             </div>
 
             <div className="grid grid-cols-1 tablet:grid-cols-2 gap-6 place-items-start">
-                {videoData.list.map((video, idx) => (
-                    <VideoCard key={video.videoId} video={video} isDummy={isDummy} reportId={idx + 1} />
+                {videos.map((video) => (
+                    <MyVideoCard key={video.videoId} video={video} />
                 ))}
             </div>
         </section>

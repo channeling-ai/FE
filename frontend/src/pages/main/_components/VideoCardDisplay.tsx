@@ -1,29 +1,13 @@
-import { useState } from 'react'
-import { formatRelativeTime, formatKoreanNumber } from '../../../utils/format'
-import type { BriefVideo } from '../../../types/main'
-import { MyReportModal } from '../../my/_components/myReportModal'
-import { useNavigate } from 'react-router-dom'
+import type { NormalizedVideo } from '../../../types/main'
+import { formatKoreanNumber, formatRelativeTime } from '../../../utils/format'
 
-interface VideoCardProps {
-    video: BriefVideo
-    isDummy?: boolean
-    reportId?: number
+interface VideoCardDisplayProps {
+    video: NormalizedVideo
 }
 
-export const VideoCard = ({ video, isDummy = false, reportId }: VideoCardProps) => {
-    const navigate = useNavigate()
-    const [open, setOpen] = useState(false)
-
-    const handleVideoClick = () => {
-        if (isDummy) navigate(`/report/demo/${reportId}`)
-        else setOpen(true)
-    }
-
+export const VideoCardDisplay = ({ video }: VideoCardDisplayProps) => {
     return (
-        <div
-            onClick={handleVideoClick}
-            className="flex flex-col items-center justify-center gap-2 w-[288px] tablet:w-[282px] cursor-pointer"
-        >
+        <div className="flex flex-col items-center justify-center gap-2 w-[288px] tablet:w-[282px]">
             {/* 영상 썸네일 이미지 */}
             <div className="w-[288px] aspect-[16/9] tablet:w-[282px] tablet:aspect-[141/79] rounded-lg overflow-hidden">
                 <img
@@ -55,8 +39,6 @@ export const VideoCard = ({ video, isDummy = false, reportId }: VideoCardProps) 
                     </div>
                 </div>
             </div>
-
-            {open && <MyReportModal videoId={video.videoId} title={video.videoTitle} setOpen={setOpen} />}
         </div>
     )
 }
