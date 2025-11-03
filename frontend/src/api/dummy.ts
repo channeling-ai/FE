@@ -1,4 +1,4 @@
-import { axiosInstance, publicAxiosInstance } from './axios'
+import { publicAxiosInstance } from './axios'
 import type {
     GetReportDto,
     ResponseReportAnalysis,
