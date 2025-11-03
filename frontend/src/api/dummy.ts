@@ -35,6 +35,6 @@ export const getDummyComments = async ({
 }
 
 export const getDummyVideoMeta = async ({ videoId }: VideoDataDto): Promise<ResponseVideoData> => {
-    const { data } = await axiosInstance.get(`/dummies/videos/${videoId}`)
+    const { data } = await publicAxiosInstance.get(`/dummies/videos/${videoId}`)
     return data
 }
