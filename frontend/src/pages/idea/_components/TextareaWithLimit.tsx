@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type PropsWithChildren } from 'react'
+import { useRef, useState, type PropsWithChildren } from 'react'
 
 interface TextareaWithLimitProps {
     id: string
@@ -33,26 +33,6 @@ const TextareaWithLimit = ({
     }
 
     const errorMessage = `${title}는 최대 ${limitLength}자까지 입력할 수 있어요. (현재 글자 수: ${inputCount}자)`
-
-    // Desktop, Tablet: 5줄까지 textarea가 늘어납니다. 6줄 부터는 스크롤해서 확인합니다.
-    // Mobile: 3줄까지 textarea가 늘어납니다. 4줄 부터는 스크롤해서 확인합니다.
-    useEffect(() => {
-        const textarea = textareaRef.current
-        if (!textarea) return
-
-        const handleResize = () => {
-            textarea.style.height = 'auto'
-
-            const isMobile = window.innerWidth <= 768
-            const maxLines = isMobile ? 3 : 5
-            const maxHeight = 32 * maxLines
-            textarea.style.height = Math.min(textarea.scrollHeight, maxHeight) + 'px'
-        }
-        handleResize()
-
-        window.addEventListener('resize', handleResize)
-        return () => window.removeEventListener('resize', handleResize)
-    }, [value])
 
     return (
         <div
