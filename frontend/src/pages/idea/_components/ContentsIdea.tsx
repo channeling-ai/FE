@@ -2,26 +2,28 @@ import { memo, useMemo } from 'react'
 import { TitledSection } from '../../../components/TitledSection'
 import BookmarkInactive from '../../../assets/icons/bookmark.svg?react'
 import BookmarkActive from '../../../assets/icons/bookmark_active.svg?react'
-import type { IdeaDataProps } from '../../../types/report/all'
+import type { ContentsIdeaProps } from '../../../types/idea'
 import type { Idea } from '../../../types/idea'
 import usePatchIdeaBookmark from '../../../hooks/idea/usePatchIdeaBookmark'
 import Spinner from '../../../assets/loading/spinner.svg?react'
 import { Skeleton } from './GeneratingSkeleton'
+import { useIsMutating } from '@tanstack/react-query'
 
-export const ContentsIdea = ({ data, isDummy = false }: IdeaDataProps & { isDummy?: boolean }) => {
-    const { idea: ideas } = data
-    const isIdeaGenerating = false
+export const ContentsIdea = ({ ideaList, isDummy = false }: ContentsIdeaProps & { isDummy?: boolean }) => {
+    const data = ideaList
+    const mutationCount = useIsMutating({ mutationKey: ['postIdea'] })
+    const isIdeaGenerating = mutationCount > 0
 
     return (
         <>
             {!isIdeaGenerating && (
                 <TitledSection title="생성된 콘텐츠 아이디어">
-                    {!ideas || ideas.length === 0 ? (
+                    {!data || data.length === 0 ? (
                         <p className="text-gray-500 text-center py-4">콘텐츠 아이디어가 없습니다.</p>
                     ) : (
                         <div className="space-y-6">
-                            {ideas.map((idea, index) => (
-                                <IdeaBox key={`${idea.ideaId}-${index}`} idea={idea} isDummy={isDummy} />
+                            {data.map((idea) => (
+                                <IdeaBox key={`${idea.ideaId}`} idea={idea} isDummy={isDummy} />
                             ))}
                         </div>
                     )}
@@ -67,7 +69,7 @@ const IdeaBox = memo(({ idea, isDummy = false }: { idea: Idea; isDummy?: boolean
                 {/* 북마크 버튼 */}
                 {!isDummy && (
                     <button onClick={handleBookmarkClick} className="cursor-pointer">
-                        {idea.isBookMarked ? <BookmarkActive /> : <BookmarkInactive />}
+                        {idea.isBookmarked ? <BookmarkActive /> : <BookmarkInactive />}
                     </button>
                 )}
             </div>

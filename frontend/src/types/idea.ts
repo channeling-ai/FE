@@ -5,7 +5,15 @@ export type Idea = {
     title: string
     content: string
     hashTag: string
-    isBookMarked: boolean
+    isBookmarked: boolean
+}
+
+export type Trend = {
+    trendKeywordId: number
+    keywordType: 'REAL_TIME' | 'CHANNEL'
+    keyword: string
+    score: number
+    createdAt: Date
 }
 
 export type BookmarkedIdeas = {
@@ -35,3 +43,54 @@ export type ResponsePatchIdeaBookmark = CommonResponse<{
     ideaId: number
     isBookMarked: boolean
 }>
+
+// 아이디어 트랜드 키워드 조회 응답 타입
+export type ResponseTrendKeywords = CommonResponse<TrendKeywordsProps>
+
+type RealTimeTrendKeywordList = {
+    trendKeywordId: number
+    keywordType: 'REAL_TIME'
+    keyword: string
+    score: number
+    createdAt: Date
+}
+type ChannelTrendKeywordInfoList = {
+    trendKeywordId: number
+    keywordType: 'REAL_TIME'
+    keyword: string
+    score: number
+    createdAt: Date
+}
+
+//아이디어 트랜드 키워드 Props 타입
+export type TrendKeywordsProps = {
+    realTimeTrendKeywordList: RealTimeTrendKeywordList[]
+    channelTrendKeywordInfoList: ChannelTrendKeywordInfoList[]
+}
+
+// 아이디어 생성 요청
+export type PostIdeaDto = {
+    keyword: string
+    videoType: 'LONG' | 'SHORTS' | null
+    detail: string
+}
+// 아이디어 생성 응답
+export type ResponsePostIdea = CommonResponse<GeneratedIdeawithChannelId>
+
+type GeneratedIdeawithChannelId = Idea & {
+    channelId: number
+    createdAt: string
+    updatedAt: string
+}
+
+type GeneratedIdea = Idea & {
+    createdAt: string
+}
+
+//생성한 아이디어 조회 응답
+export type ResponseGetGeneratedIdea = CommonResponse<ContentsIdeaProps>
+
+//생성된 콘텐츠 아이디어 Props
+export type ContentsIdeaProps = {
+    ideaList: GeneratedIdea[]
+}

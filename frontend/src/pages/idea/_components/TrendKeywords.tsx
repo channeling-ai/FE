@@ -1,19 +1,14 @@
 import { formatRelativeTime } from '../../../utils/format'
 import { TitledSection } from '../../../components/TitledSection'
 import ScoreUp from '../../../assets/icons/up.svg?react'
-import type { IdeaDataProps, Trend } from '../../../types/report/all'
+import type { TrendKeywordsProps, Trend } from '../../../types/idea'
 
-export const TrendKeywords = ({ data }: IdeaDataProps) => {
-    const { trend } = data
-
-    const realTimeTrends = trend.filter((item) => item.keywordType === 'REAL_TIME')
-    const channelTrends = trend.filter((item) => item.keywordType === 'CHANNEL')
-
+export const TrendKeywords = ({ realTimeTrendKeywordList, channelTrendKeywordInfoList }: TrendKeywordsProps) => {
     return (
         <TitledSection title="트렌드 키워드">
             <div className="grid grid-cols-1 desktop:grid-cols-2 gap-6">
-                <KeywordBox label="🔥 실시간" items={realTimeTrends} />
-                <KeywordBox label="✨ 내 채널 맞춤형" items={channelTrends} />
+                <KeywordBox label="🔥 실시간" items={realTimeTrendKeywordList} />
+                <KeywordBox label="✨ 내 채널 맞춤형" items={channelTrendKeywordInfoList} />
             </div>
         </TitledSection>
     )

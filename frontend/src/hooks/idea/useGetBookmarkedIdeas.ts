@@ -4,7 +4,7 @@ import { getBookmarkedIdeas } from '../../api/idea'
 
 export default function useGetBookmarkedIdeas({ page, size }: BookmarkedIdeasDto) {
     return useQuery<ResponseBookmarkedIdeas, Error, BookmarkedIdeas>({
-        queryKey: ['idea', 'my', page, size],
+        queryKey: ['ideas', 'my', page, size],
         queryFn: () => getBookmarkedIdeas({ page, size }),
         staleTime: 1000 * 60 * 5,
         gcTime: 1000 * 60 * 10,

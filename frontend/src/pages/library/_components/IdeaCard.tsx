@@ -1,10 +1,10 @@
 import { memo, useMemo } from 'react'
 import BookmarkActive from '../../../assets/icons/bookmark_active.svg?react'
 import type { Idea } from '../../../types/idea'
-import usePatchIdeaBookmark from '../../../hooks/idea/usePatchIdeaBookmark'
+import useRemoveIdeaBookmark from '../../../hooks/idea/useRemoveIdeaBookmark'
 
 export default memo(function IdeaCard({ item }: { item: Idea }) {
-    const { mutate: updateBookmark } = usePatchIdeaBookmark()
+    const { mutate: updateBookmark } = useRemoveIdeaBookmark()
 
     const parsedHashTags: string[] = useMemo(() => {
         try {

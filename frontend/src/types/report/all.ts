@@ -1,5 +1,4 @@
 import type { CommonResponse } from '../common'
-import type { Idea } from '../idea'
 
 // 영상 정보 조회 요청 타입
 export type VideoDataDto = {
@@ -41,14 +40,6 @@ export type GetReportDto = {
     section?: 'OVERVIEW' | 'ANALYSIS'
 }
 
-export type Trend = {
-    trendKeywordId: number
-    keywordType: 'REAL_TIME' | 'CHANNEL'
-    keyword: string
-    score: number
-    createdAt: Date
-}
-
 // 리포트 개요 데이터 타입
 export type ReportOverview = {
     reportId: number
@@ -78,22 +69,13 @@ export type ReportAnalysis = {
     optimization: string
 }
 
-// 리포트 아이디어 데이터 타입
-export type ReportIdea = {
-    reportId: number
-    idea: Idea[]
-    trend: Trend[]
-}
-
 // 리포트 조회(개요/분석/아이디어) 응답 타입
 export type ResponseReportOverview = CommonResponse<ReportOverview>
 export type ResponseReportAnalysis = CommonResponse<ReportAnalysis>
-export type ResponseReportIdea = CommonResponse<ReportIdea>
 
 // 리포트 컴포넌트 분리 데이터 props 타입
 export type OverviewDataProps = { data: ReportOverview }
 export type AnalysisDataProps = { data: ReportAnalysis }
-export type IdeaDataProps = { data: ReportIdea }
 
 export type VideoType = 'LONG' | 'SHORTS'
 
