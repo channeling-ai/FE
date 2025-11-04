@@ -1,10 +1,10 @@
 import { Footer } from '../../layouts/_components/Footer'
-import useGetRecommendedVideo from '../../hooks/main/useGetRecommendedVideo'
 import { useAuthStore } from '../../stores/authStore'
-import { UrlInputForm, VideoRecommendation } from './_components'
-import { DUMMY_POPULAR } from './dummy'
 import Metadata from '../../components/Metadata'
 import { META_KEY } from '../../constants/metaConfig'
+import { adaptVideolist } from '../../lib/mappers/main'
+import { DummyVideoRecommendation, MyVideoRecommendation, UrlInputForm } from './_components'
+import { useGetRecommendedDummyVideos, useGetRecommendedMyVideos } from '../../hooks/main'
 
 export default function MainPage() {
     const isAuth = useAuthStore((state) => state.isAuth)
@@ -13,7 +13,11 @@ export default function MainPage() {
     const PAGE = 1
     const SIZE = 2
 
-    const { data: myVideo } = useGetRecommendedVideo({ channelId: user?.channelId, page: PAGE, size: SIZE })
+    const { data: myVideo } = useGetRecommendedMyVideos({ channelId: user?.channelId, page: PAGE, size: SIZE })
+    const { data: dummyVideo } = useGetRecommendedDummyVideos()
+
+    const normalizedMyVideos = myVideo?.list ? adaptVideolist(myVideo.list, false) : []
+    const normalizedDummyVideos = dummyVideo?.videoList ? adaptVideolist(dummyVideo.videoList, true) : []
 
     return (
         <>
@@ -39,10 +43,13 @@ export default function MainPage() {
                     <UrlInputForm />
 
                     <div className="space-y-20 tablet:space-y-10">
-                        {isAuth && myVideo && myVideo.list && myVideo.list.length > 0 && (
-                            <VideoRecommendation label="내 영상의 개선점을 알고 싶다면" videoData={myVideo} />
+                        {isAuth && normalizedMyVideos && normalizedMyVideos.length > 0 && (
+                            <MyVideoRecommendation label="내 영상의 개선점을 알고 싶다면" videos={normalizedMyVideos} />
                         )}
-                        <VideoRecommendation label="인기있는 영상의 비결은?" videoData={DUMMY_POPULAR} isDummy={true} />
+
+                        {normalizedDummyVideos && normalizedDummyVideos.length > 0 && (
+                            <DummyVideoRecommendation label="인기있는 영상의 비결은?" videos={normalizedDummyVideos} />
+                        )}
                     </div>
                 </div>
 

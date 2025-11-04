@@ -3,6 +3,8 @@ import { NavbarLink, NavbarModalButton } from './NavbarLink'
 import { LOGIN_LINK, NAVIGATE_LINKS, PLUS_LINK } from './navbarLinks'
 import { NavbarUserInfo } from './NavbarUserInfo'
 import { useAuthStore } from '../../../stores/authStore'
+import useIsMobile from '../../../hooks/main/useIsMobile'
+import Settings from '../../../assets/icons/settings.svg?react'
 
 interface NavbarLinksListProps {
     loginButtonRef?: React.RefObject<HTMLDivElement | null>
@@ -19,27 +21,19 @@ const NavbarLinksListComponent = ({
 }: NavbarLinksListProps) => {
     const isAuth = useAuthStore((state) => state.isAuth)
     const user = useAuthStore((state) => state.user)
+    const isMobile = useIsMobile()
 
     const label = loginButtonRef ? undefined : PLUS_LINK.label
 
     return (
-        <div className="flex flex-col justify-between items-start desktop:items-center h-full">
-            <div className="flex flex-col justify-center items-center gap-4 desktop:gap-6">
-                <div className="hidden tablet:block">
-                    <NavbarModalButton {...PLUS_LINK} label={label} onClick={handlePlusClick} />
-                </div>
-
-                <div className="flex flex-col tablet:hidden">
-                    <div className="pt-8 pb-8">
-                        {isAuth && user ? (
-                            <NavbarUserInfo user={user} onUserClick={handleUserClick} />
-                        ) : (
-                            <NavbarModalButton {...LOGIN_LINK} onClick={handleLoginClick} />
-                        )}
-                    </div>
-
-                    <NavbarModalButton {...PLUS_LINK} label={label} onClick={handlePlusClick} />
-                </div>
+        <div className="flex flex-col justify-between items-start desktop:items-center w-full h-dvh">
+            <div className="flex flex-col justify-center items-start desktop:items-center gap-4 desktop:gap-6">
+                <NavbarModalButton
+                    {...PLUS_LINK}
+                    label={label}
+                    size={isMobile ? 'xs' : 'sm'}
+                    onClick={handlePlusClick}
+                />
 
                 <div className="flex flex-col gap-4 desktop:gap-2">
                     {NAVIGATE_LINKS.map((link) => (
@@ -48,11 +42,17 @@ const NavbarLinksListComponent = ({
                 </div>
             </div>
 
-            <div ref={loginButtonRef} className="hidden tablet:flex mb-4 desktop:m-0">
+            <div ref={loginButtonRef} className="flex w-full justify-start items-center tablet:mb-4 desktop:m-0">
                 {isAuth && user ? (
-                    <NavbarUserInfo user={user} onUserClick={handleUserClick} />
+                    <button
+                        className="flex flex-row justify-between items-center w-full cursor-pointer"
+                        onClick={handleUserClick}
+                    >
+                        <NavbarUserInfo />
+                        <Settings className="block desktop:hidden" />
+                    </button>
                 ) : (
-                    <NavbarModalButton {...LOGIN_LINK} onClick={handleLoginClick} />
+                    <NavbarModalButton {...LOGIN_LINK} onClick={handleLoginClick} variant="login" />
                 )}
             </div>
         </div>

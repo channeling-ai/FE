@@ -4,9 +4,10 @@ import { Evaluation } from './Evaluation'
 import { Summary } from './Summary'
 import { Skeleton } from './Skeleton'
 import useGetReportOverview from '../../../../hooks/report/useGetReportOverview'
-import { useGetDummyOverview } from '../../../../hooks/report/useGetDummyReport'
+
 import type { OverviewDataProps } from '../../../../types/report/all'
 import { useReportStore } from '../../../../stores/reportStore'
+import { useGetDummyOverview } from '../../../../hooks/report'
 
 interface TabOverviewProps {
     reportId: number

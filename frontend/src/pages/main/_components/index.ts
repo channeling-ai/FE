@@ -1,5 +1,5 @@
 export * from './UrlInputForm'
-export * from './VideoCard'
-export * from './VideoRecommendation'
+export * from './MyVideoRecommendation'
+export * from './DummyVideoRecommendation'
 export * from './ErrorToast'
 export * from './UrlInputModal'

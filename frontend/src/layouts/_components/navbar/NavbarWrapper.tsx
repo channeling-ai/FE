@@ -1,13 +1,11 @@
 import { NavbarDesktop } from './NavbarDesktop'
-import { NavbarMobile } from './NavbarMobile'
-import { NavbarTablet } from './NavbarTablet'
+import { NavbarMobileAndTablet } from './NavbarMobileAndTablet'
 
 export const NavbarWrapper = () => {
     return (
         <>
             <NavbarDesktop />
-            <NavbarTablet />
-            <NavbarMobile />
+            <NavbarMobileAndTablet />
         </>
     )
 }

@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom'
-import Modal from '../../../components/Modal'
-import usePostReportById from '../../../hooks/report/usePostReportById'
-import { getJosa } from '../../../utils/format'
+import Modal from './Modal'
+import usePostReportById from '../hooks/report/usePostReportById'
+import { getJosa } from '../utils/format'
 import { useQueryClient } from '@tanstack/react-query'
-import { useAuthStore } from '../../../stores/authStore'
+import { useAuthStore } from '../stores/authStore'
 
 interface MyReportModalProps {
     title: string
@@ -11,7 +11,7 @@ interface MyReportModalProps {
     videoId: number
 }
 
-export const MyReportModal = ({ title, setOpen, videoId }: MyReportModalProps) => {
+const MyReportModal = ({ title, setOpen, videoId }: MyReportModalProps) => {
     const navigate = useNavigate()
     const queryClient = useQueryClient()
     const user = useAuthStore((state) => state.user)
@@ -64,3 +64,5 @@ export const MyReportModal = ({ title, setOpen, videoId }: MyReportModalProps) =
         </Modal>
     )
 }
+
+export default MyReportModal

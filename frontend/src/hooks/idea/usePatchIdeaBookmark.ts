@@ -1,15 +1,14 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { patchReportIdeaBookmark } from '../../api/idea'
-import type { Idea, PatchIdeaBookmarkDto, ResponsePatchIdeaBookmark } from '../../types/idea'
-
+import type { PatchIdeaBookmarkDto, ResponseGetGeneratedIdea, ResponsePatchIdeaBookmark } from '../../types/idea'
 interface OptimisticUpdateContext {
-    previousIdeasResponse?: { ideas: Idea[] }
+    previousIdeasResponse?: ResponseGetGeneratedIdea
 }
 
 export default function usePatchIdeaBookmark() {
     const queryClient = useQueryClient()
 
-    const queryKey = ['idea']
+    const queryKey = ['ideas']
 
     return useMutation<ResponsePatchIdeaBookmark, Error, PatchIdeaBookmarkDto, OptimisticUpdateContext>({
         mutationFn: patchReportIdeaBookmark,
@@ -17,16 +16,19 @@ export default function usePatchIdeaBookmark() {
         onMutate: async (variables) => {
             await queryClient.cancelQueries({ queryKey })
 
-            const previousIdeasResponse = queryClient.getQueryData<{ ideas: Idea[] }>(queryKey)
+            const previousIdeasResponse = queryClient.getQueryData<ResponseGetGeneratedIdea>(queryKey)
 
             if (previousIdeasResponse) {
                 queryClient.setQueryData(queryKey, {
                     ...previousIdeasResponse,
-                    ideas: previousIdeasResponse.ideas.map((idea) =>
-                        idea.ideaId === variables.ideaId
-                            ? { ...idea, isBookMarked: !idea.isBookMarked } // 북마크 상태를 미리 변경
-                            : idea
-                    ),
+                    result: {
+                        ...previousIdeasResponse.result,
+                        ideaList: previousIdeasResponse.result.ideaList.map((idea) =>
+                            idea.ideaId === variables.ideaId
+                                ? { ...idea, isBookmarked: !idea.isBookmarked } // 북마크 상태를 미리 변경
+                                : idea
+                        ),
+                    },
                 })
             }
 

@@ -6,7 +6,6 @@ import type {
     ResponseDeleteMyReport,
     ResponseMyReports,
     ResponseReportAnalysis,
-    ResponseReportIdea,
     ResponseReportOverview,
     ResponseVideoData,
     VideoDataDto,
@@ -49,12 +48,6 @@ export const getReportOverview = async ({ reportId }: GetReportDto): Promise<Res
 // 리포트 분석 페이지 조회
 export const getReportAnalysis = async ({ reportId }: GetReportDto): Promise<ResponseReportAnalysis> => {
     const { data } = await axiosInstance.get(`/reports/${reportId}/analyses`)
-    return data
-}
-
-// 리포트 아이디어 페이지 조회
-export const getReportIdea = async ({ reportId }: GetReportDto): Promise<ResponseReportIdea> => {
-    const { data } = await axiosInstance.get(`/reports/${reportId}/ideas`)
     return data
 }
 

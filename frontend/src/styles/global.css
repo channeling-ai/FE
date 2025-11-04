@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@plugin '@tailwindcss/typography';
 @import './scrollbar.css';
 @import './typo.css';
 

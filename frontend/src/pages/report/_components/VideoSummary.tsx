@@ -1,9 +1,9 @@
 import { memo } from 'react'
 import { formatKoreanDate, formatRelativeTime } from '../../../utils/format'
 import { Tag } from './Tag'
-import type { VideoData } from '../../../types/report/all'
+import type { NormalizedVideoData } from '../../../types/report/all'
 
-export const VideoSummary = memo(({ data }: { data: VideoData | undefined }) => {
+export const VideoSummary = memo(({ data }: { data: NormalizedVideoData | undefined }) => {
     return (
         <section aria-labelledby="video-title" className="flex flex-col tablet:flex-row gap-6">
             <iframe
@@ -22,7 +22,7 @@ export const VideoSummary = memo(({ data }: { data: VideoData | undefined }) => 
                     </h1>
                     <p className="font-body-16m">업데이트: {formatKoreanDate(data?.lastUpdatedDate || new Date())}</p>
                     <div className="flex flex-row gap-1 whitespace-nowrap font-body-16r text-gray-600">
-                        <p>{data?.ChannelName || '채널 정보 불러오는 중...'}</p>
+                        <p>{data?.channelName || '채널 정보 불러오는 중...'}</p>
                         <span>·</span>
                         <p>{formatRelativeTime(data?.videoCreatedDate || new Date(), true)}</p>
                     </div>

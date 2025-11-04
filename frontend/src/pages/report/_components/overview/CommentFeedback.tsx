@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react'
-import { TitledSection } from '../TitledSection'
+import { TitledSection } from '../../../../components/TitledSection'
 import { DoughnutChart } from '../../../../components/chart'
 import useGetReportComments from '../../../../hooks/report/useGetReportComments'
 import { COMMENT_TYPE, type Comment, type CommentType } from '../../../../types/report/comment'
 import { useParams } from 'react-router-dom'
 import type { OverviewDataProps } from '../../../../types/report/all'
 import { CommentSkeleton } from './CommentSkeleton'
-import useGetDummyComments from '../../../../hooks/report/useGetDummyReport'
+import { useGetDummyComments } from '../../../../hooks/report'
 
 const Comments = ({ comments }: { comments: Comment[] | undefined }) => {
     if (!comments || comments.length === 0)
@@ -14,8 +14,10 @@ const Comments = ({ comments }: { comments: Comment[] | undefined }) => {
 
     return (
         <div className="flex flex-col gap-4">
-            {comments?.map((comment) => (
-                <div key={comment.commentId} className="px-4 py-2 rounded-lg bg-surface-elevate-l2">
+            {comments?.map((comment, idx) => (
+                // 현재 서버에서 모든 commentId 값이 동일하게 내려오는 버그가 있으므로 (예: 0)
+                // React key 충돌 예방을 위해 idx를 덧붙여 임시 유니크 key 생성
+                <div key={comment.commentId + idx} className="px-4 py-2 rounded-lg bg-surface-elevate-l2">
                     <span className="max-h-12 line-clamp-2 font-body-16r">{comment.content}</span>
                 </div>
             ))}
@@ -39,7 +41,7 @@ export const CommentFeedback = ({ data, isDummy }: OverviewDataProps & { isDummy
 
     const { data: dummyData, isLoading: isDummyLoading } = useGetDummyComments({
         reportId,
-        type: activeTab,
+        commentType: activeTab,
         enabled: isDummy,
     })
 

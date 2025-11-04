@@ -10,6 +10,11 @@ export const COMMENT_TYPE = {
 export type CommentType = keyof typeof COMMENT_TYPE
 export type CommentTypeValue = (typeof COMMENT_TYPE)[keyof typeof COMMENT_TYPE]
 
+export type ReportDummyCommentsDto = {
+    reportId: number
+    commentType: CommentType
+}
+
 export type ReportCommentsDto = {
     reportId: number
     type: CommentType

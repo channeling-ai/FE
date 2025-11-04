@@ -7,6 +7,7 @@ import type { LinkItem } from './navbarLinks'
 type NavbarLinkProps = LinkItem & {
     className?: string
     onClick?: () => void
+    variant?: 'default' | 'login'
 }
 
 // 누르면 경로 이동하는 Link 버튼
@@ -16,7 +17,7 @@ const NavbarLinkComponent = (props: NavbarLinkProps) => {
     return (
         <NavLink to={to} end={true} className={`block ${className ?? ''}`}>
             {({ isActive }) => (
-                <div className="flex flex-row desktop:flex-col items-center px-2 py-1 gap-4 desktop:gap-2">
+                <div className="flex flex-row desktop:flex-col items-center px-2 py-1 gap-2 tablet:gap-4 desktop:gap-2">
                     <IconWrapper
                         defaultIcon={defaultIcon}
                         hoverIcon={hoverIcon}
@@ -35,11 +36,26 @@ const NavbarLinkComponent = (props: NavbarLinkProps) => {
 
 // 누르면 모달이 열리는 버튼
 const NavbarModalButtonComponent = (props: NavbarLinkProps) => {
-    const { label, defaultIcon, hoverIcon, activeIcon, alt, isCircle, size, className, onClick } = props
+    const {
+        label,
+        defaultIcon,
+        hoverIcon,
+        activeIcon,
+        alt,
+        isCircle,
+        size,
+        className,
+        variant = 'default',
+        onClick,
+    } = props
 
     return (
         <button onClick={onClick} className={`block ${className ?? ''}`}>
-            <div className="flex flex-row desktop:flex-col items-center p-1 desktop:p-0 gap-3 desktop:gap-[5px] cursor-pointer">
+            <div
+                className={`flex flex-row desktop:flex-col items-center gap-2 tablet:gap-3 desktop:gap-[5px] cursor-pointer ${
+                    variant === 'login' ? 'tablet:px-1' : 'px-2 py-1 tablet:px-1 desktop:p-0'
+                }`}
+            >
                 <IconWrapper
                     defaultIcon={defaultIcon}
                     hoverIcon={hoverIcon}

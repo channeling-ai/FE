@@ -8,7 +8,7 @@ interface IconWrapperProps {
     label?: string
     isCircle: boolean
     isActive: boolean
-    size?: 'sm' | 'md' | 'lg'
+    size?: 'xs' | 'sm' | 'md' | 'lg'
 }
 
 const IconWrapperComponent = ({
@@ -29,13 +29,15 @@ const IconWrapperComponent = ({
         sizeClass = 'size-10'
     } else if (size === 'md') {
         sizeClass = 'size-8'
-    } else {
+    } else if (size === 'sm') {
         sizeClass = 'size-6'
-    }
+} else if (size === 'xs') {
+    sizeClass = 'size-[18px]'
+}
 
     return isCircle ? (
         <div
-            className="size-8 desktop:size-12 rounded-full bg-gray-200 flex items-center justify-center"
+            className="size-6 tablet:size-8 desktop:size-12 rounded-full bg-gray-200 flex items-center justify-center"
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => setIsHover(false)}
         >

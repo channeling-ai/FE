@@ -1,9 +1,20 @@
 import type { CommonResponse } from './common'
 
-export type RecommendedVideosDto = {
+export type RecommendedMyVideosDto = {
     channelId: number | undefined
     page?: number
     size?: number
+}
+
+export type NormalizedVideo = {
+    videoId: number
+    videoTitle: string
+    videoThumbnailUrl: string
+    videoCategory?: string
+    channelName?: string
+    channelImage: string
+    viewCount: number
+    uploadDate: Date
 }
 
 export type BriefVideo = {
@@ -17,7 +28,17 @@ export type BriefVideo = {
     uploadDate: Date
 }
 
-export type RecommededVideos = {
+export type BriefDummyVideo = {
+    videoId: number
+    videoTitle: string
+    videoThumbnailUrl: string
+    viewCount: number
+    channelName: string
+    channelThumbnailUrl: string // adapt to channelImage
+    uploadDate: Date
+}
+
+export type RecommendedMyVideos = {
     list: BriefVideo[]
     listSize: number
     totalPage: number
@@ -26,4 +47,15 @@ export type RecommededVideos = {
     isLast: boolean
 }
 
-export type ResponseRecommededVideos = CommonResponse<RecommededVideos>
+export type RecommendedDummyVideos = {
+    channelId: number
+    page: number
+    size: number
+    hasNextPage: boolean
+    totalElements: number
+    totalPages: number
+    videoList: BriefDummyVideo[]
+}
+
+export type ResponseRecommendedMyVideos = CommonResponse<RecommendedMyVideos>
+export type ResponseRecommendedDummyVideos = CommonResponse<RecommendedDummyVideos>

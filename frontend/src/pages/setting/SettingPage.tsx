@@ -41,7 +41,7 @@ export default function SettingPage({ onClose }: SettingPageProps) {
             >
                 <div className="flex shrink-0 justify-between items-center w-full p-6 bg-gray-100">
                     <h2 className="font-title-20b">설정</h2>
-                    <button onClick={onClose}>
+                    <button onClick={onClose} className="cursor-pointer">
                         <CloseIcon />
                     </button>
                 </div>

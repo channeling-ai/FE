@@ -12,7 +12,7 @@ export const LoginModal = ({ onClose }: { onClose: () => void }) => {
                 type="button"
                 className="
                     flex items-center py-4 px-6
-                    gap-4 rounded-xl cursor-pointer
+                    gap-4 rounded-2xl cursor-pointer
                     bg-gray-300 hover:bg-neutral-white-opacity20
                     text-gray-900 font-bold text-base leading-6 tracking-[-0.4px] text-center
                 "

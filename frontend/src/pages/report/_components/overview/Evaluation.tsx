@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from 'react'
 import { formatKoreanNumber } from '../../../../utils/format'
-import { TitledSection } from '../TitledSection'
+import { TitledSection } from '../../../../components/TitledSection'
 import type { OverviewDataProps } from '../../../../types/report/all'
 
 type EvaluationItem = {

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { Video } from '../../../types/profile'
 import { formatKoreanNumber, formatRelativeTime } from '../../../utils/format'
-import { MyReportModal } from './myReportModal'
+import MyReportModal from '../../../components/MyReportModal'
 
 interface MyShortsCardProps {
     shorts: Video

@@ -2,6 +2,10 @@ import axios from 'axios'
 import { LOCAL_STORAGE_KEY } from '../constants/key'
 import { logoutCore } from '../utils/auth'
 
+export const publicAxiosInstance = axios.create({
+    baseURL: import.meta.env.VITE_SERVER_API_URL,
+})
+
 export const axiosInstance = axios.create({
     // withCredentials: true,
     // baseURL: '/api',

@@ -1,8 +1,7 @@
 import type { Video } from '../../../types/profile'
 import { useState } from 'react'
-
 import { formatKoreanNumber, formatRelativeTime } from '../../../utils/format'
-import { MyReportModal } from './myReportModal'
+import MyReportModal from '../../../components/MyReportModal'
 
 interface MyVideoCardProps {
     video: Video
