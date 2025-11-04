@@ -31,9 +31,9 @@ const IconWrapperComponent = ({
         sizeClass = 'size-8'
     } else if (size === 'sm') {
         sizeClass = 'size-6'
-    } else {
-        sizeClass = 'size-[18px]'
-    }
+} else if (size === 'xs') {
+    sizeClass = 'size-[18px]'
+}
 
     return isCircle ? (
         <div
