@@ -12,7 +12,7 @@ import { axiosInstance } from './axios'
 
 // 아이디어 북마크 조회
 export const getBookmarkedIdeas = async ({ page, size }: BookmarkedIdeasDto): Promise<ResponseBookmarkedIdeas> => {
-    const res = await axiosInstance.get('/ideas/bookmarks', {
+    const res = await axiosInstance.get(`/ideas/bookmarks`, {
         params: { page, size },
     })
     return res.data
@@ -43,6 +43,6 @@ export const postIdea = async ({ keyword, videoType, detail }: PostIdeaDto): Pro
 
 // 생성된 아이디어 조회
 export const getGeneratedIdeas = async (): Promise<ResponseGetGeneratedIdea> => {
-    const { data } = await axiosInstance.get('/ideas')
+    const { data } = await axiosInstance.get(`/ideas`)
     return data
 }

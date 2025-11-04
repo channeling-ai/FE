@@ -68,13 +68,6 @@ export type TrendKeywordsProps = {
     channelTrendKeywordInfoList: ChannelTrendKeywordInfoList[]
 }
 
-// ✅ 리포트 아이디어 데이터 타입
-// export type TrendKeyWords = {
-//     // reportId: number
-//     // idea: Idea[]
-//     trend: Trend[]
-// }
-
 // 아이디어 생성 요청
 export type PostIdeaDto = {
     keyword: string

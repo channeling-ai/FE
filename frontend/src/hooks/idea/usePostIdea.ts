@@ -8,8 +8,7 @@ export default function usePostIdea() {
     return useMutation<ResponsePostIdea, AxiosError<ResponsePostIdea>, PostIdeaDto>({
         mutationFn: postIdea,
         mutationKey: ['postIdea'],
-        onSuccess: (data) => {
-            console.log('아이디어생성 성공: ', data)
+        onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['ideas'] })
         },
         onError: (error) => {

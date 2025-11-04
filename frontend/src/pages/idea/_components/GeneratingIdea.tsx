@@ -39,7 +39,6 @@ export const GeneratingIdea = () => {
             videoType: convertOptionToVideoType(selectedOption),
             detail: additionalInfo,
         }
-        console.log('API로 전송할 DTO:', ideaDto)
         mutate(ideaDto)
     }
 
