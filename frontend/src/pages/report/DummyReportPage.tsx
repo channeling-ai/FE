@@ -8,6 +8,7 @@ import { META_KEY } from '../../constants/metaConfig'
 import { useGetDummyVideoMeta } from '../../hooks/report'
 import { adaptVideoMeta } from '../../lib/mappers/report'
 import type { NormalizedVideoData } from '../../types/report/all'
+import { VideoSummarySkeleton } from './_components/VideoSummarySkeleton'
 
 export default function DummyReportPage() {
     const { reportId: reportIdParam } = useParams()
@@ -25,7 +26,7 @@ export default function DummyReportPage() {
     const [activeTab, setActiveTab] = useState(TABS[0])
     const [isOpenGuestModal, setIsOpenGuestModal] = useState(true)
 
-    const { data: videoData } = useGetDummyVideoMeta({ videoId: reportId, enabled: isDummy })
+    const { data: videoData, isPending } = useGetDummyVideoMeta({ videoId: reportId, enabled: isDummy })
     const normalizedVideoData: NormalizedVideoData | undefined = videoData
         ? adaptVideoMeta(videoData, isDummy)
         : undefined
@@ -37,7 +38,7 @@ export default function DummyReportPage() {
             {videoData && <Metadata metaKey={META_KEY.REPORT} vars={{ '영상 제목': videoData.videoTitle }} />}
 
             <div className="px-6 tablet:px-[76px] py-10 desktop:py-20 space-y-10">
-                <VideoSummary data={normalizedVideoData} />
+                {isPending ? <VideoSummarySkeleton /> : <VideoSummary data={normalizedVideoData} />}
                 <Tabs tabs={TABS} activeTab={activeTab} onChangeTab={setActiveTab} />
             </div>
 
