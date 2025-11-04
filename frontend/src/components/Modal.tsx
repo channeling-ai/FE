@@ -50,7 +50,7 @@ const Modal = ({ title, description, onClose, className = '', children }: PropsW
             role="dialog"
             aria-labelledby="modal-title"
             aria-describedby="modal-description"
-            className="fixed inset-0 z-50 flex items-start justify-center min-w-[288px]"
+            className="fixed inset-0 z-50 flex items-start justify-center"
         >
             <div className="absolute inset-0 bg-neutral-black-opacity50" />
 
@@ -59,7 +59,7 @@ const Modal = ({ title, description, onClose, className = '', children }: PropsW
                 ref={modalRef}
                 onClick={(e) => e.stopPropagation()}
                 className={`
-                    relative flex flex-col min-w-[288px] tablet:min-w-[384px] desktop:min-w-[486px]
+                    relative flex flex-col min-w-[328px] tablet:min-w-[384px] desktop:min-w-[486px]
                     space-y-4 tablet:space-y-6 bg-surface-elevate-l2 p-6 rounded-3xl
                     modal-animation ${className}
                 `}
