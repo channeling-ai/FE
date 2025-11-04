@@ -9,10 +9,10 @@ import { Skeleton } from './_components/Skeleton'
 import { TrendKeywords } from './_components/TrendKeywords'
 
 export default function IdeaPage() {
-    const { data: trendKeywords, isLoading: isLoading } = useGetTrendKeywords()
-    const { data: contentsIdea, isLoading: isContentsIdeaLoading } = useGetGeneratedIdeas()
+    const { data: trendKeywords, isLoading: isLoadingTrendKeywords } = useGetTrendKeywords()
+    const { data: contentsIdea, isLoading: isLoadingContentsIdea } = useGetGeneratedIdeas()
 
-    if (isLoading || isContentsIdeaLoading) return <Skeleton />
+    if (isLoadingTrendKeywords || isLoadingContentsIdea) return <Skeleton />
     return (
         <div>
             <Metadata metaKey={META_KEY.IDEA} />
