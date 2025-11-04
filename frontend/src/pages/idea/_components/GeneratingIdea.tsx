@@ -5,6 +5,8 @@ import IdeatooltipMobile from '../../../assets/icons/ideatooltip_mobile.svg?reac
 import DropdownOpen from '../../../assets/icons/dropdown_open.svg?react'
 import DropdownClose from '../../../assets/icons/dropdown_close.svg?react'
 import TextareaWithLimit from './TextareaWithLimit'
+import usePostIdea from '../../../hooks/idea/usePostIdea'
+import type { PostIdeaDto } from '../../../types/idea'
 
 export const GeneratingIdea = () => {
     const [isTooltipOpen, setIsTooltipOpen] = useState(false)
@@ -26,10 +28,30 @@ export const GeneratingIdea = () => {
         setSelectedOption(option)
         setIsDropdownOpen(false)
     }
+    const { mutate, isPending } = usePostIdea()
+    const handleSubmitClick = () => {
+        if (!keyword.trim()) {
+            alert('키워드를 입력해 주세요.')
+            return
+        }
+        const ideaDto: PostIdeaDto = {
+            keyword: keyword,
+            videoType: convertOptionToVideoType(selectedOption),
+            detail: additionalInfo,
+        }
+        console.log('API로 전송할 DTO:', ideaDto)
+        mutate(ideaDto)
+    }
 
     const headingId = useId()
 
     const dropdownOptions = ['선택없음', '숏폼 (3분 미만)', '롱폼 (3분 이상)']
+
+    const convertOptionToVideoType = (option: string): 'LONG' | 'SHORTS' | null => {
+        if (option === '숏폼 (3분 미만)') return 'SHORTS'
+        if (option === '롱폼 (3분 이상)') return 'LONG'
+        return null
+    }
 
     return (
         <section className="w-full flex flex-col gap-4">
@@ -123,6 +145,8 @@ export const GeneratingIdea = () => {
                 <button
                     className="flex h-[48px] px-2 py-4 justify-center items-center gap-2 rounded-2xl 
                                 bg-primary-500 hover:bg-primary-opacity50 font-body-16b text-gray-900 text-center cursor-pointer"
+                    onClick={handleSubmitClick}
+                    disabled={isPending}
                 >
                     콘텐츠 아이디어 생성하기
                 </button>
