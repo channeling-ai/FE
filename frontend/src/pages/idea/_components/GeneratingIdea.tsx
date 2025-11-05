@@ -9,7 +9,7 @@ import usePostIdea from '../../../hooks/idea/usePostIdea'
 import type { PostIdeaDto } from '../../../types/idea'
 
 export const GeneratingIdea = () => {
-    const [isTooltipOpen, setIsTooltipOpen] = useState(false)
+    const [isTooltipOpen, setIsTooltipOpen] = useState(true)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const [keyword, setKeyword] = useState('')
     const [additionalInfo, setAdditionalInfo] = useState('')
