@@ -27,7 +27,7 @@ export const GeneratingIdea = () => {
                 try {
                     localStorage.setItem('ideaTooltipSeen', 'true')
                 } catch (e) {
-                    console.error('Failed to write ideaTooltipiSeen to localStorage:', e)
+                    console.error('Failed to write ideaTooltipSeen to localStorage:', e)
                 }
             }
             return isOpening
