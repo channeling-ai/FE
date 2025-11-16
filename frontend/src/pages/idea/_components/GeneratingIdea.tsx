@@ -10,7 +10,7 @@ import type { PostIdeaDto } from '../../../types/idea'
 import { DropdownVideoType } from './DropdownVideoType'
 
 export const GeneratingIdea = () => {
-    const [isTooltipOpen, setIsTooltipOpen] = useState(false)
+    const [isTooltipOpen, setIsTooltipOpen] = useState(() => localStorage.getItem('ideaTooltipSeen') !== 'true')
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const [keyword, setKeyword] = useState('')
     const [additionalInfo, setAdditionalInfo] = useState('')
@@ -21,7 +21,18 @@ export const GeneratingIdea = () => {
     }
 
     const handleClick = () => {
-        setIsTooltipOpen((prev) => !prev)
+        setIsTooltipOpen((prev) => {
+            const isOpening = !prev
+            if (!isOpening) {
+                // 툴팁을 닫을 때
+                try {
+                    localStorage.setItem('ideaTooltipSeen', 'true')
+                } catch (e) {
+                    console.error('Failed to write ideaTooltipSeen to localStorage:', e)
+                }
+            }
+            return isOpening
+        })
     }
 
     const handleOptionClick = (e: React.MouseEvent<HTMLDivElement>, option: string) => {
