@@ -7,6 +7,7 @@ import DropdownClose from '../../../assets/icons/dropdown_close.svg?react'
 import TextareaWithLimit from './TextareaWithLimit'
 import usePostIdea from '../../../hooks/idea/usePostIdea'
 import type { PostIdeaDto } from '../../../types/idea'
+import { DropdownVideoType } from './DropdownVideoType'
 
 export const GeneratingIdea = () => {
     const [isTooltipOpen, setIsTooltipOpen] = useState(false)
@@ -26,7 +27,7 @@ export const GeneratingIdea = () => {
     const handleOptionClick = (e: React.MouseEvent<HTMLDivElement>, option: string) => {
         e.stopPropagation()
         setSelectedOption(option)
-        setIsDropdownOpen(false)
+        handleDropdownClick()
     }
     const { mutate, isPending } = usePostIdea()
     const handleSubmitClick = () => {
@@ -43,8 +44,6 @@ export const GeneratingIdea = () => {
     }
 
     const headingId = useId()
-
-    const dropdownOptions = ['선택없음', '숏폼 (3분 미만)', '롱폼 (3분 이상)']
 
     const convertOptionToVideoType = (option: string): 'LONG' | 'SHORTS' | null => {
         if (option === '숏폼 (3분 미만)') return 'SHORTS'
@@ -100,30 +99,7 @@ export const GeneratingIdea = () => {
                             {isDropdownOpen && (
                                 <>
                                     <DropdownOpen className="cursor-pointer" />
-                                    <div className="flex flex-col w-full absolute -bottom-45 -left-0">
-                                        {dropdownOptions.map((option, index) => {
-                                            const baseStyle =
-                                                'flex flex-col justify-center items-start p-4 gap-2 bg-gray-300 hover:bg-gray-200 font-body-16r cursor-pointer'
-                                            let conditionalStyle = ''
-
-                                            if (index === 0) {
-                                                conditionalStyle = 'border border-gray-400 rounded-t-lg'
-                                            } else if (index === dropdownOptions.length - 1) {
-                                                conditionalStyle = 'border border-gray-400 rounded-b-lg'
-                                            } else {
-                                                conditionalStyle = 'border border-gray-400'
-                                            }
-                                            return (
-                                                <div
-                                                    key={option}
-                                                    className={`${baseStyle} ${conditionalStyle}`}
-                                                    onClick={(e) => handleOptionClick(e, option)}
-                                                >
-                                                    {option}
-                                                </div>
-                                            )
-                                        })}
-                                    </div>
+                                    <DropdownVideoType handleOptionValue={handleOptionClick} />
                                 </>
                             )}
                         </div>
