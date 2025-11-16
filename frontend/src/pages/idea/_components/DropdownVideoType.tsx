@@ -7,18 +7,11 @@ export const DropdownVideoType = ({ handleOptionValue }: DropdownVideoTypeProps)
 
     return (
         <div className="flex flex-col w-full absolute -bottom-45 -left-0">
-            {dropdownOptions.map((option, index) => {
+            {dropdownOptions.map((option) => {
                 const baseStyle =
-                    'flex flex-col justify-center items-start p-4 gap-2 bg-gray-300 hover:bg-gray-200 font-body-16r cursor-pointer'
-                let conditionalStyle = ''
+                    'flex flex-col justify-center items-start p-4 gap-2 bg-gray-300 hover:bg-gray-200 font-body-16r cursor-pointer border border-gray-400'
+                const conditionalStyle = 'first:rounded-t-lg last:rounded-b-lg'
 
-                if (index === 0) {
-                    conditionalStyle = 'border border-gray-400 rounded-t-lg'
-                } else if (index === dropdownOptions.length - 1) {
-                    conditionalStyle = 'border border-gray-400 rounded-b-lg'
-                } else {
-                    conditionalStyle = 'border border-gray-400'
-                }
                 return (
                     <div
                         key={option}
