@@ -1,0 +1,49 @@
+@layer components {
+    .font-title-100r {
+        @apply text-[80px] leading-[140%] tracking-[-2.5px] font-normal;
+        @apply tablet:text-[100px]; /* Mobile -> Desktop */
+    }
+    .font-title-24b {
+        @apply text-[20px] leading-[140%] tracking-[-0.6px] font-bold; /* Mobile */
+        @apply tablet:text-[24px]; /* Tablet -> Desktop */
+    }
+
+    .font-title-20b {
+        @apply text-[16px] leading-[140%] tracking-[-0.4px] font-bold; /* Mobile */
+        @apply tablet:text-[20px] tablet:tracking-[-0.45px]; /* Tablet -> Desktop */
+    }
+
+    .font-title-18b {
+        @apply text-[16px] leading-[140%] tracking-[-0.4px] font-bold; /* Mobile */
+        @apply tablet:text-[18px] tablet:tracking-[-0.45px]; /* Tablet -> Desktop */
+    }
+
+    .font-body-24m {
+        @apply text-[16px] leading-[150%] tracking-[-0.6px] font-medium; /* Mobile */
+        @apply tablet:text-[24px]; /* Tablet */
+        @apply desktop:text-[16px] desktop:tracking-[-0.4px]; /* Desktop */
+    }
+
+    .font-body-16b {
+        @apply text-[16px] leading-[150%] tracking-[-0.4px] font-bold; /* Mobile -> Desktop */
+    }
+
+    .font-body-16m {
+        @apply text-[16px] leading-[150%] tracking-[-0.4px] font-medium; /* Mobile -> Desktop */
+    }
+
+    .font-body-16r {
+        @apply text-[14px] leading-[150%] tracking-[-0.35px] font-normal; /* Mobile */
+        @apply tablet:text-[16px]; /* Tablet -> Desktop */
+    }
+
+    .font-caption-14m {
+        @apply text-[12px] leading-[140%] tracking-[-0.3px] font-medium; /* Mobile */
+        @apply tablet:text-[14px] tablet:tracking-[-0.35px]; /* Tablet -> Desktop */
+    }
+
+    .font-caption-14r {
+        @apply text-[12px] leading-[140%] tracking-[-0.3px] font-normal; /* Mobile */
+        @apply tablet:text-[14px] tablet:tracking-[-0.35px]; /* Tablet -> Desktop */
+    }
+}

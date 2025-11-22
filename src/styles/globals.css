@@ -1,0 +1,135 @@
+@import 'tailwindcss';
+@import './typo.css';
+
+@theme {
+    --color-gray-50: #161616;
+    --color-gray-100: #262626;
+    --color-gray-200: #393939;
+    --color-gray-300: #525252;
+    --color-gray-400: #6f6f6f;
+    --color-gray-500: #8d8d8d;
+    --color-gray-600: #a8a8a8;
+    --color-gray-700: #c6c6c6;
+    --color-gray-800: #e0e0e0;
+    --color-gray-900: #f4f4f4;
+
+    --color-primary-50: #2d0709;
+    --color-primary-100: #520408;
+    --color-primary-200: #750e13;
+    --color-primary-300: #a2191f;
+    --color-primary-400: #da1e28;
+    --color-primary-500: #fa4d56;
+    --color-primary-600: #ff8389;
+    --color-primary-700: #ffb3b8;
+    --color-primary-800: #ffd7d9;
+    --color-primary-900: #fff1f1;
+    --color-primary-opacity50: #fa4d5680;
+
+    --color-surface: var(--color-gray-100);
+    --color-surface-elevate-l1: var(--color-gray-100);
+    --color-surface-elevate-l2: var(--color-gray-200);
+    --color-surface-elevate-l3: var(--color-gray-300);
+
+    --color-neutral-white: #ffffff;
+    --color-neutral-white-opacity5: #ffffff0d;
+    --color-neutral-white-opacity10: #ffffff1a;
+    --color-neutral-white-opacity20: #ffffff33;
+
+    --color-neutral-black: #121212;
+    --color-neutral-black-opacity50: #12121280;
+
+    --color-error: #ef4444;
+
+    --breakpoint-desktop: 1440px;
+    --breakpoint-tablet: 768px;
+    --breakpoint-mobile: 360px;
+
+    --animate-sway: sway 1s ease-in-out infinite;
+    --animate-wave: wave 2s linear infinite;
+}
+
+@layer base {
+    * {
+        @apply box-border;
+    }
+
+    html,
+    body {
+        @apply h-full m-0 p-0;
+    }
+
+    body {
+        min-width: 360px;
+        overflow-x: hidden;
+        font-family: var(--font-pretendard), -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell,
+            sans-serif;
+        background: var(--color-surface);
+        color: var(--color-gray-900);
+    }
+}
+
+@keyframes sway {
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(10px);
+    }
+}
+
+@keyframes wave {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+@layer utilities {
+    .multi-line-ellipsis {
+        @apply overflow-hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+    }
+
+    .page-transition {
+        animation: fadeIn 0.1s ease-in;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    .modal-animation {
+        animation: fadeInScaleUp 0.3s ease-in-out;
+    }
+
+    @keyframes fadeInScaleUp {
+        from {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+}
+
+/* @layer components {
+    .font-label-fixed {
+        @apply text-[16px] leading-[150%] font-normal;
+    }
+
+    .font-footer-fixed {
+        @apply text-[14px] leading-[140%] font-normal tracking-[-0.35px];
+    }
+} */
