@@ -1,4 +1,4 @@
-import { Modal } from '@/components'
+import { Modal } from '@/shared'
 
 export const LoginFailedModal = ({ onClose }: { onClose: () => void }) => {
     return (

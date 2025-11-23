@@ -1,5 +1,5 @@
 import GoogleIcon from '@/assets/icons/google.svg'
-import { Modal } from '@/components'
+import { Modal } from '@/shared'
 
 export const LoginModal = ({ onClose }: { onClose: () => void }) => {
     return (

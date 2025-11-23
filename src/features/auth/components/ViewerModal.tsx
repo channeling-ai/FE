@@ -1,5 +1,4 @@
-import { Modal, TextareaWithArrow } from '@/components'
-import { useWindowWidth } from '@/shared'
+import { Modal, TextareaWithArrow, useWindowWidth } from '@/shared'
 
 interface ViewerModalProps {
     onClose: () => void

@@ -1,3 +1,5 @@
+import { ProtectedRoute } from '@/shared'
+
 export default function MyPage() {
-    return <div>page</div>
+    return <ProtectedRoute>page</ProtectedRoute>
 }

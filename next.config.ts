@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
     }
   },
   images: {
-    domains: ['lh3.googleusercontent.com'],
+    domains: ['lh3.googleusercontent.com', 'i.ytimg.com', 'yt3.googleusercontent.com', 'yt3.ggpht.com'],
   },
 }
 

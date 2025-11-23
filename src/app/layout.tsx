@@ -1,10 +1,9 @@
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import '../styles/globals.css'
-import { AppLayout } from '@/components'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { queryClient } from '@/shared'
+import { AppLayout, queryClient } from '@/shared'
 
 const pretendard = localFont({
     src: [

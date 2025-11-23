@@ -1,10 +1,12 @@
+'use client'
+
 import { useEffect, useRef, useState } from 'react'
 import clsx from 'clsx'
 import ErrorIcon from '@/assets/icons/error.svg'
-import { ArrowButton } from '@/components'
 import { useRouter } from 'next/navigation'
 import { ErrorToast } from './ErrorToast'
 import { useGetVideoData, useVideoUrl } from '../hooks'
+import { ArrowButton } from '@/shared'
 
 interface VideoUrlModalProps {
     onClose: () => void
