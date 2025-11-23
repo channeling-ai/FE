@@ -8,6 +8,7 @@ import useGetReportOverview from '../../../../hooks/report/useGetReportOverview'
 import type { OverviewDataProps } from '../../../../types/report/all'
 import { useReportStore } from '../../../../stores/reportStore'
 import { useGetDummyOverview } from '../../../../hooks/report'
+import { UpdateSummary } from './UpdateSummary'
 
 interface TabOverviewProps {
     reportId: number
@@ -35,6 +36,7 @@ export const TabOverview = ({ reportId, isDummy = false }: TabOverviewProps) => 
 
     return (
         <div className="space-y-16">
+            <UpdateSummary data={overviewData} />
             <EvaluationAndSummary data={overviewData} />
             <CommentFeedback data={overviewData} isDummy={isDummy} />
         </div>
