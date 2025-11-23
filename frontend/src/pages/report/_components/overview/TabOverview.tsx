@@ -2,6 +2,7 @@ import { memo } from 'react'
 import { CommentFeedback } from './CommentFeedback'
 import { Evaluation } from './Evaluation'
 import { Summary } from './Summary'
+import { UpdateSummary } from './UpdateSummary'
 import { Skeleton } from './Skeleton'
 import useGetReportOverview from '../../../../hooks/report/useGetReportOverview'
 
@@ -35,6 +36,7 @@ export const TabOverview = ({ reportId, isDummy = false }: TabOverviewProps) => 
 
     return (
         <div className="space-y-16">
+            <UpdateSummary data={overviewData} />
             <EvaluationAndSummary data={overviewData} />
             <CommentFeedback data={overviewData} isDummy={isDummy} />
         </div>
