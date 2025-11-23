@@ -3,16 +3,21 @@ import { NavButton } from './NavButton'
 import { UserInfo } from './UserInfo'
 import { LOGIN_LINK, NAVIGATE_LINKS, PLUS_LINK } from './nav'
 import { NavbarContext } from '../store'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+import Settings from '@/assets/icons/settings.svg'
 
-const NavListComponent = () => {
+interface NavListProps {
+    isDesktop?: boolean
+}
+
+const NavListComponent = ({ isDesktop = false }: NavListProps) => {
     const router = useRouter()
+    const pathname = usePathname()
 
     const context = useContext(NavbarContext)
-
     const { isAuth, loginButtonRef, user, handlePlusClick, handleUserClick } = context!
 
-    const plusLabel = loginButtonRef ? undefined : PLUS_LINK.label
+    const plusLabel = isDesktop ? undefined : PLUS_LINK.label
 
     return (
         <div className="flex flex-col justify-between items-start desktop:items-center w-full h-dvh">
@@ -26,22 +31,30 @@ const NavListComponent = () => {
 
                 <div className="flex flex-col gap-4 desktop:gap-2">
                     {NAVIGATE_LINKS.map((link) => (
-                        <NavButton key={link.to} onClick={() => router.push(link.to)} {...link} />
+                        <NavButton
+                            key={link.to}
+                            {...link}
+                            onClick={() => router.push(link.to)}
+                            isActive={pathname === link.to}
+                        />
                     ))}
                 </div>
             </div>
 
-            <div ref={loginButtonRef} className="flex w-full justify-start items-center tablet:mb-4 desktop:m-0">
+            <div
+                ref={isDesktop ? loginButtonRef : undefined}
+                className="flex w-full justify-start items-center tablet:mb-4 desktop:m-0"
+            >
                 {isAuth && user ? (
                     <button
                         className="flex flex-row justify-between items-center w-full cursor-pointer"
                         onClick={handleUserClick}
                     >
                         <UserInfo />
-                        {/* <Settings className="block desktop:hidden" /> */}
+                        <Settings className="block desktop:hidden" />
                     </button>
                 ) : (
-                    <NavButton variant="login" icons={{ default: LOGIN_LINK.icons.default }} />
+                    <NavButton label={LOGIN_LINK.label} variant="login" icons={{ default: LOGIN_LINK.icons.default }} />
                 )}
             </div>
         </div>

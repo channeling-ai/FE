@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import LoginToolTip from '@/assets/icons/tooltip.svg?react'
+import LoginToolTip from '@/assets/icons/tooltip.svg'
 
-export const ToolTipBubble = () => {
+export const TooltipBubble = () => {
     const [visible, setVisible] = useState(true)
 
     useEffect(() => {

@@ -1,3 +1,5 @@
+'use client'
+
 import { logoutCore } from '../utils/auth'
 
 export function useLogout() {

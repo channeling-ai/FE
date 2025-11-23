@@ -3,10 +3,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { ToolTipPos } from '../types'
 import { useAuthStore, useLoginStore } from '@/shared/store'
-import { useIsMobile } from '@/shared/hooks'
 import { NavbarContext } from '../store'
 import { NavbarDesktop } from './NavbarDesktop'
-import { useOpenSetting } from '@/features/setting/hooks'
+import { NavbarMobileAndTablet } from './NavbarMobileAndTablet'
+import { useOpenSetting } from '@/features/setting'
+import { useResponsive } from '@/shared/hooks'
 
 export const Navbar = () => {
     const [showUrlModal, setShowUrlModal] = useState(false)
@@ -16,7 +17,7 @@ export const Navbar = () => {
 
     const isAuth = useAuthStore((state) => state.isAuth)
     const user = useAuthStore((state) => state.user)
-    const isMobile = useIsMobile()
+    const { isMobile } = useResponsive()
 
     const handlePlusClick = useCallback(() => setShowUrlModal((prev) => !prev), [])
     const handleUserClick = useOpenSetting()
@@ -61,6 +62,7 @@ export const Navbar = () => {
             }}
         >
             <NavbarDesktop />
+            <NavbarMobileAndTablet />
         </NavbarContext>
     )
 }

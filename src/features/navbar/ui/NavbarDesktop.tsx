@@ -1,14 +1,14 @@
 import Link from 'next/link'
 import ChannelingLogo from '@/assets/icons/channelingLogo.svg'
 import { useContext } from 'react'
-import { ToolTipBubble } from './ToolTipBubble'
 import { NavList } from './NavList'
 import { NavbarContext } from '../store'
+import { VideoUrlModal } from '@/features/home'
+import { TooltipBubble } from './TooltipBubble'
 
 export const NavbarDesktop = () => {
     const context = useContext(NavbarContext)
-
-    const { isAuth, tooltipPos } = context!
+    const { isAuth, tooltipPos, showUrlModal, handlePlusClick } = context!
 
     return (
         <nav className="hidden desktop:block">
@@ -17,16 +17,16 @@ export const NavbarDesktop = () => {
                     <ChannelingLogo />
                 </Link>
 
-                <NavList />
+                <NavList isDesktop={true} />
             </div>
 
             {!isAuth && tooltipPos && (
                 <div style={{ position: 'absolute', top: tooltipPos.top, left: tooltipPos.left, zIndex: 9999 }}>
-                    <ToolTipBubble />
+                    <TooltipBubble />
                 </div>
             )}
 
-            {/* {showUrlModal && <UrlInputModal onClose={handlePlusClick} />} */}
+            {showUrlModal && <VideoUrlModal onClose={handlePlusClick} />}
         </nav>
     )
 }

@@ -1,3 +1,5 @@
+'use client'
+
 export const useLocalStorage = (key: string) => {
     const setItem = (value: unknown) => {
         try {
