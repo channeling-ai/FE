@@ -15,7 +15,7 @@ const NavListComponent = ({ isDesktop = false }: NavListProps) => {
     const pathname = usePathname()
 
     const context = useContext(NavbarContext)
-    const { isAuth, loginButtonRef, user, handlePlusClick, handleUserClick } = context!
+    const { isAuth, loginButtonRef, user, handlePlusClick, handleUserClick, handleLoginClick } = context!
 
     const plusLabel = isDesktop ? undefined : PLUS_LINK.label
 
@@ -54,7 +54,12 @@ const NavListComponent = ({ isDesktop = false }: NavListProps) => {
                         <Settings className="block desktop:hidden" />
                     </button>
                 ) : (
-                    <NavButton label={LOGIN_LINK.label} variant="login" icons={{ default: LOGIN_LINK.icons.default }} />
+                    <NavButton
+                        label={LOGIN_LINK.label}
+                        variant="login"
+                        icons={{ default: LOGIN_LINK.icons.default }}
+                        onClick={handleLoginClick}
+                    />
                 )}
             </div>
         </div>

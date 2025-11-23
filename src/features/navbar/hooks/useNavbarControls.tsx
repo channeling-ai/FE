@@ -1,6 +1,6 @@
 import { VideoUrlModal } from '@/features/home'
-import { useOpenSetting } from '@/features/setting/hooks'
-import { useAuthStore, useLoginStore } from '@/shared/store'
+import { useOpenSetting } from '@/features/setting'
+import { useAuthStore, useLoginStore } from '@/shared'
 import { useState, useCallback } from 'react'
 
 export const useNavbarControls = () => {

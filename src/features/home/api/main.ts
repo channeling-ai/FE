@@ -1,5 +1,5 @@
-import { axiosInstance } from '@/shared/api'
 import {
+    axiosInstance,
     DeleteMyReport,
     GetReportDto,
     MyReportsDto,
@@ -16,7 +16,7 @@ import {
     ResponseReportOverview,
     ResponseVideoData,
     VideoDataDto,
-} from '@/shared/types'
+} from '@/shared'
 
 // URL로 리포트 분석 요청
 export const postReportByUrl = async ({ url }: PostReportByUrlDto): Promise<ResponseReportByUrl> => {

@@ -14,7 +14,7 @@ export const NavbarDesktop = () => {
         <nav className="hidden desktop:block">
             <div className="fixed top-0 left-0 flex flex-col items-center w-20 h-full px-4 py-9 gap-[88px] bg-surface">
                 <Link href="/">
-                    <ChannelingLogo />
+                    <ChannelingLogo className="w-12 h-12" />
                 </Link>
 
                 <NavList isDesktop={true} />

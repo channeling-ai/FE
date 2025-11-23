@@ -1,6 +1,4 @@
-'use client'
-
-import { useGetMyProfile, useResponsive } from '@/shared/hooks'
+import { useGetMyProfile, useResponsive } from '@/shared'
 import Image from 'next/image'
 import { memo } from 'react'
 

@@ -4,7 +4,7 @@ import '../styles/globals.css'
 import { AppLayout } from '@/components'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { queryClient } from '@/shared/utils'
+import { queryClient } from '@/shared'
 
 const pretendard = localFont({
     src: [

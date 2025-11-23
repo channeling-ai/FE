@@ -2,8 +2,7 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import type { AxiosError } from 'axios'
-import { useReportStore } from '@/shared/store'
-import { ResponseReportByUrl, ResultReportByUrl } from '@/shared/types'
+import { ResponseReportByUrl, ResultReportByUrl, useReportStore } from '@/shared'
 import { postReportByUrl } from '../api'
 
 interface ReportByUrlCallbacks {

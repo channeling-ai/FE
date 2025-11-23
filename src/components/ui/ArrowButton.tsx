@@ -1,4 +1,4 @@
-import { ButtonType } from '@/shared/types'
+import { ButtonType } from '@/shared'
 import Arrow from '@/assets/icons/arrow.svg'
 
 interface ArrowButtonProps {

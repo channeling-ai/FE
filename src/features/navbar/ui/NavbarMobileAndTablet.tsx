@@ -1,5 +1,3 @@
-'use client'
-
 import { useContext, useEffect, useState } from 'react'
 import ChannelingLogo from '@/assets/icons/channelingLogo.svg'
 import Channeling from '@/assets/icons/channeling.svg'

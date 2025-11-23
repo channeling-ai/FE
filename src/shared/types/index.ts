@@ -1,4 +1,4 @@
-export * from './channel'
+export * from './auth'
 export * from './common'
 export * from './home'
 export * from './idea'

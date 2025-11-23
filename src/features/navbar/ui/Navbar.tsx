@@ -2,12 +2,12 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { ToolTipPos } from '../types'
-import { useAuthStore, useLoginStore } from '@/shared/store'
+import { useAuthStore, useLoginStore, useResponsive } from '@/shared'
 import { NavbarContext } from '../store'
 import { NavbarDesktop } from './NavbarDesktop'
 import { NavbarMobileAndTablet } from './NavbarMobileAndTablet'
 import { useOpenSetting } from '@/features/setting'
-import { useResponsive } from '@/shared/hooks'
+import { AuthContainer } from '@/features/auth'
 
 export const Navbar = () => {
     const [showUrlModal, setShowUrlModal] = useState(false)
@@ -63,6 +63,8 @@ export const Navbar = () => {
         >
             <NavbarDesktop />
             <NavbarMobileAndTablet />
+
+            <AuthContainer />
         </NavbarContext>
     )
 }

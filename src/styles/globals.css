@@ -1,5 +1,7 @@
 @import 'tailwindcss';
+@plugin '@tailwindcss/typography';
 @import './typo.css';
+@import './scrollbar.css';
 
 @theme {
     --color-gray-50: #161616;

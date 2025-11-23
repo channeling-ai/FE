@@ -1,5 +1,5 @@
 import { createContext, RefObject } from 'react'
-import { User } from '@/shared/types'
+import { User } from '@/shared'
 import { ToolTipPos } from '../types'
 
 interface NavbarContextType {

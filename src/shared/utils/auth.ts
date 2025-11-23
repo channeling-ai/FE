@@ -1,5 +1,5 @@
 import { axiosInstance } from '../api/axios'
-import { LOCAL_STORAGE_KEY } from '../constants/key'
+import { LOCAL_STORAGE_KEY } from '../constants'
 import { useAuthStore, useSNSFormStore } from '../store'
 import { queryClient } from './queryClient'
 
