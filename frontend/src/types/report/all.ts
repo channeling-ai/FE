@@ -56,6 +56,7 @@ export type ReportOverview = {
     seo: number
     revisit: number
     summary: string
+    updateSummary: string
     neutralComment: number
     adviceComment: number
     positiveComment: number

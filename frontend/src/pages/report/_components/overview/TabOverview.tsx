@@ -2,13 +2,13 @@ import { memo } from 'react'
 import { CommentFeedback } from './CommentFeedback'
 import { Evaluation } from './Evaluation'
 import { Summary } from './Summary'
+import { UpdateSummary } from './UpdateSummary'
 import { Skeleton } from './Skeleton'
 import useGetReportOverview from '../../../../hooks/report/useGetReportOverview'
 
 import type { OverviewDataProps } from '../../../../types/report/all'
 import { useReportStore } from '../../../../stores/reportStore'
 import { useGetDummyOverview } from '../../../../hooks/report'
-import { UpdateSummary } from './UpdateSummary'
 
 interface TabOverviewProps {
     reportId: number
