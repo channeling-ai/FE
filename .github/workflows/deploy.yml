@@ -15,20 +15,22 @@ jobs:
             - name: 🛠 Create output directory for sync
               run: sh ./scripts/build.sh
 
-            - name: 🕒 Set timestamp
-              run: echo "TIMESTAMP=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_ENV
+            - name: 📝 Set timestamp & Commit Message
+              run: |
+                  echo "TIMESTAMP=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_ENV
+                  echo "COMMIT_MSG=$(git log -1 --pretty=%s)" >> $GITHUB_ENV
 
             - name: ✅ Push to another repository
               uses: cpina/github-action-push-to-another-repository@main
               env:
-                  API_TOKEN_GITHUB: ${{ secrets.GOM_AUTO_ACTIONS }}
+                  API_TOKEN_GITHUB: ${{ secrets.AUTO_ACTIONS }}
               with:
                   source-directory: 'output'
-                  destination-github-username: 'gomx3'
-                  destination-repository-name: 'Channeling-FE-Production'
-                  user-email: ${{ secrets.GOM_EMAIL }}
+                  destination-github-username: 'channeling8'
+                  destination-repository-name: 'channeling-FE'
+                  user-email: ${{ secrets.EMAIL }}
                   target-branch: ${{ github.ref_name }}
-                  commit-message: '[DEPLOY] Auto-sync from ${{ github.ref_name }} at ${{ env.TIMESTAMP }}'
+                  commit-message: '[DEPLOY] ${{ env.COMMIT_MSG }} (auto-synced at ${{ env.TIMESTAMP }})'
 
             - name: 🧪 Test get variable exported by push-to-another-repository
               run: echo $DESTINATION_CLONED_DIRECTORY
