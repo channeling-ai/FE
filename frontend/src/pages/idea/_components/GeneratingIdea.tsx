@@ -10,6 +10,12 @@ import useClickOutside from '../../../hooks/idea/useClickOutside'
 import type { PostIdeaDto } from '../../../types/idea'
 import { DropdownVideoType } from './DropdownVideoType'
 
+const convertOptionToVideoType = (option: string): 'LONG' | 'SHORTS' | null => {
+    if (option === '숏폼 (3분 미만)') return 'SHORTS'
+    if (option === '롱폼 (3분 이상)') return 'LONG'
+    return null
+}
+
 export const GeneratingIdea = () => {
     const [isTooltipOpen, setIsTooltipOpen] = useState(() => localStorage.getItem('ideaTooltipSeen') !== 'true')
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -38,7 +44,7 @@ export const GeneratingIdea = () => {
         })
     }
 
-    const handleOptionClick = (e: React.MouseEvent<HTMLDivElement>, option: string) => {
+    const handleOptionClick = (e: React.MouseEvent<HTMLButtonElement>, option: string) => {
         e.stopPropagation()
         setSelectedOption(option)
         handleDropdownClick()
@@ -60,11 +66,6 @@ export const GeneratingIdea = () => {
 
     const headingId = useId()
 
-    const convertOptionToVideoType = (option: string): 'LONG' | 'SHORTS' | null => {
-        if (option === '숏폼 (3분 미만)') return 'SHORTS'
-        if (option === '롱폼 (3분 이상)') return 'LONG'
-        return null
-    }
     const closeDropdown = useCallback(() => {
         setIsDropdownOpen(false)
     }, [])

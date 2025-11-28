@@ -1,5 +1,5 @@
 interface DropdownVideoTypeProps {
-    handleOptionValue: (e: React.MouseEvent<HTMLDivElement>, option: string) => void
+    handleOptionValue: (e: React.MouseEvent<HTMLButtonElement>, option: string) => void
 }
 
 export const DropdownVideoType = ({ handleOptionValue }: DropdownVideoTypeProps) => {
@@ -13,13 +13,14 @@ export const DropdownVideoType = ({ handleOptionValue }: DropdownVideoTypeProps)
                 const conditionalStyle = 'first:rounded-t-lg last:rounded-b-lg'
 
                 return (
-                    <div
+                    <button
                         key={option}
+                        type="button"
                         className={`${baseStyle} ${conditionalStyle}`}
                         onClick={(e) => handleOptionValue(e, option)}
                     >
                         {option}
-                    </div>
+                    </button>
                 )
             })}
         </div>
