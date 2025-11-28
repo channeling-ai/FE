@@ -1,4 +1,4 @@
-import { useId, useState } from 'react'
+import { useId, useState, useRef, useCallback } from 'react'
 import Info from '../../../assets/icons/info.svg?react'
 import Ideatooltip from '../../../assets/icons/ideatootltip.svg?react'
 import IdeatooltipMobile from '../../../assets/icons/ideatooltip_mobile.svg?react'
@@ -6,6 +6,7 @@ import DropdownOpen from '../../../assets/icons/dropdown_open.svg?react'
 import DropdownClose from '../../../assets/icons/dropdown_close.svg?react'
 import TextareaWithLimit from './TextareaWithLimit'
 import usePostIdea from '../../../hooks/idea/usePostIdea'
+import useClickOutside from '../../../hooks/idea/useClickOutside'
 import type { PostIdeaDto } from '../../../types/idea'
 import { DropdownVideoType } from './DropdownVideoType'
 
@@ -16,11 +17,13 @@ export const GeneratingIdea = () => {
     const [additionalInfo, setAdditionalInfo] = useState('')
     const [selectedOption, setSelectedOption] = useState('')
 
+    const dropdownRef = useRef<HTMLDivElement>(null)
+
     const handleDropdownClick = () => {
         setIsDropdownOpen((prev) => !prev)
     }
 
-    const handleClick = () => {
+    const handleInfoClick = () => {
         setIsTooltipOpen((prev) => {
             const isOpening = !prev
             if (!isOpening) {
@@ -40,6 +43,7 @@ export const GeneratingIdea = () => {
         setSelectedOption(option)
         handleDropdownClick()
     }
+
     const { mutate, isPending } = usePostIdea()
     const handleSubmitClick = () => {
         if (!keyword.trim()) {
@@ -61,6 +65,11 @@ export const GeneratingIdea = () => {
         if (option === '롱폼 (3분 이상)') return 'LONG'
         return null
     }
+    const closeDropdown = useCallback(() => {
+        setIsDropdownOpen(false)
+    }, [])
+
+    useClickOutside(dropdownRef, closeDropdown)
 
     return (
         <section className="w-full flex flex-col gap-4">
@@ -69,7 +78,7 @@ export const GeneratingIdea = () => {
                     콘텐츠 아이디어 생성
                 </h2>
                 <div className="relative">
-                    <Info className="cursor-pointer" onClick={handleClick} />
+                    <Info className="cursor-pointer" onClick={handleInfoClick} />
                     {isTooltipOpen && (
                         <>
                             <Ideatooltip className="hidden tablet:block absolute left-full top-1/2 -translate-y-5 ml-2" />
@@ -99,6 +108,7 @@ export const GeneratingIdea = () => {
                         <div
                             className="flex items-start justify-between self-stretch select-none cursor-pointer"
                             onClick={handleDropdownClick}
+                            ref={dropdownRef}
                         >
                             {selectedOption == '' && (
                                 <div className="font-body-16r text-gray-500">영상 형식을 선택해 주세요.</div>
@@ -110,6 +120,7 @@ export const GeneratingIdea = () => {
                             {isDropdownOpen && (
                                 <>
                                     <DropdownOpen className="cursor-pointer" />
+
                                     <DropdownVideoType handleOptionValue={handleOptionClick} />
                                 </>
                             )}
