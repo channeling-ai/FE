@@ -2,6 +2,7 @@
 @plugin '@tailwindcss/typography';
 @import './scrollbar.css';
 @import './typo.css';
+@import './animation.css';
 
 @font-face {
     font-family: 'Pretendard';
@@ -116,42 +117,5 @@
 
     .font-footer-fixed {
         @apply text-[14px] leading-[140%] font-normal tracking-[-0.35px];
-    }
-}
-
-@layer utilities {
-    .multi-line-ellipsis {
-        @apply overflow-hidden;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
-    }
-
-    .page-transition {
-        animation: fadeIn 0.1s ease-in;
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 1;
-        }
-    }
-
-    .modal-animation {
-        animation: fadeInScaleUp 0.3s ease-in-out;
-    }
-
-    @keyframes fadeInScaleUp {
-        from {
-            opacity: 0;
-            transform: scale(0.95);
-        }
-        to {
-            opacity: 1;
-            transform: scale(1);
-        }
     }
 }

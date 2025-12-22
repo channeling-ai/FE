@@ -3,8 +3,8 @@ import { NavbarLink, NavbarModalButton } from './NavbarLink'
 import { LOGIN_LINK, NAVIGATE_LINKS, PLUS_LINK } from './navbarLinks'
 import { NavbarUserInfo } from './NavbarUserInfo'
 import { useAuthStore } from '../../../stores/authStore'
-import useIsMobile from '../../../hooks/main/useIsMobile'
 import Settings from '../../../assets/icons/settings.svg?react'
+import { useIsMobile } from '../../../hooks'
 
 interface NavbarLinksListProps {
     loginButtonRef?: React.RefObject<HTMLDivElement | null>
