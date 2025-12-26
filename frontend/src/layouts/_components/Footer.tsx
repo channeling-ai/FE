@@ -9,14 +9,14 @@ export const Footer = () => {
             >
                 <div className="grid grid-cols-2 tablet:grid-cols-4 gap-y-4 gap-x-[56px] tablet:gap-x-[69px] text-center">
                     <a
-                        href="https://spangled-bridge-914.notion.site/1f7086918f4380e8a744d961e8efaa9c?source=copy_link"
+                        href="https://chaneling.notion.site/1f7086918f4380e8a744d961e8efaa9c"
                         target="_blank"
                         rel="noopener noreferrer"
                     >
                         서비스 이용약관
                     </a>
                     <a
-                        href="https://spangled-bridge-914.notion.site/1f7086918f4380d88829f055b0f0732a?source=copy_link"
+                        href="https://chaneling.notion.site/1f7086918f4380d88829f055b0f0732a"
                         target="_blank"
                         rel="noopener noreferrer"
                     >
