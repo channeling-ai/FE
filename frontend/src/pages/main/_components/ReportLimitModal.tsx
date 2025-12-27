@@ -11,7 +11,7 @@ export const ReportLimitModal = ({ onClose }: ReportLimitModalProps) => {
             title="생성 한도를 모두 사용하셨어요"
             description={`이번 주에 제공되는 무료 크레딧을 모두 사용하셨습니다. \n한도는 매주 월요일에 초기화될 예정이니 조금만 기다려주세요!`}
             onClose={onClose}
-            icon={<ErrorIcon className="w-8 h-8" />}
+            Icon={<ErrorIcon className="w-8 h-8" />}
         >
             <button
                 onClick={onClose}
