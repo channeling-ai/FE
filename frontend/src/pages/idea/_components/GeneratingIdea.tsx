@@ -1,4 +1,4 @@
-import { useId, useState } from 'react'
+import { useId, useState, useRef, useCallback } from 'react'
 import Info from '../../../assets/icons/info.svg?react'
 import Ideatooltip from '../../../assets/icons/ideatootltip.svg?react'
 import IdeatooltipMobile from '../../../assets/icons/ideatooltip_mobile.svg?react'
@@ -6,7 +6,15 @@ import DropdownOpen from '../../../assets/icons/dropdown_open.svg?react'
 import DropdownClose from '../../../assets/icons/dropdown_close.svg?react'
 import TextareaWithLimit from './TextareaWithLimit'
 import usePostIdea from '../../../hooks/idea/usePostIdea'
+import useClickOutside from '../../../hooks/useClickOutside'
 import type { PostIdeaDto } from '../../../types/idea'
+import { DropdownVideoType } from './DropdownVideoType'
+
+const convertOptionToVideoType = (option: string): 'LONG' | 'SHORTS' | null => {
+    if (option === '숏폼 (3분 미만)') return 'SHORTS'
+    if (option === '롱폼 (3분 이상)') return 'LONG'
+    return null
+}
 
 export const GeneratingIdea = () => {
     const [isTooltipOpen, setIsTooltipOpen] = useState(() => localStorage.getItem('ideaTooltipSeen') !== 'true')
@@ -15,11 +23,13 @@ export const GeneratingIdea = () => {
     const [additionalInfo, setAdditionalInfo] = useState('')
     const [selectedOption, setSelectedOption] = useState('')
 
+    const dropdownRef = useRef<HTMLDivElement>(null)
+
     const handleDropdownClick = () => {
         setIsDropdownOpen((prev) => !prev)
     }
 
-    const handleClick = () => {
+    const handleInfoClick = () => {
         setIsTooltipOpen((prev) => {
             const isOpening = !prev
             if (!isOpening) {
@@ -34,11 +44,12 @@ export const GeneratingIdea = () => {
         })
     }
 
-    const handleOptionClick = (e: React.MouseEvent<HTMLDivElement>, option: string) => {
+    const handleOptionClick = (e: React.MouseEvent<HTMLButtonElement>, option: string) => {
         e.stopPropagation()
         setSelectedOption(option)
-        setIsDropdownOpen(false)
+        handleDropdownClick()
     }
+
     const { mutate, isPending } = usePostIdea()
     const handleSubmitClick = () => {
         if (!keyword.trim()) {
@@ -55,13 +66,11 @@ export const GeneratingIdea = () => {
 
     const headingId = useId()
 
-    const dropdownOptions = ['선택없음', '숏폼 (3분 미만)', '롱폼 (3분 이상)']
+    const closeDropdown = useCallback(() => {
+        setIsDropdownOpen(false)
+    }, [])
 
-    const convertOptionToVideoType = (option: string): 'LONG' | 'SHORTS' | null => {
-        if (option === '숏폼 (3분 미만)') return 'SHORTS'
-        if (option === '롱폼 (3분 이상)') return 'LONG'
-        return null
-    }
+    useClickOutside(dropdownRef, closeDropdown)
 
     return (
         <section className="w-full flex flex-col gap-4">
@@ -70,7 +79,7 @@ export const GeneratingIdea = () => {
                     콘텐츠 아이디어 생성
                 </h2>
                 <div className="relative">
-                    <Info className="cursor-pointer" onClick={handleClick} />
+                    <Info className="cursor-pointer" onClick={handleInfoClick} />
                     {isTooltipOpen && (
                         <>
                             <Ideatooltip className="hidden tablet:block absolute left-full top-1/2 -translate-y-5 ml-2" />
@@ -100,6 +109,7 @@ export const GeneratingIdea = () => {
                         <div
                             className="flex items-start justify-between self-stretch select-none cursor-pointer"
                             onClick={handleDropdownClick}
+                            ref={dropdownRef}
                         >
                             {selectedOption == '' && (
                                 <div className="font-body-16r text-gray-500">영상 형식을 선택해 주세요.</div>
@@ -111,30 +121,8 @@ export const GeneratingIdea = () => {
                             {isDropdownOpen && (
                                 <>
                                     <DropdownOpen className="cursor-pointer" />
-                                    <div className="flex flex-col w-full absolute -bottom-45 -left-0">
-                                        {dropdownOptions.map((option, index) => {
-                                            const baseStyle =
-                                                'flex flex-col justify-center items-start p-4 gap-2 bg-gray-300 hover:bg-gray-200 font-body-16r cursor-pointer'
-                                            let conditionalStyle = ''
 
-                                            if (index === 0) {
-                                                conditionalStyle = 'border border-gray-400 rounded-t-lg'
-                                            } else if (index === dropdownOptions.length - 1) {
-                                                conditionalStyle = 'border border-gray-400 rounded-b-lg'
-                                            } else {
-                                                conditionalStyle = 'border border-gray-400'
-                                            }
-                                            return (
-                                                <div
-                                                    key={option}
-                                                    className={`${baseStyle} ${conditionalStyle}`}
-                                                    onClick={(e) => handleOptionClick(e, option)}
-                                                >
-                                                    {option}
-                                                </div>
-                                            )
-                                        })}
-                                    </div>
+                                    <DropdownVideoType handleOptionValue={handleOptionClick} />
                                 </>
                             )}
                         </div>
