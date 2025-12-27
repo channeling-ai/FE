@@ -5,17 +5,11 @@ interface ModalProps {
     title: string
     description?: string
     onClose: () => void
-
-    /**
-     * 모달 컨테이너에 적용할 Tailwind 클래스
-     *
-     * - 모달의 크기나 여백 등의 스타일을 외부에서 조정할 수 있습니다.
-     * - 예: className="w-[486px]" → 모달 너비를 고정
-     */
+    Icon?: React.ReactNode
     className?: string
 }
 
-const Modal = ({ title, description, onClose, className = '', children }: PropsWithChildren<ModalProps>) => {
+const Modal = ({ title, description, onClose, className = '', Icon, children }: PropsWithChildren<ModalProps>) => {
     const modalRef = useRef<HTMLDivElement>(null)
     const [marginTop, setMarginTop] = useState<number | null>(null)
 
@@ -65,11 +59,12 @@ const Modal = ({ title, description, onClose, className = '', children }: PropsW
                 `}
                 style={marginTop !== null ? { marginTop } : undefined}
             >
+                <div className="flex flex-col items-center">{Icon}</div>
                 <button
                     type="button"
                     onClick={onClose}
                     aria-label="Close modal"
-                    className="cursor-pointer absolute top-4 right-4 tablet:top-6 tablet:right-6"
+                    className="cursor-pointer absolute top-4 right-4 tablet:top-6 tablet:right-6 "
                 >
                     <X />
                 </button>
