@@ -6,7 +6,7 @@ import DropdownOpen from '../../../assets/icons/dropdown_open.svg?react'
 import DropdownClose from '../../../assets/icons/dropdown_close.svg?react'
 import TextareaWithLimit from './TextareaWithLimit'
 import usePostIdea from '../../../hooks/idea/usePostIdea'
-import useClickOutside from '../../../hooks/idea/useClickOutside'
+import useClickOutside from '../../../hooks/useClickOutside'
 import type { PostIdeaDto } from '../../../types/idea'
 import { DropdownVideoType } from './DropdownVideoType'
 
