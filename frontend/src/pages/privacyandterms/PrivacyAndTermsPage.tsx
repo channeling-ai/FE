@@ -19,9 +19,14 @@ export default function PrivacyAndTermsPage({ docpath }: PrivacyAndTermsProps) {
                 }
                 const text = await response.text()
                 if (text.trim().length > 0) setContent(text)
-            } catch (error) {
-                const e = error as any
-                if (e.name !== 'AbortError') {
+            } catch (error: unknown) {
+                if (error instanceof DOMException && error.name === 'AbortError') {
+                    return
+                }
+
+                if (error instanceof Error) {
+                    console.error('Failed to fetch privacy policy and terms:', error.message)
+                } else {
                     console.error('Failed to fetch privacy policy and terms:', error)
                 }
             }
@@ -32,7 +37,7 @@ export default function PrivacyAndTermsPage({ docpath }: PrivacyAndTermsProps) {
         return () => {
             controller.abort()
         }
-    }, [])
+    }, [docpath])
 
     return (
         <div className="flex justify-center desktop:py-20 py-10 px-4">
