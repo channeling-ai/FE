@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../stores/authStore'
 import { useEffect } from 'react'
 
-const PUBLIC_PATH = ['/', '/report/demo', '/auth/callback']
+const PUBLIC_PATH = ['/', '/report/demo', '/auth/callback', '/privacy', '/terms']
 
 export default function AuthWatcher() {
     const navigate = useNavigate()
