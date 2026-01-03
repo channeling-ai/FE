@@ -36,7 +36,7 @@ export const TabOverview = ({ reportId, isDummy = false }: TabOverviewProps) => 
 
     return (
         <div className="space-y-16">
-            <UpdateSummary data={overviewData} />
+            {!isDummy && overviewData.updateSummary?.trim() && <UpdateSummary data={overviewData} />}
             <EvaluationAndSummary data={overviewData} />
             <CommentFeedback data={overviewData} isDummy={isDummy} />
         </div>
