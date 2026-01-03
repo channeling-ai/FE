@@ -31,12 +31,13 @@ export const TabOverview = ({ reportId, isDummy = false }: TabOverviewProps) => 
 
     const overviewData = isDummy ? dummyData : realData
     const isLoading = isDummy ? isDummyLoading : !isCompleted || isRealLoading
+    const shouldShowUpdateSummary = !isDummy && !!overviewData?.updateSummary?.trim()
 
-    if (isLoading || !overviewData) return <Skeleton />
+    if (isLoading || !overviewData) return <Skeleton showUpdateSummary={shouldShowUpdateSummary} />
 
     return (
         <div className="space-y-16">
-            {!isDummy && overviewData.updateSummary?.trim() && <UpdateSummary data={overviewData} />}
+            {shouldShowUpdateSummary && <UpdateSummary data={overviewData} />}
             <EvaluationAndSummary data={overviewData} />
             <CommentFeedback data={overviewData} isDummy={isDummy} />
         </div>
