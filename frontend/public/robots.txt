@@ -7,4 +7,4 @@ Disallow: /auth/
 Allow: /report/demo/
 Disallow: /report/
 
-Sitemap: https://channeling.it.com/sitemap.xml
+Sitemap: https://www.chaneling.com/sitemap.xml
