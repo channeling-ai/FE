@@ -11,7 +11,7 @@ export const MarkdownBox = ({ content }: MarkdownBoxProps) => {
         <div
             className="prose prose-invert max-w-none
                 prose-headings:mt-0 prose-headings:leading-[150%] prose-headings:tracking-[-0.4px] prose-headings:font-bold prose-headings:text-gray-900
-                prose-h1:text-[20px]
+                prose-h1:text-[24px]
                 prose-h2:text-[18px]
                 prose-h3:text-[16px]
                 prose-h4:text-[16px]

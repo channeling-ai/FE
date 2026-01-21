@@ -9,6 +9,8 @@ import GoogleLoginRedirectPage from '../pages/auth/GoogleRedirectPage'
 import NotFoundPage from '../pages/NotFound'
 import ProtectedRoute from './ProtectedRoute'
 import IdeaPage from '../pages/idea/IdeaPage'
+import PrivacyPolicyPage from '../pages/privacyandterms/PrivacyPolicyPage'
+import TermsOfServicePage from '../pages/privacyandterms/TermsOfServicePage'
 
 export const router = createBrowserRouter([
     {
@@ -22,6 +24,14 @@ export const router = createBrowserRouter([
             {
                 path: '/report/demo/:reportId',
                 element: <DummyReportPage />,
+            },
+            {
+                path: '/privacy',
+                element: <PrivacyPolicyPage />,
+            },
+            {
+                path: '/terms',
+                element: <TermsOfServicePage />,
             },
             {
                 path: '/report/:reportId',

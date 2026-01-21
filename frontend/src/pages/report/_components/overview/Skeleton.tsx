@@ -1,11 +1,17 @@
 import { BaseSkeleton, TitledSkeleton } from '../../../../components/Skeleton'
 
-export const Skeleton = () => {
+interface SkeletonProps {
+    showUpdateSummary: boolean
+}
+
+export const Skeleton = ({ showUpdateSummary }: SkeletonProps) => {
     return (
         <div className="space-y-16">
-            <TitledSkeleton>
-                <BaseSkeleton sizeConfig="w-full min-h-30" />
-            </TitledSkeleton>
+            {showUpdateSummary && (
+                <TitledSkeleton>
+                    <BaseSkeleton sizeConfig="w-full min-h-30" />
+                </TitledSkeleton>
+            )}
             <div className="grid grid-cols-1 desktop:grid-cols-2 gap-16 desktop:gap-6">
                 <TitledSkeleton>
                     <div className="grid grid-cols-3 gap-3">
