@@ -52,10 +52,6 @@ export const GeneratingIdea = () => {
 
     const { mutate, isPending } = usePostIdea()
     const handleSubmitClick = () => {
-        if (!keyword.trim()) {
-            alert('키워드를 입력해 주세요.')
-            return
-        }
         const ideaDto: PostIdeaDto = {
             keyword: keyword,
             videoType: convertOptionToVideoType(selectedOption),
