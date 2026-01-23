@@ -4,21 +4,22 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
                       http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
   <url>
-    <loc>https://channeling.it.com/</loc>
-    <lastmod>2025-10-05T12:21:53+00:00</lastmod>
+    <loc>https://www.chaneling.com/</loc>
+    <lastmod>2026-01-11T06:10:51+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://channeling.it.com/report/demo/1</loc>
-    <lastmod>2025-10-05T12:21:53+00:00</lastmod>
+    <loc>https://www.chaneling.com/report/demo/1</loc>
+    <lastmod>2026-01-11T06:10:51+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://channeling.it.com/report/demo/2</loc>
-    <lastmod>2025-10-05T12:21:53+00:00</lastmod>
+    <loc>https://www.chaneling.com/report/demo/2</loc>
+    <lastmod>2026-01-11T06:10:51+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
