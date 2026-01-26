@@ -23,10 +23,12 @@ export default function usePostReportByUrl({ onSuccess, onError }: ReportByUrlCa
 
     return useMutation({
         mutationFn: postReportByUrl,
+        onMutate: () => {
+            startGenerating()
+        },
         onSuccess: (data: ResponseReportByUrl) => {
             if (data.isSuccess && data.result) {
                 queryClient.invalidateQueries({ queryKey: ['recommendedVideos'] })
-                startGenerating()
                 addPendingReportId(data.result.reportId)
                 onSuccess(data.result) // 성공 콜백 호출
             } else {
