@@ -1,22 +1,20 @@
 import { create } from 'zustand'
 
-type ModalType = 'GENERATING_LIMIT' | null
+export type ModalType = 'GENERATING_LIMIT' | null
 
 interface ModalState {
     type: ModalType
-    props?: any
     actions: {
-        openModal: (type: ModalType, props?: any) => void
+        openModal: (type: ModalType) => void
         closeModal: () => void
     }
 }
 
 export const useModalStore = create<ModalState>((set) => ({
     type: null,
-    props: null,
     actions: {
-        openModal: (type, props) => set({ type, props }),
-        closeModal: () => set({ type: null, props: null }),
+        openModal: (type) => set({ type }),
+        closeModal: () => set({ type: null }),
     },
 }))
 

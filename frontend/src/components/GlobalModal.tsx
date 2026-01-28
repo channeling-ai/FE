@@ -1,7 +1,11 @@
-import { useModalType, useModalActions } from '../stores/modalStore'
+import { useModalType, useModalActions, type ModalType } from '../stores/modalStore'
 import { ReportLimitModal } from '../pages/main/_components/ReportLimitModal'
 
-const MODAL_COMPONENTS: Record<string, React.ComponentType<any>> = {
+interface BaseModalProps {
+    onClose: () => void
+}
+
+const MODAL_COMPONENTS: Record<NonNullable<ModalType>, React.ComponentType<BaseModalProps>> = {
     GENERATING_LIMIT: ReportLimitModal,
 }
 
