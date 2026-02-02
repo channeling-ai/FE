@@ -1,12 +1,12 @@
 import Modal from '../../../components/Modal'
 import { Button } from './SettingButton'
 
-type WithdrawlModalProps = {
+type WithdrawModalProps = {
     onClose: () => void
     onConfirm: () => void
 }
 
-export default function WithdrawlModal({ onClose, onConfirm }: WithdrawlModalProps) {
+export default function WithdrawModal({ onClose, onConfirm }: WithdrawModalProps) {
     return (
         <Modal
             title="계정을 탈퇴하시겠어요?"
