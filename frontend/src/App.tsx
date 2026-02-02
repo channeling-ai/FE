@@ -4,6 +4,7 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { GlobalReportPoller } from './components/GlobalReportPoller'
 import { queryClient } from './utils/queryClient'
+import GlobalModal from './components/GlobalModal'
 
 function App() {
     return (
@@ -11,7 +12,7 @@ function App() {
             <QueryClientProvider client={queryClient}>
                 <ReactQueryDevtools initialIsOpen={false} />
                 <RouterProvider router={router} />
-
+                <GlobalModal />
                 {/* 전역 폴러 */}
                 <GlobalReportPoller />
             </QueryClientProvider>
