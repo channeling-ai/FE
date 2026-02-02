@@ -3,10 +3,11 @@ import { Button } from './_components/SettingButton'
 import '../../styles/scrollbar.css'
 import CloseIcon from '../../assets/icons/delete_normal.svg?react'
 import LogoutIcon from '../../assets/icons/logout.svg?react'
-import WithdrawlModal from './_components/WithdrawModal'
+import WithdrawModal from './_components/WithdrawModal'
 import { useLogout } from '../../hooks/useLogout'
 import ProfileSettings from './_containers/ProfileSettings'
 import ConsentSettings from './_containers/ConsentSettings'
+import { useWithdrawSettings } from '../../hooks/setting/useWithdrawSettings'
 
 type SettingPageProps = {
     onClose?: () => void
@@ -14,10 +15,12 @@ type SettingPageProps = {
 
 export default function SettingPage({ onClose }: SettingPageProps) {
     const [activeTab, setActiveTab] = useState<'profile' | 'consent'>('profile')
-    const [showWithdrawlModal, setShowWithdrawlModal] = useState(false)
+    const [showWithdrawModal, setShowWithdrawModal] = useState(false)
 
     const logout = useLogout()
     const [loggingOut, setLoggingOut] = useState(false)
+
+    const { confirmWithdraw, isPending } = useWithdrawSettings()
 
     const handleClickLogout = async () => {
         if (loggingOut) return
@@ -25,10 +28,6 @@ export default function SettingPage({ onClose }: SettingPageProps) {
 
         await logout()
         onClose?.()
-    }
-
-    const handleWithdrawlConfirm = () => {
-        setShowWithdrawlModal(false)
     }
 
     return (
@@ -78,7 +77,7 @@ export default function SettingPage({ onClose }: SettingPageProps) {
                     <div className="[&::-webkit-scrollbar]:hidden flex flex-1 flex-col p-8 gap-10 overflow-y-auto">
                         {activeTab === 'profile' && (
                             <ProfileSettings
-                                onOpenWithdraw={() => setShowWithdrawlModal(true)}
+                                onOpenWithdraw={() => setShowWithdrawModal(true)}
                                 fetchEnabled={!loggingOut}
                             />
                         )}
@@ -88,8 +87,12 @@ export default function SettingPage({ onClose }: SettingPageProps) {
                 </div>
             </div>
 
-            {showWithdrawlModal && (
-                <WithdrawlModal onClose={() => setShowWithdrawlModal(false)} onConfirm={handleWithdrawlConfirm} />
+            {showWithdrawModal && (
+                <WithdrawModal
+                    onClose={() => setShowWithdrawModal(false)}
+                    onConfirm={confirmWithdraw}
+                    isPending={isPending}
+                />
             )}
         </div>
     )
