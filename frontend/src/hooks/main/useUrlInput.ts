@@ -6,6 +6,7 @@ import { useAuthStore } from '../../stores/authStore'
 import { useLoginStore } from '../../stores/LoginStore'
 import usePostReportByUrl from '../report/usePostReportByUrl'
 import { useQueryClient } from '@tanstack/react-query'
+import { trackEvent } from '../../utils/analytics'
 
 const PENDING_KEY = 'pending-url'
 
@@ -36,16 +37,28 @@ export const useUrlInput = (onRequestUrlSuccess?: (reportId: number, videoId: nu
                 })
             }
 
+            trackEvent({
+                category: 'Report',
+                action: 'Generate Report Success',
+                label: 'Main Page URL Input',
+            })
+
             onRequestUrlSuccess?.(reportId, videoId)
             setError(null)
         },
         onError: ({ code, message }) => {
+            trackEvent({
+                category: 'Report',
+                action: 'Generate Report Error',
+                label: code,
+            })
+
             if (code === 'YOUTUBE400') {
                 setError('유효한 유튜브 URL을 입력해주세요.')
             } else if (code === 'VIDEO403') {
                 setError('본인 채널의 영상 URL을 입력해주세요.')
             } else {
-                setError(message) // 그 외 다른 에러
+                setError(message)
             }
         },
     })
@@ -58,7 +71,6 @@ export const useUrlInput = (onRequestUrlSuccess?: (reportId: number, videoId: nu
 
     const url = watch('url')
 
-    // URL이 변경될 때만 에러 상태를 초기화
     useEffect(() => {
         if (error) {
             setError(null)
@@ -88,12 +100,25 @@ export const useUrlInput = (onRequestUrlSuccess?: (reportId: number, videoId: nu
             } catch {
                 alert('URL 임시 저장 실패')
             }
-            openLoginFlow() // 비로그인 상태에서 요청할 경우 로그인 플로우를 시작
+
+            trackEvent({
+                category: 'User',
+                action: 'Login Required',
+                label: 'URL Input - Not Authenticated',
+            })
+
+            openLoginFlow()
             return
         }
 
+        trackEvent({
+            category: 'Report',
+            action: 'Generate Report Request',
+            label: 'Main Page URL Input',
+        })
+
         setError(null)
-        requestNewReport({ url }) // 리포트 생성 요청
+        requestNewReport({ url })
     }
 
     return { register, handleSubmit: handleSubmit(onSubmit), isActive, error, clearPendingUrl }

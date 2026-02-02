@@ -2,13 +2,13 @@ import { memo, useMemo } from 'react'
 import BookmarkActive from '../../../assets/icons/bookmark_active.svg?react'
 import type { Idea } from '../../../types/idea'
 import useRemoveIdeaBookmark from '../../../hooks/idea/useRemoveIdeaBookmark'
+import { trackEvent } from '../../../utils/analytics'
 
 export default memo(function IdeaCard({ item }: { item: Idea }) {
     const { mutate: updateBookmark } = useRemoveIdeaBookmark()
 
     const parsedHashTags: string[] = useMemo(() => {
         try {
-            // hashTag가 문자열로 오는 경우 배열로 파싱
             return Array.isArray(item.hashTag) ? item.hashTag : JSON.parse(item.hashTag)
         } catch {
             alert('해시태그 업데이트에 실패하였습니다.')
@@ -17,6 +17,12 @@ export default memo(function IdeaCard({ item }: { item: Idea }) {
     }, [item.hashTag])
 
     const handleBookmarkDelete = () => {
+        trackEvent({
+            category: 'Library',
+            action: 'Remove Idea Bookmark',
+            label: `Idea: ${item.ideaId}`,
+        })
+
         updateBookmark({ ideaId: item.ideaId })
     }
 

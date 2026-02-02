@@ -6,14 +6,15 @@ import { useGetChannelVideo } from '../../../hooks/my/useGetChannelVideo'
 import { mapResponseToVideoList } from '../../../lib/mappers/profile/mapResponseToVideo'
 import { useAuthStore } from '../../../stores/authStore'
 import { VideoSkeleton } from './Skeleton/VideoSkeleton'
+import { trackEvent } from '../../../utils/analytics'
 
 export default function Videolist() {
-    const [videoCurrentPage, setVideoCurrentPage] = useState(1) //현재 페이지 값
+    const [videoCurrentPage, setVideoCurrentPage] = useState(1)
     const [shortsCurrentPage, setShortsCurrentPage] = useState(1)
 
-    const [videoStartPage, setVideoStartPage] = useState(1) //가장 앞 페이지 값
+    const [videoStartPage, setVideoStartPage] = useState(1)
     const [ShortsStartPage, setShortsStartPage] = useState(1)
-    const itemsPerPage = 12 // 페이지당 보여줄 아이템 개수
+    const itemsPerPage = 12
     const [activeTab, setActiveTab] = useState<'video' | 'shorts'>('video')
 
     const user = useAuthStore((state) => state.user)
@@ -46,6 +47,18 @@ export default function Videolist() {
     const shortsData = shortsResponse ? mapResponseToVideoList(shortsResponse) : []
     const shortsTotalItems = shortsResponse?.result.totalElements ?? 0
 
+    const handleTabChange = (tab: 'video' | 'shorts') => {
+        if (tab === activeTab) return
+
+        trackEvent({
+            category: 'My Channel',
+            action: 'Switch Video Tab',
+            label: tab === 'video' ? 'Video' : 'Shorts',
+        })
+
+        setActiveTab(tab)
+    }
+
     if (isVideoPending || isShortsPending) return <VideoSkeleton />
     if (isVideoError || isShortsError) return <div>에러</div>
 
@@ -54,29 +67,26 @@ export default function Videolist() {
             <div className="self-stretch text-neutral-white font-title-20b">영상 리스트</div>
             <div className="flex items-center">
                 <button
-                    className={`flex justify-center items-center gap-[8px] px-[16px] py-[8px] font-title-18b whitespace-nowrap border-b-2 cursor-pointer ${
-                        activeTab === 'video'
+                    className={`flex justify-center items-center gap-[8px] px-[16px] py-[8px] font-title-18b whitespace-nowrap border-b-2 cursor-pointer ${activeTab === 'video'
                             ? 'text-primary-500 border-primary-500'
                             : 'text-neutral-white border-transparent'
-                    }`}
-                    onClick={() => setActiveTab('video')}
+                        }`}
+                    onClick={() => handleTabChange('video')}
                 >
                     동영상
                 </button>
                 <button
-                    className={`px-[16px] py-[8px] font-title-18b flex justify-center items-center border-b-2 cursor-pointer ${
-                        activeTab === 'shorts'
+                    className={`px-[16px] py-[8px] font-title-18b flex justify-center items-center border-b-2 cursor-pointer ${activeTab === 'shorts'
                             ? 'text-primary-500 border-primary-500'
                             : 'text-neutral-white border-transparent'
-                    } transition-colors duration-300`}
-                    onClick={() => setActiveTab('shorts')}
+                        } transition-colors duration-300`}
+                    onClick={() => handleTabChange('shorts')}
                 >
                     Shorts
                 </button>
             </div>
 
             {activeTab === 'video' ? (
-                // Video 탭이 활성화된 경우
                 videoTotalItems === 0 ? (
                     <p className="w-full mt-10 text-center text-gray-600">업로드된 동영상이 없습니다.</p>
                 ) : (
@@ -86,8 +96,7 @@ export default function Videolist() {
                         ))}
                     </div>
                 )
-            ) : // Shorts 탭이 활성화된 경우
-            shortsTotalItems === 0 ? (
+            ) : shortsTotalItems === 0 ? (
                 <p className="w-full mt-10 text-center text-gray-600">업로드된 Shorts가 없습니다.</p>
             ) : (
                 <div className="grid grid-cols-3 desktop:grid-cols-6 w-full  self-stretch desktop:gap-x-4 gap-x-[9px] gap-y-6 cursor-pointer">

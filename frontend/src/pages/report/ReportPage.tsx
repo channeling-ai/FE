@@ -13,6 +13,7 @@ import { useGetInitialReportStatus, usePollReportStatus } from '../../hooks/repo
 import { META_KEY } from '../../constants/metaConfig'
 import type { NormalizedVideoData } from '../../types/report/all'
 import { adaptVideoMeta } from '../../lib/mappers/report'
+import { trackEvent } from '../../utils/analytics'
 
 export default function ReportPage() {
     const navigate = useNavigate()
@@ -27,14 +28,11 @@ export default function ReportPage() {
     const currentReportStatus = useReportStore((state) => state.statuses[reportId])
     const pendingReportIds = useReportStore((state) => state.pendingReportIds)
 
-    // ✅ 페이지 진입 시 해당 리포트 ID로 상태가 없을 때만 일회성으로 서버에 상태 조회
     const { isInvalidReportError } = useGetInitialReportStatus(reportId)
 
-    // ✅ 해당 리포트 ID가 PENDING 중일 경우 로컬 폴링
     const needsPolling = useMemo(() => pendingReportIds.includes(reportId), [pendingReportIds, reportId])
     usePollReportStatus(reportId, { enabled: needsPolling })
 
-    // ✅ 리포트 생성에 실패한 경우
     const isKnownToHaveFailed = useMemo(() => {
         if (!currentReportStatus) return false
         const { overviewStatus, analysisStatus } = currentReportStatus
@@ -44,7 +42,6 @@ export default function ReportPage() {
     const isInvalidOrDeleted = isInvalidReportError
     const shouldShowError = isKnownToHaveFailed || isInvalidOrDeleted
 
-    // ✅ 리포트가 생성 중인 경우
     const isGenerating = useMemo(() => pendingReportIds.includes(reportId), [pendingReportIds, reportId])
 
     const handleCloseErrorModal = () => navigate('/', { replace: true })
@@ -65,12 +62,46 @@ export default function ReportPage() {
         ? adaptVideoMeta(videoData, false)
         : undefined
 
-    // 영상 정보 조회가 성공하면 로딩 스피너를 종료
     useEffect(() => {
         if (!isPending) endGenerating()
     }, [isPending, endGenerating])
 
-    const handleUpdateModalClick = () => setIsOpenUpdateModal(!isOpenUpdateModal)
+    useEffect(() => {
+        if (!isPending && videoData) {
+            trackEvent({
+                category: 'Report',
+                action: 'View Report',
+                label: 'Real Report',
+            })
+        }
+    }, [isPending, videoData])
+
+    const handleTabChange = (tab: (typeof TABS)[number]) => {
+        if (tab.index === activeTab.index) return
+
+        const fromTab = activeTab.label
+        const toTab = tab.label
+
+        trackEvent({
+            category: 'Report',
+            action: 'Switch Tab',
+            label: `${fromTab} to ${toTab}`,
+        })
+
+        setActiveTab(tab)
+    }
+
+    const handleUpdateModalClick = () => {
+        if (!isOpenUpdateModal) {
+            trackEvent({
+                category: 'Report',
+                action: 'Click Update Button',
+                label: String(reportId),
+            })
+        }
+        setIsOpenUpdateModal(!isOpenUpdateModal)
+    }
+
     const handleResetTab = () => setActiveTab(TABS[0])
 
     return (
@@ -81,12 +112,13 @@ export default function ReportPage() {
 
             <div className="px-6 tablet:px-[76px] py-10 desktop:py-20 space-y-10">
                 {isPending ? <VideoSummarySkeleton /> : <VideoSummary data={normalizedVideoData} />}
-                <Tabs tabs={TABS} activeTab={activeTab} onChangeTab={setActiveTab} />
+                <Tabs tabs={TABS} activeTab={activeTab} onChangeTab={handleTabChange} />
             </div>
 
             {isOpenUpdateModal && (
                 <UpdateModal
                     videoId={videoId}
+                    reportId={reportId}
                     handleModalClick={handleUpdateModalClick}
                     handleResetTab={handleResetTab}
                 />
@@ -105,10 +137,8 @@ export default function ReportPage() {
 
             {/* 우선순위에 따른 모달 렌더링 */}
             {shouldShowError ? (
-                // 1순위: 생성 실패 에러 모달
                 <GenerateErrorModal onClose={handleCloseErrorModal} />
             ) : isGenerating ? (
-                // 2순위: 생성 중 모달
                 <GeneratingModal />
             ) : null}
         </article>

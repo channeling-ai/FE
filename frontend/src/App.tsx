@@ -5,8 +5,14 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { GlobalReportPoller } from './components/GlobalReportPoller'
 import { queryClient } from './utils/queryClient'
 import GlobalModal from './components/GlobalModal'
+import { useEffect } from 'react'
+import { initGA } from './utils/analytics'
 
 function App() {
+    useEffect(() => {
+        initGA()
+    }, [])
+
     return (
         <>
             <QueryClientProvider client={queryClient}>
@@ -21,3 +27,6 @@ function App() {
 }
 
 export default App
+
+
+

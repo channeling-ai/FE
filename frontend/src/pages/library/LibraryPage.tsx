@@ -3,9 +3,22 @@ import ReportTab from './_components/ReportTab'
 import IdeaTab from './_components/IdeaTab'
 import Metadata from '../../components/Metadata'
 import { META_KEY } from '../../constants/metaConfig'
+import { trackEvent } from '../../utils/analytics'
 
 export default function LibraryPage() {
     const [activeTab, setActiveTab] = useState<'report' | 'idea'>('report')
+
+    const handleTabChange = (tab: 'report' | 'idea') => {
+        if (tab === activeTab) return
+
+        trackEvent({
+            category: 'Library',
+            action: 'Switch Main Tab',
+            label: tab === 'report' ? 'Report' : 'Idea',
+        })
+
+        setActiveTab(tab)
+    }
 
     return (
         <>
@@ -14,10 +27,9 @@ export default function LibraryPage() {
             <div className="px-6 tablet:px-[76px] py-20">
                 <div className="relative flex mb-6">
                     <button
-                        className={`flex-1 cursor-pointer pb-3.5 text-center font-title-20b relative transition-colors duration-300 ${
-                            activeTab === 'report' ? 'text-primary-500' : 'text-gray-600'
-                        }`}
-                        onClick={() => setActiveTab('report')}
+                        className={`flex-1 cursor-pointer pb-3.5 text-center font-title-20b relative transition-colors duration-300 ${activeTab === 'report' ? 'text-primary-500' : 'text-gray-600'
+                            }`}
+                        onClick={() => handleTabChange('report')}
                     >
                         최근 받아본 리포트
                         <span className="absolute bottom-0 left-0 w-full h-1 bg-gray-600"></span>
@@ -27,10 +39,9 @@ export default function LibraryPage() {
                     </button>
 
                     <button
-                        className={`flex-1 cursor-pointer pb-3.5 text-center font-title-20b relative transition-colors duration-300 ${
-                            activeTab === 'idea' ? 'text-primary-500' : 'text-gray-600'
-                        }`}
-                        onClick={() => setActiveTab('idea')}
+                        className={`flex-1 cursor-pointer pb-3.5 text-center font-title-20b relative transition-colors duration-300 ${activeTab === 'idea' ? 'text-primary-500' : 'text-gray-600'
+                            }`}
+                        onClick={() => handleTabChange('idea')}
                     >
                         저장한 아이디어
                         <span className="absolute bottom-0 left-0 w-full h-1 bg-gray-600"></span>
@@ -40,7 +51,6 @@ export default function LibraryPage() {
                     </button>
                 </div>
 
-                {/* 각 탭 렌더링 */}
                 {activeTab === 'report' ? <ReportTab /> : <IdeaTab />}
             </div>
         </>
