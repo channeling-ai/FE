@@ -89,7 +89,7 @@ export default function SettingPage({ onClose }: SettingPageProps) {
 
             {showWithdrawModal && (
                 <WithdrawModal
-                    onClose={() => setShowWithdrawModal(false)}
+                    onClose={isPending ? () => {} : () => setShowWithdrawModal(false)}
                     onConfirm={confirmWithdraw}
                     isPending={isPending}
                 />
