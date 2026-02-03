@@ -2,11 +2,11 @@ import { useRef, useState, type PropsWithChildren } from 'react'
 
 interface TextareaWithLimitProps {
     id: string
-    value: string
-    onChange: (value: string) => void
+    value: string // textarea의 값
+    onChange: (value: string) => void // 사용자가 입력한 텍스트가 변경될 때 호출되는 함수
     title: string
     placeholder?: string
-    initialRows?: number
+    initialRows?: number // row 개수로 textarea 박스의 초기 높이를 지정할 수 있습니다. 디폴트는 1
     disabled?: boolean
     classOfTextarea?: string
     limitLength?: number

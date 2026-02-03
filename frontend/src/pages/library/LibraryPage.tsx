@@ -51,6 +51,7 @@ export default function LibraryPage() {
                     </button>
                 </div>
 
+                {/* 각 탭 렌더링 */}
                 {activeTab === 'report' ? <ReportTab /> : <IdeaTab />}
             </div>
         </>

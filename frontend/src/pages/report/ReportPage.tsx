@@ -30,9 +30,11 @@ export default function ReportPage() {
 
     const { isInvalidReportError } = useGetInitialReportStatus(reportId)
 
+    // ✅ 페이지 진입 시 해당 리포트 ID로 상태가 없을 때만 일회성으로 서버에 상태 조회
     const needsPolling = useMemo(() => pendingReportIds.includes(reportId), [pendingReportIds, reportId])
     usePollReportStatus(reportId, { enabled: needsPolling })
 
+    // ✅ 해당 리포트 ID가 PENDING 중일 경우 로컬 폴링
     const isKnownToHaveFailed = useMemo(() => {
         if (!currentReportStatus) return false
         const { overviewStatus, analysisStatus } = currentReportStatus
@@ -42,6 +44,7 @@ export default function ReportPage() {
     const isInvalidOrDeleted = isInvalidReportError
     const shouldShowError = isKnownToHaveFailed || isInvalidOrDeleted
 
+    // ✅ 리포트가 생성 중인 경우
     const isGenerating = useMemo(() => pendingReportIds.includes(reportId), [pendingReportIds, reportId])
 
     const handleCloseErrorModal = () => navigate('/', { replace: true })
@@ -66,6 +69,7 @@ export default function ReportPage() {
         if (!isPending) endGenerating()
     }, [isPending, endGenerating])
 
+    // 영상 정보 조회가 성공하면 로딩 스피너를 종료
     useEffect(() => {
         if (!isPending && videoData) {
             trackEvent({
@@ -137,8 +141,10 @@ export default function ReportPage() {
 
             {/* 우선순위에 따른 모달 렌더링 */}
             {shouldShowError ? (
+                // 1순위: 생성 실패 에러 모달
                 <GenerateErrorModal onClose={handleCloseErrorModal} />
             ) : isGenerating ? (
+                // 2순위: 생성 중 모달
                 <GeneratingModal />
             ) : null}
         </article>

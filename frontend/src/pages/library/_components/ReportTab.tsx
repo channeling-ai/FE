@@ -82,6 +82,7 @@ export default function ReportTab() {
                 <div className="text-base font-body-16m">{reportData.totalElements}개의 영상 리포트</div>
             </div>
 
+            {/* 카드 리스트 */}
             {reportData.totalElements === 0 ? (
                 <p className="w-full mt-10 text-center text-gray-600">등록된 영상 리포트가 없습니다.</p>
             ) : (
@@ -115,7 +116,7 @@ export default function ReportTab() {
             <div className="flex flex-col pt-[40px] justify-center items-center gap-[8px] self-stretch">
                 <Pagination
                     key={`pagination-${subTab}`}
-                    totalItems={Math.max(1, reportData.totalElements)}
+                    totalItems={Math.max(1, reportData.totalElements)} // 최소 1개 보장
                     itemCountPerPage={itemsPerPage}
                     currentPage={page}
                     startPage={startPage}

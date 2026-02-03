@@ -43,6 +43,7 @@ export const GeneratingIdea = () => {
                 })
             }
             if (!isOpening) {
+                // 툴팁을 닫을 때
                 try {
                     localStorage.setItem('ideaTooltipSeen', 'true')
                 } catch (e) {
@@ -101,7 +102,25 @@ export const GeneratingIdea = () => {
             label: `Keyword: ${keyword || 'empty'}, Type: ${selectedOption || 'none'}`,
         })
 
-        mutate(ideaDto)
+        mutate(ideaDto, {
+            onSuccess: (data) => {
+                trackEvent({
+                    category: 'Idea',
+                    action: 'Generate Idea Success',
+                    label: data.result?.title || 'Untitled',
+                })
+            },
+            onError: (error) => {
+                const state = error.response?.status
+                const errorMessage = error.response?.data?.message || 'Unknown error'
+
+                trackEvent({
+                    category: 'Idea',
+                    action: 'Generate Idea Error',
+                    label: state === 400 ? 'Generation Limit Exceeded' : errorMessage,
+                })
+            },
+        })
     }
 
     const headingId = useId()

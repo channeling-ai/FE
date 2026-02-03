@@ -9,12 +9,12 @@ import { VideoSkeleton } from './Skeleton/VideoSkeleton'
 import { trackEvent } from '../../../utils/analytics'
 
 export default function Videolist() {
-    const [videoCurrentPage, setVideoCurrentPage] = useState(1)
+    const [videoCurrentPage, setVideoCurrentPage] = useState(1) //현재 페이지 값
     const [shortsCurrentPage, setShortsCurrentPage] = useState(1)
 
-    const [videoStartPage, setVideoStartPage] = useState(1)
+    const [videoStartPage, setVideoStartPage] = useState(1) //가장 앞 페이지 값
     const [ShortsStartPage, setShortsStartPage] = useState(1)
-    const itemsPerPage = 12
+    const itemsPerPage = 12 // 페이지당 보여줄 아이템 개수
     const [activeTab, setActiveTab] = useState<'video' | 'shorts'>('video')
 
     const user = useAuthStore((state) => state.user)
@@ -68,8 +68,8 @@ export default function Videolist() {
             <div className="flex items-center">
                 <button
                     className={`flex justify-center items-center gap-[8px] px-[16px] py-[8px] font-title-18b whitespace-nowrap border-b-2 cursor-pointer ${activeTab === 'video'
-                            ? 'text-primary-500 border-primary-500'
-                            : 'text-neutral-white border-transparent'
+                        ? 'text-primary-500 border-primary-500'
+                        : 'text-neutral-white border-transparent'
                         }`}
                     onClick={() => handleTabChange('video')}
                 >
@@ -77,8 +77,8 @@ export default function Videolist() {
                 </button>
                 <button
                     className={`px-[16px] py-[8px] font-title-18b flex justify-center items-center border-b-2 cursor-pointer ${activeTab === 'shorts'
-                            ? 'text-primary-500 border-primary-500'
-                            : 'text-neutral-white border-transparent'
+                        ? 'text-primary-500 border-primary-500'
+                        : 'text-neutral-white border-transparent'
                         } transition-colors duration-300`}
                     onClick={() => handleTabChange('shorts')}
                 >
@@ -87,6 +87,7 @@ export default function Videolist() {
             </div>
 
             {activeTab === 'video' ? (
+                // Video 탭이 활성화된 경우 
                 videoTotalItems === 0 ? (
                     <p className="w-full mt-10 text-center text-gray-600">업로드된 동영상이 없습니다.</p>
                 ) : (
@@ -96,15 +97,16 @@ export default function Videolist() {
                         ))}
                     </div>
                 )
-            ) : shortsTotalItems === 0 ? (
-                <p className="w-full mt-10 text-center text-gray-600">업로드된 Shorts가 없습니다.</p>
-            ) : (
-                <div className="grid grid-cols-3 desktop:grid-cols-6 w-full  self-stretch desktop:gap-x-4 gap-x-[9px] gap-y-6 cursor-pointer">
-                    {shortsData.map((short) => (
-                        <MyShortsCard shorts={short} key={short.id} />
-                    ))}
-                </div>
-            )}
+            ) : // Shorts 탭이 활성화된 경우
+                shortsTotalItems === 0 ? (
+                    <p className="w-full mt-10 text-center text-gray-600">업로드된 Shorts가 없습니다.</p>
+                ) : (
+                    <div className="grid grid-cols-3 desktop:grid-cols-6 w-full  self-stretch desktop:gap-x-4 gap-x-[9px] gap-y-6 cursor-pointer">
+                        {shortsData.map((short) => (
+                            <MyShortsCard shorts={short} key={short.id} />
+                        ))}
+                    </div>
+                )}
 
             {(activeTab === 'video' ? videoTotalItems : shortsTotalItems) > 0 && (
                 <div className="flex flex-col pt-[40px] justify-center items-center gap-[8px] self-stretch">

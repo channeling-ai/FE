@@ -67,7 +67,7 @@ export const NavbarModalsContainer = () => {
                                                 action: 'Submit Viewer Success',
                                             })
 
-                                            setChannelConceptValue('')
+                                            setChannelConceptValue('')  // 다음 모달 입력창 초기화
                                             goToConceptStep()
                                         },
                                         onError: (error) => {
@@ -104,7 +104,7 @@ export const NavbarModalsContainer = () => {
                                                 action: 'Submit Concept Success',
                                             })
 
-                                            setChannelConceptValue('')
+                                            setChannelConceptValue('') // 입력 초기화
                                             finishLoginAndAuthenticate()
                                         },
                                         onError: (error) => {

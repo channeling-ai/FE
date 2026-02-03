@@ -37,7 +37,7 @@ export const UpdateModal = ({ videoId, reportId, handleModalClick, handleResetTa
             })
 
             navigate(`/report/${newReportId}?video=${videoId}`)
-            handleResetTab()
+            handleResetTab() // 업데이트 후 탭 초기화
         },
         onError: (error) => {
             trackEvent({
