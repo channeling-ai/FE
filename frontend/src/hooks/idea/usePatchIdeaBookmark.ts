@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { patchReportIdeaBookmark } from '../../api/idea'
 import type { PatchIdeaBookmarkDto, ResponseGetGeneratedIdea, ResponsePatchIdeaBookmark } from '../../types/idea'
+
 interface OptimisticUpdateContext {
     previousIdeasResponse?: ResponseGetGeneratedIdea
 }

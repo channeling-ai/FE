@@ -6,6 +6,7 @@ import ErrorIcon from '../../../assets/icons/error.svg?react'
 import { useUrlInput } from '../../../hooks/main/useUrlInput'
 import { ErrorToast } from './ErrorToast'
 import useGetVideoData from '../../../hooks/report/useGetVideoData'
+import { trackEvent } from '../../../utils/analytics'
 
 interface UrlInputModalProps {
     onClose: () => void
@@ -18,9 +19,12 @@ export const UrlInputModal = ({ onClose }: UrlInputModalProps) => {
     const [isFocused, setIsFocused] = useState(false)
     const modalRef = useRef<HTMLDivElement>(null)
 
-    const { register, handleSubmit, isActive, error } = useUrlInput((newReportId, newVideoId) => {
-        setReportId(newReportId)
-        setVideoId(newVideoId)
+    const { register, handleSubmit, isActive, error } = useUrlInput({
+        onRequestUrlSuccess: (newReportId, newVideoId) => {
+            setReportId(newReportId)
+            setVideoId(newVideoId)
+        },
+        onTrackEvent: trackEvent,
     })
 
     const { data: videoData, isPending } = useGetVideoData(videoId ?? undefined)
@@ -72,9 +76,8 @@ export const UrlInputModal = ({ onClose }: UrlInputModalProps) => {
             >
                 <form onSubmit={handleSubmit} className="flex flex-row items-center">
                     <ErrorIcon
-                        className={`transition-opacity duration-300 ${
-                            error ? 'opacity-100 max-w-6 mr-2' : 'opacity-0 max-w-0'
-                        }`}
+                        className={`transition-opacity duration-300 ${error ? 'opacity-100 max-w-6 mr-2' : 'opacity-0 max-w-0'
+                            }`}
                     />
                     <input
                         {...register('url')}
