@@ -10,6 +10,7 @@ interface TextareaWithLimitProps {
     disabled?: boolean
     classOfTextarea?: string
     limitLength?: number
+    onFocus?: () => void
 }
 
 const TextareaWithLimit = ({
@@ -22,6 +23,7 @@ const TextareaWithLimit = ({
     disabled = false,
     limitLength = 25,
     classOfTextarea,
+    onFocus,
 }: PropsWithChildren<TextareaWithLimitProps>) => {
     const [isFocused, setIsFocused] = useState(false)
     const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -32,13 +34,17 @@ const TextareaWithLimit = ({
         setInputCount(value.length)
     }
 
+    const handleFocus = () => {
+        setIsFocused(true)
+        onFocus?.()
+    }
+
     const errorMessage = `${title}는 최대 ${limitLength}자까지 입력할 수 있어요. (현재 글자 수: ${inputCount}자)`
 
     return (
         <div
             className={`flex flex-col p-4 gap-2 items-start
-                border bg-surface-elevate-l2 rounded-lg   ${
-                    inputCount > limitLength ? 'border-error' : isFocused ? 'border-gray-400' : 'border-transparent'
+                border bg-surface-elevate-l2 rounded-lg   ${inputCount > limitLength ? 'border-error' : isFocused ? 'border-gray-400' : 'border-transparent'
                 } 
             `}
         >
@@ -57,7 +63,7 @@ const TextareaWithLimit = ({
                     onChange(e.target.value)
                     onInputHandler(e.target.value)
                 }}
-                onFocus={() => setIsFocused(true)}
+                onFocus={handleFocus}
                 onBlur={() => setIsFocused(false)}
                 rows={initialRows}
                 placeholder={placeholder}

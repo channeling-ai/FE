@@ -1,6 +1,6 @@
 import { memo } from 'react'
 import { NavbarLink, NavbarModalButton } from './NavbarLink'
-import { LOGIN_LINK, NAVIGATE_LINKS, PLUS_LINK } from './navbarLinks'
+import { FEEDBACK_LINK, LOGIN_LINK, NAVIGATE_LINKS, PLUS_LINK } from './navbarLinks'
 import { NavbarUserInfo } from './NavbarUserInfo'
 import { useAuthStore } from '../../../stores/authStore'
 import useIsMobile from '../../../hooks/main/useIsMobile'
@@ -42,18 +42,24 @@ const NavbarLinksListComponent = ({
                 </div>
             </div>
 
-            <div ref={loginButtonRef} className="flex w-full justify-start items-center tablet:mb-4 desktop:m-0">
-                {isAuth && user ? (
-                    <button
-                        className="flex flex-row justify-between items-center w-full cursor-pointer"
-                        onClick={handleUserClick}
-                    >
-                        <NavbarUserInfo />
-                        <Settings className="block desktop:hidden" />
-                    </button>
-                ) : (
-                    <NavbarModalButton {...LOGIN_LINK} onClick={handleLoginClick} variant="login" />
-                )}
+            <div className="mt-auto flex flex-col gap-4 w-full">
+                <div className="flex justify-start desktop:justify-center">
+                    <NavbarLink {...FEEDBACK_LINK} />
+                </div>
+
+                <div ref={loginButtonRef} className="flex w-full justify-start items-center tablet:mb-4 desktop:m-0">
+                    {isAuth && user ? (
+                        <button
+                            className="flex flex-row justify-between items-center w-full cursor-pointer"
+                            onClick={handleUserClick}
+                        >
+                            <NavbarUserInfo />
+                            <Settings className="block desktop:hidden" />
+                        </button>
+                    ) : (
+                        <NavbarModalButton {...LOGIN_LINK} onClick={handleLoginClick} variant="login" />
+                    )}
+                </div>
             </div>
         </div>
     )

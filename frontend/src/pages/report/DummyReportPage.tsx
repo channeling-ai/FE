@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import Metadata from '../../components/Metadata'
@@ -9,6 +9,7 @@ import { useGetDummyVideoMeta } from '../../hooks/report'
 import { adaptVideoMeta } from '../../lib/mappers/report'
 import type { NormalizedVideoData } from '../../types/report/all'
 import { VideoSummarySkeleton } from './_components/VideoSummarySkeleton'
+import { trackEvent } from '../../utils/analytics'
 
 export default function DummyReportPage() {
     const { reportId: reportIdParam } = useParams()
@@ -31,6 +32,31 @@ export default function DummyReportPage() {
         ? adaptVideoMeta(videoData, isDummy)
         : undefined
 
+    useEffect(() => {
+        if (!isPending && videoData) {
+            trackEvent({
+                category: 'Report',
+                action: 'View Report',
+                label: 'Demo Report',
+            })
+        }
+    }, [isPending, videoData])
+
+    const handleTabChange = (tab: (typeof TABS)[number]) => {
+        if (tab.index === activeTab.index) return
+
+        const fromTab = activeTab.label
+        const toTab = tab.label
+
+        trackEvent({
+            category: 'Report',
+            action: 'Switch Tab',
+            label: `${fromTab} to ${toTab} (Demo)`,
+        })
+
+        setActiveTab(tab)
+    }
+
     const handleGuestModalClick = () => setIsOpenGuestModal(!isOpenGuestModal)
 
     return (
@@ -39,7 +65,7 @@ export default function DummyReportPage() {
 
             <div className="px-6 tablet:px-[76px] py-10 desktop:py-20 space-y-10">
                 {isPending ? <VideoSummarySkeleton /> : <VideoSummary data={normalizedVideoData} />}
-                <Tabs tabs={TABS} activeTab={activeTab} onChangeTab={setActiveTab} />
+                <Tabs tabs={TABS} activeTab={activeTab} onChangeTab={handleTabChange} />
             </div>
 
             {isOpenGuestModal && <GuestModal onClose={handleGuestModalClick} />}

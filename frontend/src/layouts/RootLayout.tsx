@@ -10,6 +10,7 @@ import { useFetchAndSetUser } from '../hooks/channel/useFetchAndSetUser'
 import { NavbarModalsContainer } from '../pages/auth'
 import { SettingModalContainer } from '../pages/setting/_components/SettingModalContainer'
 import AuthWatcher from '../components/AuthWatcher'
+import { GoogleAnalytics } from '../components/GoogleAnalytics'
 
 export default function RootLayout() {
     const location = useLocation()
@@ -34,6 +35,7 @@ export default function RootLayout() {
 
     return (
         <>
+            <GoogleAnalytics />
             <AuthWatcher />
             <NavbarWrapper />
 

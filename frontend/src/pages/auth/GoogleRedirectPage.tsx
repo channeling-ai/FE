@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { LOCAL_STORAGE_KEY } from '../../constants/key'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
 import { useNavigate } from 'react-router-dom'
+import { trackEvent } from '../../utils/analytics'
 
 const GoogleLoginRedirectPage = () => {
     const navigate = useNavigate()
@@ -22,12 +23,24 @@ const GoogleLoginRedirectPage = () => {
         const isNew = urlParams.get('isNew') === 'true'
 
         if (message === 'Success' && accessToken && channelId) {
+            trackEvent({
+                category: 'Auth',
+                action: 'Login Success',
+                label: `New User: ${isNew}`,
+            })
+
             setAccessToken(accessToken)
             setChannelId(channelId)
             setIsNew(isNew.toString())
 
             navigate('/')
         } else {
+            trackEvent({
+                category: 'Auth',
+                action: 'Login Failed',
+                label: message || 'Unknown error',
+            })
+
             alert('로그인 실패! 다시 시도해주세요.')
             navigate('/')
         }

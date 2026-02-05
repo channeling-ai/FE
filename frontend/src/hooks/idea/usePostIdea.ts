@@ -15,11 +15,12 @@ export default function usePostIdea() {
         },
         onError: (error) => {
             const state = error.response?.status
+            const errorMessage = error.response?.data?.message || 'Unknown error'
+
             if (state === 400) {
                 openModal('GENERATING_LIMIT')
                 return
             }
-            const errorMessage = error.response?.data?.message
             console.error('아이디어 생성 실패:', errorMessage)
         },
     })

@@ -6,6 +6,7 @@ import { useUrlInput } from '../../../hooks/main/useUrlInput'
 import ArrowButton from '../../../components/ArrowButton'
 import { ErrorToast } from './ErrorToast'
 import useGetVideoData from '../../../hooks/report/useGetVideoData'
+import { trackEvent } from '../../../utils/analytics'
 
 export const UrlInputForm = () => {
     const navigate = useNavigate()
@@ -13,9 +14,12 @@ export const UrlInputForm = () => {
     const [videoId, setVideoId] = useState<number | null>(null)
     const [isFocused, setIsFocused] = useState(false)
 
-    const { register, handleSubmit, isActive, error } = useUrlInput((newReportId, newVideoId) => {
-        setReportId(newReportId)
-        setVideoId(newVideoId)
+    const { register, handleSubmit, isActive, error } = useUrlInput({
+        onRequestUrlSuccess: (newReportId, newVideoId) => {
+            setReportId(newReportId)
+            setVideoId(newVideoId)
+        },
+        onTrackEvent: trackEvent,
     })
 
     const { data: videoData, isPending } = useGetVideoData(videoId ?? undefined)
@@ -47,9 +51,8 @@ export const UrlInputForm = () => {
                     )}
                 >
                     <ErrorIcon
-                        className={`ml-2 transition-opacity duration-300 ${
-                            error ? 'opacity-100 max-w-6' : 'opacity-0 max-w-0'
-                        }`}
+                        className={`ml-2 transition-opacity duration-300 ${error ? 'opacity-100 max-w-6' : 'opacity-0 max-w-0'
+                            }`}
                     />
                     <input
                         {...register('url')}

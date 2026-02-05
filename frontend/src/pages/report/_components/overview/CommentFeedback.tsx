@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom'
 import type { OverviewDataProps } from '../../../../types/report/all'
 import { CommentSkeleton } from './CommentSkeleton'
 import { useGetDummyComments } from '../../../../hooks/report'
+import { trackEvent } from '../../../../utils/analytics'
 
 const Comments = ({ comments }: { comments: Comment[] | undefined }) => {
     if (!comments || comments.length === 0)
@@ -66,8 +67,24 @@ export const CommentFeedback = ({ data, isDummy }: OverviewDataProps & { isDummy
 
     const activeIndex = useMemo(() => commentTypes.indexOf(activeTab), [activeTab, commentTypes])
 
-    const handleTabChange = (tabKey: CommentType) => setActiveTab(tabKey)
-    const handleChartSegmentClick = (index: number) => setActiveTab(commentTypes[index] as CommentType)
+    const handleTabChange = (tabKey: CommentType) => {
+        trackEvent({
+            category: 'Report Content',
+            action: 'Switch Comment Tab',
+            label: COMMENT_TYPE[tabKey],
+        })
+        setActiveTab(tabKey)
+    }
+
+    const handleChartSegmentClick = (index: number) => {
+        const selectedType = commentTypes[index] as CommentType
+        trackEvent({
+            category: 'Report Content',
+            action: 'Click Comment Chart',
+            label: COMMENT_TYPE[selectedType],
+        })
+        setActiveTab(selectedType)
+    }
 
     return (
         <TitledSection title="댓글 반응">

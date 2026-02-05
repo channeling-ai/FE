@@ -11,6 +11,7 @@ function App() {
         <>
             <QueryClientProvider client={queryClient}>
                 <ReactQueryDevtools initialIsOpen={false} />
+
                 <RouterProvider router={router} />
                 <GlobalModal />
                 {/* 전역 폴러 */}
