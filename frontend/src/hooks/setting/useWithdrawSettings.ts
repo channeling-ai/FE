@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../stores/authStore'
 import { useWithdrawMember } from './userMutations'
 
-export function useWithdrawSettings() {
+export function useWithdrawSettings(onSuccessAction?: () => void) {
     const navigate = useNavigate()
     const queryClient = useQueryClient()
     const clearAuth = useAuthStore((state) => state.actions.clearAuth)
@@ -16,6 +16,7 @@ export function useWithdrawSettings() {
             onSuccess: () => {
                 queryClient.clear()
                 clearAuth()
+                onSuccessAction?.()
                 navigate('/')
             },
             onError: () => {

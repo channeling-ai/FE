@@ -8,19 +8,21 @@ import { useLogout } from '../../hooks/useLogout'
 import ProfileSettings from './_containers/ProfileSettings'
 import ConsentSettings from './_containers/ConsentSettings'
 import { useWithdrawSettings } from '../../hooks/setting/useWithdrawSettings'
+import { useAuthStore } from '../../stores/authStore'
 
 type SettingPageProps = {
     onClose?: () => void
 }
 
 export default function SettingPage({ onClose }: SettingPageProps) {
+    const isLoggedIn = useAuthStore((state) => !!state.isAuth)
     const [activeTab, setActiveTab] = useState<'profile' | 'consent'>('profile')
     const [showWithdrawModal, setShowWithdrawModal] = useState(false)
 
     const logout = useLogout()
     const [loggingOut, setLoggingOut] = useState(false)
 
-    const { confirmWithdraw, isPending } = useWithdrawSettings()
+    const { confirmWithdraw, isPending } = useWithdrawSettings(() => onClose?.())
 
     const handleClickLogout = async () => {
         if (loggingOut) return
@@ -87,7 +89,7 @@ export default function SettingPage({ onClose }: SettingPageProps) {
                 </div>
             </div>
 
-            {showWithdrawModal && (
+            {isLoggedIn && showWithdrawModal && (
                 <WithdrawModal
                     onClose={isPending ? () => {} : () => setShowWithdrawModal(false)}
                     onConfirm={confirmWithdraw}
