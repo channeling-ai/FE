@@ -8,6 +8,7 @@ import usePatchIdeaBookmark from '../../../hooks/idea/usePatchIdeaBookmark'
 import Spinner from '../../../assets/loading/spinner.svg?react'
 import { Skeleton } from './GeneratingSkeleton'
 import { useIsMutating } from '@tanstack/react-query'
+import { trackEvent } from '../../../utils/analytics'
 
 export const ContentsIdea = ({ ideaList, isDummy = false }: ContentsIdeaProps & { isDummy?: boolean }) => {
     const data = ideaList
@@ -48,7 +49,27 @@ const IdeaBox = memo(({ idea, isDummy = false }: { idea: Idea; isDummy?: boolean
     const { mutate: updateBookmark } = usePatchIdeaBookmark()
 
     const handleBookmarkClick = () => {
-        updateBookmark({ ideaId: idea.ideaId })
+        updateBookmark(
+            { ideaId: idea.ideaId },
+            {
+                onSuccess: (data) => {
+                    const isBookmarked = data.result?.isBookMarked
+
+                    trackEvent({
+                        category: 'Idea',
+                        action: isBookmarked ? 'Add Bookmark' : 'Remove Bookmark',
+                        label: String(idea.ideaId),
+                    })
+                },
+                onError: () => {
+                    trackEvent({
+                        category: 'Idea',
+                        action: 'Bookmark Error',
+                        label: 'Failed to update bookmark',
+                    })
+                },
+            }
+        )
     }
 
     const parsedHashTags: string[] = useMemo(() => {

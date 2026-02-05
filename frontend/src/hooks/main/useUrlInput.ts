@@ -9,7 +9,16 @@ import { useQueryClient } from '@tanstack/react-query'
 
 const PENDING_KEY = 'pending-url'
 
-export const useUrlInput = (onRequestUrlSuccess?: (reportId: number, videoId: number) => void) => {
+interface UseUrlInputCallbacks {
+    onRequestUrlSuccess?: (reportId: number, videoId: number) => void
+    onTrackEvent?: (event: {
+        category: string
+        action: string
+        label: string
+    }) => void
+}
+
+export const useUrlInput = ({ onRequestUrlSuccess, onTrackEvent }: UseUrlInputCallbacks = {}) => {
     const [isActive, setIsActive] = useState(false)
     const [error, setError] = useState<string | null>(null)
 
@@ -36,10 +45,22 @@ export const useUrlInput = (onRequestUrlSuccess?: (reportId: number, videoId: nu
                 })
             }
 
+            onTrackEvent?.({
+                category: 'Report',
+                action: 'Generate Report Success',
+                label: 'Main Page URL Input',
+            })
+
             onRequestUrlSuccess?.(reportId, videoId)
             setError(null)
         },
         onError: ({ code, message }) => {
+            onTrackEvent?.({
+                category: 'Report',
+                action: 'Generate Report Error',
+                label: code,
+            })
+
             if (code === 'YOUTUBE400') {
                 setError('유효한 유튜브 URL을 입력해주세요.')
             } else if (code === 'VIDEO403') {
@@ -59,6 +80,7 @@ export const useUrlInput = (onRequestUrlSuccess?: (reportId: number, videoId: nu
     const url = watch('url')
 
     // URL이 변경될 때만 에러 상태를 초기화
+
     useEffect(() => {
         if (error) {
             setError(null)
@@ -88,9 +110,22 @@ export const useUrlInput = (onRequestUrlSuccess?: (reportId: number, videoId: nu
             } catch {
                 alert('URL 임시 저장 실패')
             }
+
+            onTrackEvent?.({
+                category: 'User',
+                action: 'Login Required',
+                label: 'URL Input - Not Authenticated',
+            })
+
             openLoginFlow() // 비로그인 상태에서 요청할 경우 로그인 플로우를 시작
             return
         }
+
+        onTrackEvent?.({
+            category: 'Report',
+            action: 'Generate Report Request',
+            label: 'Main Page URL Input',
+        })
 
         setError(null)
         requestNewReport({ url }) // 리포트 생성 요청
