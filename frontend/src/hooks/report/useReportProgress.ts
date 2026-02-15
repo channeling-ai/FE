@@ -4,14 +4,40 @@ import { fetchEventSource } from '@microsoft/fetch-event-source'
 import { LOCAL_STORAGE_KEY } from '../../constants/key'
 import { SSE_URL } from '../../constants/sse'
 
-export const useReportProgress = (targetReportId: number, enabled: boolean, isVideoLoaded: boolean) => {
+interface ReportResult {
+    overviewStatus: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED'
+    analysisStatus: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED'
+}
+
+export const useReportProgress = (
+    targetReportId: number,
+    enabled: boolean,
+    isVideoLoaded: boolean,
+    initialResult?: ReportResult
+) => {
     const queryClient = useQueryClient()
-    const [currentStep, setCurrentStep] = useState<number>(1)
+    const [currentStep, setCurrentStep] = useState(1)
 
     const progressRef = useRef({
         overview: false,
         analysis: false,
     })
+
+    // 새로고침/재진입 시 서버 상태와 동기화
+    useEffect(() => {
+        if (!initialResult) return
+
+        const { overviewStatus, analysisStatus } = initialResult
+
+        if (analysisStatus === 'COMPLETED') {
+            progressRef.current.overview = true
+            progressRef.current.analysis = true
+            setCurrentStep((prev) => Math.max(prev, 4))
+        } else if (overviewStatus === 'COMPLETED') {
+            progressRef.current.overview = true
+            setCurrentStep((prev) => Math.max(prev, 3))
+        }
+    }, [initialResult])
 
     useEffect(() => {
         if (enabled && currentStep === 1 && isVideoLoaded) {

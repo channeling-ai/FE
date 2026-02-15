@@ -17,6 +17,8 @@ import { useGetVideoData, useReportProgress, useReportStatus } from '../../hooks
 
 import type { NormalizedVideoData } from '../../types/report/all'
 import { adaptVideoMeta } from '../../lib/mappers/report'
+import { useDeleteMyReport } from '../../hooks/report/useDeleteMyReport'
+import { useAuthStore } from '../../stores/authStore'
 
 export default function ReportPage() {
     const navigate = useNavigate()
@@ -35,10 +37,13 @@ export default function ReportPage() {
 
     // 리포트 생성 상태 조회
     // 리포트의 생성 여부 분리(SSE, 리포트 조회)를 위함
-    const { isLoading, isProcessing, isFailed } = useReportStatus(reportId)
+    const { rawResult, isLoading, isProcessing, isFailed } = useReportStatus(reportId)
+
+    const channelId = useAuthStore((state) => state.channelId)
+    const { mutate: deleteReport } = useDeleteMyReport({ channelId: channelId || 0 })
 
     // SSE 훅 연동
-    const { currentStep } = useReportProgress(reportId, isProcessing, !!normalizedVideoData)
+    const { currentStep } = useReportProgress(reportId, isProcessing, !!normalizedVideoData, rawResult)
 
     // 탭 구성
     const TABS = useMemo(
@@ -54,7 +59,10 @@ export default function ReportPage() {
 
     const handleResetTab = () => setActiveTab(TABS[0])
     const handleUpdateModalClick = () => setIsOpenUpdateModal(!isOpenUpdateModal)
-    const handleCloseErrorModal = () => navigate('/', { replace: true })
+    const handleCloseErrorModal = () => {
+        deleteReport({ reportId })
+        navigate('/', { replace: true })
+    }
 
     if (isFailed) {
         return <GenerateErrorModal onClose={handleCloseErrorModal} />
