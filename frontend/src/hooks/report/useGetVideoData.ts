@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { getVideoData } from '../../api/report'
 
-export default function useGetVideoData(videoId: number | undefined) {
+export function useGetVideoData(videoId: number | undefined) {
     return useQuery({
         queryKey: ['video', videoId],
         queryFn: async () => getVideoData({ videoId }),

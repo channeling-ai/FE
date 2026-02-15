@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useReportStore } from '../../stores/reportStore'
 import type { ResponseReportById, ResultReportById } from '../../types/report/new'
 import type { AxiosError } from 'axios'
 import { postReportById } from '../../api/report'
@@ -15,27 +14,18 @@ interface ReportByIdCallbacks {
  */
 export default function usePostReportById({ onSuccess, onError }: ReportByIdCallbacks) {
     const queryClient = useQueryClient()
-    const startGenerating = useReportStore((state) => state.actions.startGenerating)
-    const endGenerating = useReportStore((state) => state.actions.endGenerating)
-    const addPendingReportId = useReportStore((state) => state.actions.addPendingReportId)
 
     return useMutation({
         mutationFn: postReportById,
-        onMutate: () => {
-            startGenerating()
-        },
         onSuccess: (data: ResponseReportById) => {
             if (data.isSuccess && data.result) {
                 queryClient.invalidateQueries({ queryKey: ['recommendedVideos'] })
-                addPendingReportId(data.result.reportId)
                 onSuccess(data.result) // 성공 콜백 호출
             } else {
-                endGenerating()
                 onError({ code: data.code, message: data.message })
             }
         },
         onError: (error: AxiosError<ResponseReportById>) => {
-            endGenerating()
             if (error.response) {
                 const errorData = error.response.data
                 onError({ code: errorData.code, message: errorData.message })

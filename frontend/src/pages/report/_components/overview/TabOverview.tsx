@@ -7,8 +7,7 @@ import { Skeleton } from './Skeleton'
 import useGetReportOverview from '../../../../hooks/report/useGetReportOverview'
 
 import type { OverviewDataProps } from '../../../../types/report/all'
-import { useReportStore } from '../../../../stores/reportStore'
-import { useGetDummyOverview } from '../../../../hooks/report'
+import { useGetDummyOverview, useReportStatus } from '../../../../hooks/report'
 
 interface TabOverviewProps {
     reportId: number
@@ -16,8 +15,8 @@ interface TabOverviewProps {
 }
 
 export const TabOverview = ({ reportId, isDummy = false }: TabOverviewProps) => {
-    const overviewStatus = useReportStore((state) => state.statuses[reportId]?.overviewStatus)
-    const isCompleted = overviewStatus === 'COMPLETED'
+    const { rawResult, isLoading: isStatusLoading } = useReportStatus(reportId)
+    const isCompleted = rawResult?.overviewStatus === 'COMPLETED'
 
     const { data: realData, isLoading: isRealLoading } = useGetReportOverview({
         reportId,
@@ -30,7 +29,7 @@ export const TabOverview = ({ reportId, isDummy = false }: TabOverviewProps) => 
     })
 
     const overviewData = isDummy ? dummyData : realData
-    const isLoading = isDummy ? isDummyLoading : !isCompleted || isRealLoading
+    const isLoading = isDummy ? isDummyLoading : isStatusLoading || !isCompleted || isRealLoading
     const shouldShowUpdateSummary = !isDummy && !!overviewData?.updateSummary?.trim()
 
     if (isLoading || !overviewData) return <Skeleton showUpdateSummary={shouldShowUpdateSummary} />

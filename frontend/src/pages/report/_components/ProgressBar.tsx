@@ -8,9 +8,11 @@ const STEPS = [
     { id: 4, label: '리포트\n완성', width: 'w-[3rem]', shortWidth: 'w-[1.5rem]' },
 ]
 
-// export default function ProgressBar({ currentStep }: { currentStep: number }) {
-export default function ProgressBar() {
-    const currentStep = 2
+interface ProgressBarProps {
+    currentStep: number
+}
+
+export const ProgressBar = ({ currentStep }: ProgressBarProps) => {
     const isMobile = useIsMobile()
 
     return (
@@ -22,8 +24,9 @@ export default function ProgressBar() {
                 )}
             >
                 {STEPS.map((step) => {
-                    const isActive = currentStep >= step.id
+                    const isCompleted = currentStep > step.id
                     const isCurrent = currentStep === step.id
+                    const isActive = currentStep >= step.id
 
                     return (
                         <div key={step.id} className="flex-1 flex flex-col text-center justify-center items-center">
@@ -44,11 +47,22 @@ export default function ProgressBar() {
                             {/* bar */}
                             <div
                                 className={clsx(
-                                    'mt-1 rounded-full transition-colors duration-300',
-                                    isMobile ? `${step.shortWidth} h-[0.125rem]` : `${step.width} h-1`,
-                                    isActive ? 'bg-primary-500' : 'bg-gray-100' // <-- 수정됨: 활성 상태가 아닐 때 회색 배경 적용
+                                    'mt-1 rounded-full relative overflow-hidden bg-gray-100',
+                                    isMobile ? `${step.shortWidth} h-[0.125rem]` : `${step.width} h-1`
                                 )}
-                            />
+                            >
+                                <div
+                                    className={clsx(
+                                        'absolute top-0 left-0 h-full bg-primary-500 rounded-full transition-all ease-out',
+                                        isCompleted && 'w-full duration-500 delay-0',
+                                        isCurrent && [
+                                            step.id === 1 ? 'delay-0' : 'delay-500',
+                                            step.id === 4 ? 'w-full duration-300' : 'w-[85%] duration-[20000ms]',
+                                        ],
+                                        !isActive && 'w-0 duration-0 delay-0'
+                                    )}
+                                ></div>
+                            </div>
                         </div>
                     )
                 })}

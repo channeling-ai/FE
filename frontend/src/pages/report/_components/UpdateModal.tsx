@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import Modal from '../../../components/Modal'
 import usePostReportById from '../../../hooks/report/usePostReportById'
-import { useReportStore } from '../../../stores/reportStore'
 import { useQueryClient } from '@tanstack/react-query'
 import { useAuthStore } from '../../../stores/authStore'
 
@@ -17,11 +16,8 @@ export const UpdateModal = ({ videoId, handleModalClick, handleResetTab }: Updat
     const user = useAuthStore((state) => state.user)
     const channelId = user?.channelId
 
-    const addPendingReportId = useReportStore((state) => state.actions.addPendingReportId)
-
     const { mutate: requestNewReport } = usePostReportById({
         onSuccess: ({ reportId }) => {
-            addPendingReportId(reportId)
             if (typeof channelId === 'number') {
                 queryClient.invalidateQueries({
                     queryKey: ['my', 'report', channelId],

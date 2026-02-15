@@ -5,7 +5,7 @@ import ArrowButton from '../../../components/ArrowButton'
 import ErrorIcon from '../../../assets/icons/error.svg?react'
 import { useUrlInput } from '../../../hooks/main/useUrlInput'
 import { ErrorToast } from './ErrorToast'
-import useGetVideoData from '../../../hooks/report/useGetVideoData'
+import { useGetVideoData } from '../../../hooks/report'
 
 interface UrlInputModalProps {
     onClose: () => void

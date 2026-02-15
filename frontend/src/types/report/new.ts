@@ -34,11 +34,10 @@ export type Status = 'PENDING' | 'COMPLETED' | 'FAILED'
 export type Statuses = {
     overviewStatus: Status
     analysisStatus: Status
-    ideaStatus: Status
+    ideaStatus?: Status
 }
 
 export type ReportStatus = {
-    taskId: number
     reportId: number
 } & Statuses
 
