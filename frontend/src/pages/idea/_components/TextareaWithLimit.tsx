@@ -63,9 +63,10 @@ const TextareaWithLimit = ({
                 value={value}
                 disabled={disabled}
                 onChange={(e) => {
-                    onChange(e.target.value)
-                    onInputHandler(e.target.value)
-                    onLimitChange(e.target.value.length > limitLength)
+                    const newValue = e.target.value
+                    onChange(newValue)
+                    onInputHandler(newValue)
+                    onLimitChange(newValue.length > limitLength)
                 }}
                 onFocus={handleFocus}
                 onBlur={() => setIsFocused(false)}
