@@ -4,6 +4,7 @@ interface TextareaWithLimitProps {
     id: string
     value: string // textarea의 값
     onChange: (value: string) => void // 사용자가 입력한 텍스트가 변경될 때 호출되는 함수
+    onLimitChange: (value: boolean) => void
     title: string
     placeholder?: string
     initialRows?: number // row 개수로 textarea 박스의 초기 높이를 지정할 수 있습니다. 디폴트는 1
@@ -17,6 +18,7 @@ const TextareaWithLimit = ({
     id,
     value,
     onChange,
+    onLimitChange,
     title,
     placeholder,
     initialRows = 1,
@@ -44,7 +46,8 @@ const TextareaWithLimit = ({
     return (
         <div
             className={`flex flex-col p-4 gap-2 items-start
-                border bg-surface-elevate-l2 rounded-lg   ${inputCount > limitLength ? 'border-error' : isFocused ? 'border-gray-400' : 'border-transparent'
+                border bg-surface-elevate-l2 rounded-lg   ${
+                    inputCount > limitLength ? 'border-error' : isFocused ? 'border-gray-400' : 'border-transparent'
                 } 
             `}
         >
@@ -60,8 +63,10 @@ const TextareaWithLimit = ({
                 value={value}
                 disabled={disabled}
                 onChange={(e) => {
-                    onChange(e.target.value)
-                    onInputHandler(e.target.value)
+                    const newValue = e.target.value
+                    onChange(newValue)
+                    onInputHandler(newValue)
+                    onLimitChange(newValue.length > limitLength)
                 }}
                 onFocus={handleFocus}
                 onBlur={() => setIsFocused(false)}
