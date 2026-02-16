@@ -23,6 +23,8 @@ export const GeneratingIdea = () => {
     const [keyword, setKeyword] = useState('')
     const [additionalInfo, setAdditionalInfo] = useState('')
     const [selectedOption, setSelectedOption] = useState('')
+    const [isKeywordLimit, setIsKeywordLimit] = useState(false)
+    const [isExtraLimit, setIsExtraLimit] = useState(false)
 
     const hasTrackedKeywordFocus = useRef(false)
     const hasTrackedAdditionalFocus = useRef(false)
@@ -153,6 +155,7 @@ export const GeneratingIdea = () => {
                         id="keyword-input"
                         value={keyword}
                         onChange={(value) => setKeyword(value)}
+                        onLimitChange={setIsKeywordLimit}
                         onFocus={handleKeywordFocus}
                         title="키워드"
                         placeholder="생각나는 키워드를 입력해주세요. (예: 바이브코딩, 도쿄 여행, 가을 메이크업)"
@@ -161,8 +164,9 @@ export const GeneratingIdea = () => {
                     />
 
                     <div
-                        className={`flex flex-col p-4 items-start gap-2 rounded-lg bg-surface-elevate-l2 relative border self-stretch ${isDropdownOpen ? ' border-gray-400' : 'border-transparent'
-                            }`}
+                        className={`flex flex-col p-4 items-start gap-2 rounded-lg bg-surface-elevate-l2 relative border self-stretch ${
+                            isDropdownOpen ? ' border-gray-400' : 'border-transparent'
+                        }`}
                     >
                         <div className="font-caption-14m text-gray-600">영상형식</div>
                         <div
@@ -192,6 +196,7 @@ export const GeneratingIdea = () => {
                     id="additional-info-input"
                     value={additionalInfo}
                     onChange={(value) => setAdditionalInfo(value)}
+                    onLimitChange={setIsExtraLimit}
                     onFocus={handleAdditionalFocus}
                     title="추가 입력 사항"
                     placeholder="어떤 점을 강조하고 싶으신가요? (예: 쉬운 설명, 유머, 영상미)"
@@ -201,10 +206,10 @@ export const GeneratingIdea = () => {
                 />
 
                 <button
-                    className="flex h-[48px] px-2 py-4 justify-center items-center gap-2 rounded-2xl 
-                                bg-primary-500 hover:bg-primary-opacity50 font-body-16b text-gray-900 text-center cursor-pointer"
+                    className="flex h-12 px-2 py-4 justify-center items-center gap-2 rounded-2xl 
+                                bg-primary-500 hover:bg-primary-opacity50 font-body-16b text-gray-900 text-center cursor-pointer disabled:bg-gray-300"
                     onClick={handleSubmitClick}
-                    disabled={isPending}
+                    disabled={isPending || isKeywordLimit || isExtraLimit}
                 >
                     콘텐츠 아이디어 생성하기
                 </button>
