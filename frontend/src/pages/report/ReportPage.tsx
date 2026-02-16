@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
 import Tabs from '../../components/Tabs'
@@ -19,6 +19,7 @@ import type { NormalizedVideoData } from '../../types/report/all'
 import { adaptVideoMeta } from '../../lib/mappers/report'
 import { useDeleteMyReport } from '../../hooks/report/useDeleteMyReport'
 import { useAuthStore } from '../../stores/authStore'
+import { useReportStore } from '../../stores/reportStore'
 
 export default function ReportPage() {
     const navigate = useNavigate()
@@ -29,6 +30,8 @@ export default function ReportPage() {
     const videoIdParam = searchParams.get('video')
     const videoId = Number(videoIdParam)
 
+    const addReport = useReportStore((state) => state.addReport)
+
     // 영상 정보 조회: VideoSummary에 전달
     const { data: videoData, isPending: isVideoLoading } = useGetVideoData(videoId)
     const normalizedVideoData: NormalizedVideoData | undefined = useMemo(() => {
@@ -37,7 +40,7 @@ export default function ReportPage() {
 
     // 리포트 생성 상태 조회
     // 리포트의 생성 여부 분리(SSE, 리포트 조회)를 위함
-    const { rawResult, isLoading, isProcessing, isFailed } = useReportStatus(reportId)
+    const { rawResult, isProcessing, isFailed } = useReportStatus(reportId)
 
     const channelId = useAuthStore((state) => state.channelId)
     const { mutate: deleteReport } = useDeleteMyReport({ channelId: channelId || 0 })
@@ -64,6 +67,17 @@ export default function ReportPage() {
         navigate('/', { replace: true })
     }
 
+    // 리포트 생성 상태 동기화
+    useEffect(() => {
+        if (isProcessing && normalizedVideoData) {
+            addReport({
+                reportId,
+                videoId,
+                title: normalizedVideoData.videoTitle,
+            })
+        }
+    }, [isProcessing, reportId, videoId, normalizedVideoData, addReport])
+
     if (isFailed) {
         return <GenerateErrorModal onClose={handleCloseErrorModal} />
     }
@@ -71,7 +85,7 @@ export default function ReportPage() {
     return (
         <article>
             {/* 프로그레스 바 */}
-            {(isLoading || isProcessing) && <ProgressBar currentStep={currentStep} />}
+            {isProcessing && <ProgressBar currentStep={currentStep} />}
 
             {/* 리포트 콘텐츠 */}
             <div className="px-6 tablet:px-[76px] py-10 desktop:py-20 space-y-10">
@@ -94,6 +108,8 @@ export default function ReportPage() {
 
             {/* 리포트 업데이트 버튼 */}
             {!isProcessing && <RefreshButton handleClick={handleUpdateModalClick} />}
+
+            <div className="fixed bottom-6 right-6 z-50 flex flex-col-reverse gap-3"></div>
         </article>
     )
 }

@@ -8,6 +8,8 @@ import { useFetchAndSetUser } from '../hooks/channel/useFetchAndSetUser'
 import { NavbarModalsContainer } from '../pages/auth'
 import { SettingModalContainer } from '../pages/setting/_components/SettingModalContainer'
 import AuthWatcher from '../components/AuthWatcher'
+import { GlobalProcessingModal } from '../components/GlobalProcessingModal'
+import { GlobalToast } from '../components/GlobalToast'
 
 export default function RootLayout() {
     const location = useLocation()
@@ -32,6 +34,8 @@ export default function RootLayout() {
         <>
             <AuthWatcher />
             <NavbarWrapper />
+            <GlobalProcessingModal />
+            <GlobalToast />
 
             <main
                 className={`
