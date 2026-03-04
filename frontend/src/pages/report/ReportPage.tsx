@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
 import Tabs from '../../components/Tabs'
@@ -31,6 +31,8 @@ export default function ReportPage() {
     const videoId = Number(videoIdParam)
 
     const addReport = useReportStore((state) => state.addReport)
+    const removeReport = useReportStore((state) => state.removeReport)
+    const addCompletedReport = useReportStore((state) => state.addCompletedReport)
 
     // 영상 정보 조회: VideoSummary에 전달
     const { data: videoData, isPending: isVideoLoading } = useGetVideoData(videoId)
@@ -46,7 +48,10 @@ export default function ReportPage() {
     const { mutate: deleteReport } = useDeleteMyReport({ channelId: channelId || 0 })
 
     // SSE 훅 연동
-    const { currentStep } = useReportProgress(reportId, isProcessing, !!normalizedVideoData, rawResult)
+    const { currentStep } = useReportProgress(reportId, isProcessing, rawResult)
+
+    const hasSeenCompletionRef = useRef(false)
+    const latestResultRef = useRef<typeof rawResult>(null)
 
     // 탭 구성
     const TABS = useMemo(
@@ -67,6 +72,30 @@ export default function ReportPage() {
         navigate('/', { replace: true })
     }
 
+    const [displayStep, setDisplayStep] = useState<number | null>(null)
+    const firstVisibleRef = useRef(false)
+
+    useEffect(() => {
+        if (!isProcessing) {
+            setDisplayStep(null)
+            firstVisibleRef.current = false
+            return
+        }
+
+        if (!firstVisibleRef.current) {
+            firstVisibleRef.current = true
+            setDisplayStep(1)
+
+            const timer = setTimeout(() => {
+                setDisplayStep(currentStep)
+            }, 500) // 최소 노출 시간
+
+            return () => clearTimeout(timer)
+        }
+
+        setDisplayStep(currentStep)
+    }, [isProcessing, currentStep])
+
     // 리포트 생성 상태 동기화
     useEffect(() => {
         if (isProcessing && normalizedVideoData) {
@@ -78,6 +107,58 @@ export default function ReportPage() {
         }
     }, [isProcessing, reportId, videoId, normalizedVideoData, addReport])
 
+    useEffect(() => {
+        if (!isProcessing && rawResult) {
+            const { overviewStatus, analysisStatus } = rawResult
+
+            if (overviewStatus === 'COMPLETED' && analysisStatus === 'COMPLETED') {
+                hasSeenCompletionRef.current = true
+            }
+        }
+    }, [isProcessing, rawResult])
+
+    // 항상 최신 rawResult 저장
+    useEffect(() => {
+        latestResultRef.current = rawResult
+    }, [rawResult])
+
+    // 완료를 직접 본 경우 처리
+    useEffect(() => {
+        if (!rawResult) return
+
+        const { overviewStatus, analysisStatus } = rawResult
+        const isCompleted = overviewStatus === 'COMPLETED' && analysisStatus === 'COMPLETED'
+
+        if (!isCompleted) return
+
+        // 이 페이지에서 완료를 직접 본 경우
+        if (!isProcessing) {
+            hasSeenCompletionRef.current = true
+            removeReport(reportId)
+        }
+    }, [rawResult, isProcessing, reportId, removeReport])
+
+    // 진짜 unmount 시에만 실행
+    useEffect(() => {
+        return () => {
+            const result = latestResultRef.current
+            if (!result) return
+
+            const { overviewStatus, analysisStatus } = result
+
+            const isCompleted = overviewStatus === 'COMPLETED' && analysisStatus === 'COMPLETED'
+
+            // 내가 완료를 직접 보지 않았고,
+            // 완료된 상태라면 → background 완료 처리
+            if (isCompleted && !hasSeenCompletionRef.current) {
+                addCompletedReport(reportId)
+                removeReport(reportId)
+            }
+        }
+        // 의존성 비움 (unmount 전용)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
     if (isFailed) {
         return <GenerateErrorModal onClose={handleCloseErrorModal} />
     }
@@ -85,7 +166,7 @@ export default function ReportPage() {
     return (
         <article>
             {/* 프로그레스 바 */}
-            {isProcessing && <ProgressBar currentStep={currentStep} />}
+            {isProcessing && displayStep !== null && <ProgressBar currentStep={displayStep} />}
 
             {/* 리포트 콘텐츠 */}
             <div className="px-6 tablet:px-[76px] py-10 desktop:py-20 space-y-10">

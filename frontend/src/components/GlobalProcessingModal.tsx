@@ -24,7 +24,6 @@ export const ProcessingReportItem = ({ item }: ProcessingReportItemProps) => {
     const { currentStep } = useReportProgress(
         item.reportId,
         !isCompleted && !isFailed, // 완료나 실패가 아닐 때만 SSE 연결
-        true, // 비디오는 이미 로드되었다고 가정
         rawResult // 서버의 현재 상태 (재진입 시 동기화용)
     )
 
@@ -82,7 +81,7 @@ export const ProcessingReportItem = ({ item }: ProcessingReportItemProps) => {
             <div
                 onClick={(e) => e.stopPropagation()}
                 className={`
-                    relative flex flex-col min-w-[328px] tablet:min-w-[384px] desktop:min-w-[486px]
+                    relative flex flex-col mx-auto w-[calc(100%-16px)] tablet:w-[384px] desktop:w-[486px]
                     space-y-4 tablet:space-y-6 bg-surface-elevate-l2 p-6 rounded-3xl
                 `}
             >
@@ -130,7 +129,7 @@ export const ProcessingReportItem = ({ item }: ProcessingReportItemProps) => {
         <div
             onClick={() => navigate(`/report/${item.reportId}?video=${item.videoId}`)}
             className={`
-                    relative flex flex-col min-w-[328px] tablet:min-w-[384px] desktop:min-w-[486px]
+                    relative flex flex-col mx-auto w-[calc(100%-16px)] tablet:w-[384px] desktop:w-[486px]
                     space-y-4 tablet:space-y-6 bg-surface-elevate-l2 p-6 rounded-3xl
                 `}
         >
@@ -150,7 +149,7 @@ export const ProcessingReportItem = ({ item }: ProcessingReportItemProps) => {
                     {currentStep === 3 && '이탈 구간과 알고리즘 최적화 분석 중..'}
                     {currentStep === 4 && '리포트 완성'}
                 </h1>
-                <p id="modal-description" className="font-body-16r text-gray-600">
+                <p id="modal-description" className="font-body-16r text-gray-600 whitespace-pre-wrap">
                     [{item.title}] 리포트를 생성 중입니다.
                 </p>
 
@@ -179,11 +178,13 @@ export const ProcessingReportItem = ({ item }: ProcessingReportItemProps) => {
 export const GlobalProcessingModal = () => {
     const { pathname } = useLocation()
     const reports = useReportStore((state) => state.reports)
+    const isAuth = useAuthStore((state) => state.isAuth)
 
+    if (!isAuth) return null
     if (reports.length === 0) return null
 
     return (
-        <div className="fixed bottom-2 right-2 tablet:bottom-8 tablet:right-8 z-50 flex flex-col-reverse gap-2 tablet:gap-4">
+        <div className="fixed bottom-2 tablet:bottom-8 tablet:right-8 z-50 flex flex-col-reverse gap-2 tablet:gap-4">
             {reports.map((report) => {
                 // 현재 보고 있는 리포트 페이지의 모달은 숨김
                 const isCurrentPage = pathname.includes(`/report/${report.reportId}`)
