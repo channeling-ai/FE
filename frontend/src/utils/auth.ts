@@ -1,6 +1,7 @@
 import { axiosInstance } from '../api/axios'
 import { LOCAL_STORAGE_KEY } from '../constants/key'
 import { useAuthStore } from '../stores/authStore'
+import { useReportStore } from '../stores/reportStore'
 import { useSNSFormStore } from '../stores/snsFormStore'
 import { queryClient } from './queryClient'
 
@@ -20,6 +21,8 @@ export async function logoutCore() {
         const { resetFormData, setOwner } = useSNSFormStore.getState()
         resetFormData()
         setOwner(null)
+
+        useReportStore.getState().clearReports?.()
     } catch (e) {
         console.error('auth 상태 초기화 실패:', e)
     }
@@ -27,6 +30,7 @@ export async function logoutCore() {
     try {
         useAuthStore.persist?.clearStorage?.()
         useSNSFormStore.persist?.clearStorage?.()
+        useReportStore.persist?.clearStorage?.()
     } catch (e) {
         console.error('persist clear 실패: ', e)
     }

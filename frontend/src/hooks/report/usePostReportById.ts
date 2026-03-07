@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useReportStore } from '../../stores/reportStore'
 import type { ResponseReportById, ResultReportById } from '../../types/report/new'
 import type { AxiosError } from 'axios'
 import { postReportById } from '../../api/report'
@@ -17,28 +16,19 @@ interface ReportByIdCallbacks {
 export default function usePostReportById({ onSuccess, onError }: ReportByIdCallbacks) {
     const { openModal } = useModalActions()
     const queryClient = useQueryClient()
-    const startGenerating = useReportStore((state) => state.actions.startGenerating)
-    const endGenerating = useReportStore((state) => state.actions.endGenerating)
-    const addPendingReportId = useReportStore((state) => state.actions.addPendingReportId)
 
     return useMutation({
         mutationFn: postReportById,
-        onMutate: () => {
-            startGenerating()
-        },
         onSuccess: (data: ResponseReportById) => {
             if (data.isSuccess && data.result) {
                 queryClient.invalidateQueries({ queryKey: ['recommendedVideos'] })
-                addPendingReportId(data.result.reportId)
                 onSuccess(data.result) // 성공 콜백 호출
             } else {
-                endGenerating()
                 onError({ code: data.code, message: data.message })
             }
         },
         onError: (error: AxiosError<ResponseReportById>) => {
             const state = error.response?.status
-            endGenerating()
             if (state === 403) {
                 openModal('GENERATING_LIMIT')
                 return

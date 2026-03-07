@@ -5,7 +5,7 @@ import ArrowButton from '../../../components/ArrowButton'
 import ErrorIcon from '../../../assets/icons/error.svg?react'
 import { useUrlInput } from '../../../hooks/main/useUrlInput'
 import { ErrorToast } from './ErrorToast'
-import useGetVideoData from '../../../hooks/report/useGetVideoData'
+import { useGetVideoData } from '../../../hooks/report'
 import { trackEvent } from '../../../utils/analytics'
 
 interface UrlInputModalProps {
@@ -76,8 +76,9 @@ export const UrlInputModal = ({ onClose }: UrlInputModalProps) => {
             >
                 <form onSubmit={handleSubmit} className="flex flex-row items-center">
                     <ErrorIcon
-                        className={`transition-opacity duration-300 ${error ? 'opacity-100 max-w-6 mr-2' : 'opacity-0 max-w-0'
-                            }`}
+                        className={`transition-opacity duration-300 ${
+                            error ? 'opacity-100 max-w-6 mr-2' : 'opacity-0 max-w-0'
+                        }`}
                     />
                     <input
                         {...register('url')}

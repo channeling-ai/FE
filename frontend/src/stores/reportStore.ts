@@ -1,81 +1,65 @@
 import { create } from 'zustand'
-import { createJSONStorage, devtools, persist } from 'zustand/middleware'
-import type { ReportStatus, Statuses } from '../types/report/new'
+import { persist } from 'zustand/middleware'
 
-interface ReportActions {
-    startGenerating: () => void
-    endGenerating: () => void
-    updateReportStatus: (reportId: number, partialStatus: Partial<Statuses>) => void
-    removeReportStatus: (reportId: number) => void
-    addPendingReportId: (reportId: number) => void
-    removePendingReportId: (reportId: number) => void
-    beginReportCleanup: (reportId: number) => void
+export interface ProcessingReport {
+    reportId: number
+    videoId: number
+    title: string
+    isHidden: boolean
 }
 
 interface ReportState {
-    isReportGenerating: boolean
+    reports: ProcessingReport[]
+    completedReports: number[]
 
-    /**
-     * 각 리포트 ID를 키로 하여 ReportStatus 객체를 저장
-     * ex) { 17: { overviewStatus: 'PENDING', analysisStatus: 'PENDING', ... } }
-     */
-    statuses: Record<number, ReportStatus>
-    /**
-     * 현재 폴링이 필요한 리포트 ID 목록
-     */
-    pendingReportIds: number[]
-    cleanupReportIds: number[]
-    actions: ReportActions
+    addReport: (report: Omit<ProcessingReport, 'isHidden'>) => void
+    removeReport: (reportId: number) => void
+    hideReport: (reportId: number) => void
+    addCompletedReport: (reportId: number) => void
+    removeCompletedReport: (reportId: number) => void
+    clearReports: () => void
 }
 
 export const useReportStore = create<ReportState>()(
-    devtools(
-        persist(
-            (set) => ({
-                isReportGenerating: false,
-                statuses: {},
-                pendingReportIds: [],
-                cleanupReportIds: [],
-                actions: {
-                    startGenerating: () => set({ isReportGenerating: true }),
-                    endGenerating: () => set({ isReportGenerating: false }),
-                    updateReportStatus: (reportId, partialStatus) =>
-                        set((state) => ({
-                            statuses: {
-                                ...state.statuses,
-                                [reportId]: {
-                                    ...state.statuses[reportId],
-                                    ...partialStatus,
-                                },
-                            },
-                        })),
-                    removeReportStatus: (reportId) =>
-                        set((state) => {
-                            const newStatuses = { ...state.statuses }
-                            delete newStatuses[reportId]
-                            return { statuses: newStatuses }
-                        }),
-                    addPendingReportId: (reportId) =>
-                        set((state) => ({
-                            pendingReportIds: [...state.pendingReportIds, reportId],
-                        })),
-                    removePendingReportId: (reportId) =>
-                        set((state) => ({
-                            pendingReportIds: state.pendingReportIds.filter(
-                                (pendingId) => pendingId !== reportId
-                            ),
-                        })),
-                    beginReportCleanup: (reportId) =>
-                        set((state) => ({
-                            cleanupReportIds: [...state.cleanupReportIds, reportId],
-                        })),
-                },
-            }),
-            {
-                name: 'report-storage',
-                storage: createJSONStorage(() => sessionStorage),
-                partialize: (state) => ({ pendingReportIds: state.pendingReportIds }),
-            }
-        )
+    persist(
+        (set) => ({
+            reports: [],
+            completedReports: [],
+
+            addReport: (newReport) =>
+                set((state) => {
+                    // 이미 있으면 무시
+                    if (state.reports.some((r) => r.reportId === newReport.reportId)) {
+                        return state
+                    }
+                    return { reports: [...state.reports, { ...newReport, isHidden: false }] }
+                }),
+
+            removeReport: (reportId) =>
+                set((state) => ({
+                    reports: state.reports.filter((r) => r.reportId !== reportId),
+                })),
+
+            // 리포트를 삭제하지 않고 숨김 처리만 함 (백그라운드 실행)
+            hideReport: (reportId) =>
+                set((state) => ({
+                    reports: state.reports.map((r) => (r.reportId === reportId ? { ...r, isHidden: true } : r)),
+                })),
+
+            addCompletedReport: (reportId) =>
+                set((state) => ({
+                    completedReports: [...state.completedReports, reportId],
+                })),
+
+            removeCompletedReport: (reportId) =>
+                set((state) => ({
+                    completedReports: state.completedReports.filter((id) => id !== reportId),
+                })),
+
+            clearReports: () => set({ reports: [] }),
+        }),
+        {
+            name: 'processing-reports-storage',
+        }
     )
 )

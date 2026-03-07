@@ -1,8 +1,6 @@
 import { Outlet, useLocation } from 'react-router-dom'
 import { NavbarWrapper } from './_components/navbar/NavbarWrapper'
-import LoadingSpinner from '../components/LoadingSpinner'
 import ScrollToTop from '../components/ScrollToTop'
-import { useReportStore } from '../stores/reportStore'
 import { useEffect } from 'react'
 import { useLocalStorage } from '../hooks/useLocalStorage'
 import { LOCAL_STORAGE_KEY } from '../constants/key'
@@ -10,13 +8,13 @@ import { useFetchAndSetUser } from '../hooks/channel/useFetchAndSetUser'
 import { NavbarModalsContainer } from '../pages/auth'
 import { SettingModalContainer } from '../pages/setting/_components/SettingModalContainer'
 import AuthWatcher from '../components/AuthWatcher'
+import { GlobalProcessingModal } from '../components/GlobalProcessingModal'
+import { GlobalToast } from '../components/GlobalToast'
 import { GoogleAnalytics } from '../components/GoogleAnalytics'
 
 export default function RootLayout() {
     const location = useLocation()
     const isMain = location.pathname === '/'
-
-    const isReportGenerating = useReportStore((state) => state.isReportGenerating)
 
     const { getItem: getChannelId, removeItem: removeChannelId } = useLocalStorage(LOCAL_STORAGE_KEY.channelId)
     const { getItem: getIsNew, removeItem: removeIsNew } = useLocalStorage(LOCAL_STORAGE_KEY.isNew)
@@ -38,6 +36,8 @@ export default function RootLayout() {
             <GoogleAnalytics />
             <AuthWatcher />
             <NavbarWrapper />
+            <GlobalProcessingModal />
+            <GlobalToast />
 
             <main
                 className={`
@@ -67,12 +67,6 @@ export default function RootLayout() {
 
                 <NavbarModalsContainer />
                 <SettingModalContainer />
-
-                <LoadingSpinner
-                    title="영상 분석 중..."
-                    description="조금만 기다려 주세요. 곧 결과가 나와요!"
-                    isLoading={isReportGenerating}
-                />
             </main>
         </>
     )
