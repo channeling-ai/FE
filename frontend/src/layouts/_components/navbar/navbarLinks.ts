@@ -11,10 +11,12 @@ import HomeRedIcon from '../../../assets/icons/home_active.svg'
 import IdeaRedIcon from '../../../assets/icons/idea_active.svg'
 import MyChannelRedIcon from '../../../assets/icons/mychannel_active.svg'
 import StoreRedIcon from '../../../assets/icons/store_active.svg'
+import FeedbackIcon from '../../../assets/icons/feedback.svg'
 import LoginIcon from '../../../assets/icons/login.svg'
 
 export type LinkItem = {
     to: string
+    isExternal?: boolean
     defaultIcon: string
     hoverIcon?: string
     activeIcon?: string
@@ -26,6 +28,7 @@ export type LinkItem = {
 
 export const PLUS_LINK: LinkItem = {
     to: '',
+    isExternal: false,
     defaultIcon: PlusIcon,
     hoverIcon: PlusIcon,
     activeIcon: PlusIcon,
@@ -37,6 +40,7 @@ export const PLUS_LINK: LinkItem = {
 export const NAVIGATE_LINKS: LinkItem[] = [
     {
         to: '/',
+        isExternal: false,
         defaultIcon: HomeIcon,
         hoverIcon: HomeWhiteIcon,
         activeIcon: HomeRedIcon,
@@ -46,6 +50,7 @@ export const NAVIGATE_LINKS: LinkItem[] = [
     },
     {
         to: '/idea',
+        isExternal: false,
         defaultIcon: IdeaIcon,
         hoverIcon: IdeaWhiteIcon,
         activeIcon: IdeaRedIcon,
@@ -55,6 +60,7 @@ export const NAVIGATE_LINKS: LinkItem[] = [
     },
     {
         to: '/my',
+        isExternal: false,
         defaultIcon: MyChannelIcon,
         hoverIcon: MyChannelWhiteIcon,
         activeIcon: MyChannelRedIcon,
@@ -64,6 +70,7 @@ export const NAVIGATE_LINKS: LinkItem[] = [
     },
     {
         to: '/library',
+        isExternal: false,
         defaultIcon: StoreIcon,
         hoverIcon: StoreWhiteIcon,
         activeIcon: StoreRedIcon,
@@ -73,8 +80,20 @@ export const NAVIGATE_LINKS: LinkItem[] = [
     },
 ]
 
+export const FEEDBACK_LINK: LinkItem = {
+    to: 'https://open.kakao.com/o/sTPlNEvh',
+    isExternal: true,
+    defaultIcon: FeedbackIcon,
+    hoverIcon: FeedbackIcon,
+    activeIcon: FeedbackIcon,
+    alt: '피드백 아이콘',
+    label: '피드백',
+    isCircle: false,
+}
+
 export const LOGIN_LINK: LinkItem = {
     to: '',
+    isExternal: false,
     defaultIcon: LoginIcon,
     hoverIcon: LoginIcon,
     activeIcon: LoginIcon,

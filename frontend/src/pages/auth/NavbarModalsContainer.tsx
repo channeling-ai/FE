@@ -1,8 +1,9 @@
 import { ChannelConceptModal, LoginModal, ViewerModal } from './_components'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useLoginStore } from '../../stores/LoginStore'
 import { useAuthStore } from '../../stores/authStore'
 import { useUpdateChannelConcept, useUpdateChannelTarget } from '../../hooks/channel/useUpdateIdentity'
+import { trackEvent } from '../../utils/analytics'
 
 export const NavbarModalsContainer = () => {
     const { mutate: updateTarget } = useUpdateChannelTarget()
@@ -18,9 +19,28 @@ export const NavbarModalsContainer = () => {
     const channelId = useAuthStore((state) => state.user?.channelId)
 
     const finishLoginAndAuthenticate = () => {
+        trackEvent({
+            category: 'Auth',
+            action: 'Complete Onboarding',
+        })
+
         setAuthMember()
         closeLoginFlow()
     }
+
+    useEffect(() => {
+        if (step === 'viewer') {
+            trackEvent({
+                category: 'Auth',
+                action: 'Open Viewer Modal',
+            })
+        } else if (step === 'concept') {
+            trackEvent({
+                category: 'Auth',
+                action: 'Open Concept Modal',
+            })
+        }
+    }, [step])
 
     return (
         <>
@@ -42,10 +62,21 @@ export const NavbarModalsContainer = () => {
                                     { channelId, target: viewerValue },
                                     {
                                         onSuccess: () => {
-                                            setChannelConceptValue('') // 다음 모달 입력창 초기화
+                                            trackEvent({
+                                                category: 'Auth',
+                                                action: 'Submit Viewer Success',
+                                            })
+
+                                            setChannelConceptValue('')  // 다음 모달 입력창 초기화
                                             goToConceptStep()
                                         },
-                                        onError: () => {
+                                        onError: (error) => {
+                                            trackEvent({
+                                                category: 'Auth',
+                                                action: 'Submit Viewer Error',
+                                                label: error?.message || 'Unknown error',
+                                            })
+
                                             alert('타겟 저장 실패')
                                         },
                                     }
@@ -68,10 +99,21 @@ export const NavbarModalsContainer = () => {
                                     { channelId, concept: channelConceptValue },
                                     {
                                         onSuccess: () => {
+                                            trackEvent({
+                                                category: 'Auth',
+                                                action: 'Submit Concept Success',
+                                            })
+
                                             setChannelConceptValue('') // 입력 초기화
                                             finishLoginAndAuthenticate()
                                         },
-                                        onError: () => {
+                                        onError: (error) => {
+                                            trackEvent({
+                                                category: 'Auth',
+                                                action: 'Submit Concept Error',
+                                                label: error?.message || 'Unknown error',
+                                            })
+
                                             alert('채널 콘셉트 저장 실패')
                                         },
                                     }

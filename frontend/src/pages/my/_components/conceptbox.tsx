@@ -3,6 +3,7 @@ import Textarea from '../../../components/Textarea'
 import { EditButton } from '../../../components/EditButton'
 import { useUpdateChannelConcept } from '../../../hooks/channel/useUpdateIdentity'
 import { useAuthStore } from '../../../stores/authStore'
+import { trackEvent } from '../../../utils/analytics'
 
 type Mode = 'VIEW' | 'EDIT' | 'ACTIVE_COMPLETE'
 
@@ -23,7 +24,13 @@ const Conceptbox = ({ conceptValue, setConceptValue }: ConceptboxProps) => {
         ['VIEW']: {
             buttonColor: 'text-gray-900',
             label: '수정',
-            onClick: () => setMode('EDIT'),
+            onClick: () => {
+                trackEvent({
+                    category: 'My Channel',
+                    action: 'Start Edit Concept',
+                })
+                setMode('EDIT')
+            },
             isDisabled: true,
         },
         ['EDIT']: {
@@ -42,10 +49,19 @@ const Conceptbox = ({ conceptValue, setConceptValue }: ConceptboxProps) => {
                     { channelId, concept: conceptValue },
                     {
                         onSuccess: (res) => {
+                            trackEvent({
+                                category: 'My Channel',
+                                action: 'Update Concept Success',
+                            })
                             console.log('updateChannelConcept 응답 :', res)
                             setConceptValue(res.updatedConcept)
                         },
-                        onError: () => {
+                        onError: (error) => {
+                            trackEvent({
+                                category: 'My Channel',
+                                action: 'Update Concept Error',
+                                label: error?.message || 'Unknown error',
+                            })
                             alert(' 콘셉트 저장 실패 ')
                         },
                     }

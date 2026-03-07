@@ -9,6 +9,7 @@ import usePostIdea from '../../../hooks/idea/usePostIdea'
 import useClickOutside from '../../../hooks/useClickOutside'
 import type { PostIdeaDto } from '../../../types/idea'
 import { DropdownVideoType } from './DropdownVideoType'
+import { trackEvent } from '../../../utils/analytics'
 
 const convertOptionToVideoType = (option: string): 'LONG' | 'SHORTS' | null => {
     if (option === '숏폼 (3분 미만)') return 'SHORTS'
@@ -22,7 +23,11 @@ export const GeneratingIdea = () => {
     const [keyword, setKeyword] = useState('')
     const [additionalInfo, setAdditionalInfo] = useState('')
     const [selectedOption, setSelectedOption] = useState('')
+    const [isKeywordLimit, setIsKeywordLimit] = useState(false)
+    const [isExtraLimit, setIsExtraLimit] = useState(false)
 
+    const hasTrackedKeywordFocus = useRef(false)
+    const hasTrackedAdditionalFocus = useRef(false)
     const dropdownRef = useRef<HTMLDivElement>(null)
 
     const handleDropdownClick = () => {
@@ -32,6 +37,13 @@ export const GeneratingIdea = () => {
     const handleInfoClick = () => {
         setIsTooltipOpen((prev) => {
             const isOpening = !prev
+            if (isOpening) {
+                trackEvent({
+                    category: 'Idea',
+                    action: 'Open Tooltip',
+                    label: 'Idea Generation Help',
+                })
+            }
             if (!isOpening) {
                 // 툴팁을 닫을 때
                 try {
@@ -46,22 +58,71 @@ export const GeneratingIdea = () => {
 
     const handleOptionClick = (e: React.MouseEvent<HTMLButtonElement>, option: string) => {
         e.stopPropagation()
+
+        trackEvent({
+            category: 'Idea',
+            action: 'Select Video Type',
+            label: option,
+        })
+
         setSelectedOption(option)
         handleDropdownClick()
     }
 
+    const handleKeywordFocus = () => {
+        if (!hasTrackedKeywordFocus.current) {
+            trackEvent({
+                category: 'Idea',
+                action: 'Start Keyword Input',
+            })
+            hasTrackedKeywordFocus.current = true
+        }
+    }
+
+    const handleAdditionalFocus = () => {
+        if (!hasTrackedAdditionalFocus.current) {
+            trackEvent({
+                category: 'Idea',
+                action: 'Start Additional Input',
+            })
+            hasTrackedAdditionalFocus.current = true
+        }
+    }
+
     const { mutate, isPending } = usePostIdea()
     const handleSubmitClick = () => {
-        if (!keyword.trim()) {
-            alert('키워드를 입력해 주세요.')
-            return
-        }
+        const videoType = convertOptionToVideoType(selectedOption)
         const ideaDto: PostIdeaDto = {
             keyword: keyword,
-            videoType: convertOptionToVideoType(selectedOption),
+            videoType: videoType,
             detail: additionalInfo,
         }
-        mutate(ideaDto)
+
+        trackEvent({
+            category: 'Idea',
+            action: 'Generate Idea Request',
+            label: `Keyword: ${keyword || 'empty'}, Type: ${selectedOption || 'none'}`,
+        })
+
+        mutate(ideaDto, {
+            onSuccess: (data) => {
+                trackEvent({
+                    category: 'Idea',
+                    action: 'Generate Idea Success',
+                    label: data.result?.title || 'Untitled',
+                })
+            },
+            onError: (error) => {
+                const state = error.response?.status
+                const errorMessage = error.response?.data?.message || 'Unknown error'
+
+                trackEvent({
+                    category: 'Idea',
+                    action: 'Generate Idea Error',
+                    label: state === 400 ? 'Generation Limit Exceeded' : errorMessage,
+                })
+            },
+        })
     }
 
     const headingId = useId()
@@ -94,6 +155,8 @@ export const GeneratingIdea = () => {
                         id="keyword-input"
                         value={keyword}
                         onChange={(value) => setKeyword(value)}
+                        onLimitChange={setIsKeywordLimit}
+                        onFocus={handleKeywordFocus}
                         title="키워드"
                         placeholder="생각나는 키워드를 입력해주세요. (예: 바이브코딩, 도쿄 여행, 가을 메이크업)"
                         initialRows={1}
@@ -133,6 +196,8 @@ export const GeneratingIdea = () => {
                     id="additional-info-input"
                     value={additionalInfo}
                     onChange={(value) => setAdditionalInfo(value)}
+                    onLimitChange={setIsExtraLimit}
+                    onFocus={handleAdditionalFocus}
                     title="추가 입력 사항"
                     placeholder="어떤 점을 강조하고 싶으신가요? (예: 쉬운 설명, 유머, 영상미)"
                     initialRows={5}
@@ -141,10 +206,10 @@ export const GeneratingIdea = () => {
                 />
 
                 <button
-                    className="flex h-[48px] px-2 py-4 justify-center items-center gap-2 rounded-2xl 
-                                bg-primary-500 hover:bg-primary-opacity50 font-body-16b text-gray-900 text-center cursor-pointer"
+                    className="flex h-12 px-2 py-4 justify-center items-center gap-2 rounded-2xl 
+                                bg-primary-500 hover:bg-primary-opacity50 font-body-16b text-gray-900 text-center cursor-pointer disabled:bg-gray-300"
                     onClick={handleSubmitClick}
-                    disabled={isPending}
+                    disabled={isPending || isKeywordLimit || isExtraLimit}
                 >
                     콘텐츠 아이디어 생성하기
                 </button>

@@ -1,12 +1,13 @@
 import Modal from '../../../components/Modal'
 import { Button } from './SettingButton'
 
-type WithdrawlModalProps = {
+type WithdrawModalProps = {
     onClose: () => void
     onConfirm: () => void
+    isPending: boolean
 }
 
-export default function WithdrawlModal({ onClose, onConfirm }: WithdrawlModalProps) {
+export default function WithdrawModal({ onClose, onConfirm, isPending }: WithdrawModalProps) {
     return (
         <Modal
             title="계정을 탈퇴하시겠어요?"
@@ -17,6 +18,7 @@ export default function WithdrawlModal({ onClose, onConfirm }: WithdrawlModalPro
                 <Button
                     variant="ghost"
                     onClick={onClose}
+                    disabled={isPending}
                     className="flex items-center justify-center gap-2 px-4 w-full !max-w-[103px] h-[40px] !rounded-[16px]
                     font-body-16b border border-gray-300"
                 >
@@ -25,6 +27,7 @@ export default function WithdrawlModal({ onClose, onConfirm }: WithdrawlModalPro
                 <Button
                     variant="danger"
                     onClick={onConfirm}
+                    disabled={isPending}
                     className="flex items-center justify-center gap-2 px-4 w-full !max-w-[87px] h-[40px] !rounded-[16px]
                     font-body-16b"
                 >

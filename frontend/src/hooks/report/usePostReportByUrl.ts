@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { postReportByUrl } from '../../api/report'
 import type { ResponseReportByUrl, ResultReportByUrl } from '../../types/report/new'
 import type { AxiosError } from 'axios'
+import { useModalActions } from '../../stores/modalStore'
 
 interface ReportByUrlCallbacks {
     onSuccess: (data: ResultReportByUrl) => void
@@ -13,6 +14,7 @@ interface ReportByUrlCallbacks {
  * 성공 시 리포트 ID를 반환하고, 실패 시 에러 메시지를 처리합니다.
  */
 export default function usePostReportByUrl({ onSuccess, onError }: ReportByUrlCallbacks) {
+    const { openModal } = useModalActions()
     const queryClient = useQueryClient()
 
     return useMutation({
@@ -26,6 +28,11 @@ export default function usePostReportByUrl({ onSuccess, onError }: ReportByUrlCa
             }
         },
         onError: (error: AxiosError<ResponseReportByUrl>) => {
+            const state = error.response?.status
+            if (state === 403) {
+                openModal('GENERATING_LIMIT')
+                return
+            }
             if (error.response) {
                 const errorData = error.response.data
                 onError({ code: errorData.code, message: errorData.message })

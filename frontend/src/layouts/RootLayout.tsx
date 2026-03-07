@@ -10,6 +10,7 @@ import { SettingModalContainer } from '../pages/setting/_components/SettingModal
 import AuthWatcher from '../components/AuthWatcher'
 import { GlobalProcessingModal } from '../components/GlobalProcessingModal'
 import { GlobalToast } from '../components/GlobalToast'
+import { GoogleAnalytics } from '../components/GoogleAnalytics'
 
 export default function RootLayout() {
     const location = useLocation()
@@ -32,6 +33,7 @@ export default function RootLayout() {
 
     return (
         <>
+            <GoogleAnalytics />
             <AuthWatcher />
             <NavbarWrapper />
             <GlobalProcessingModal />

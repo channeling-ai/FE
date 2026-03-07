@@ -20,6 +20,7 @@ import { adaptVideoMeta } from '../../lib/mappers/report'
 import { useDeleteMyReport } from '../../hooks/report/useDeleteMyReport'
 import { useAuthStore } from '../../stores/authStore'
 import { useReportStore } from '../../stores/reportStore'
+import { trackEvent } from '../../utils/analytics'
 
 export default function ReportPage() {
     const navigate = useNavigate()
@@ -65,8 +66,43 @@ export default function ReportPage() {
     const [activeTab, setActiveTab] = useState(TABS[0])
     const [isOpenUpdateModal, setIsOpenUpdateModal] = useState(false)
 
+    useEffect(() => {
+        if (!isVideoLoading && videoData) {
+            trackEvent({
+                category: 'Report',
+                action: 'View Report',
+                label: 'Real Report',
+            })
+        }
+    }, [isVideoLoading, videoData])
+
+    const handleTabChange = (tab: (typeof TABS)[number]) => {
+        if (tab.index === activeTab.index) return
+
+        const fromTab = activeTab.label
+        const toTab = tab.label
+
+        trackEvent({
+            category: 'Report',
+            action: 'Switch Tab',
+            label: `${fromTab} to ${toTab}`,
+        })
+
+        setActiveTab(tab)
+    }
+
+    const handleUpdateModalClick = () => {
+        if (!isOpenUpdateModal) {
+            trackEvent({
+                category: 'Report',
+                action: 'Click Update Button',
+                label: String(reportId),
+            })
+        }
+        setIsOpenUpdateModal(!isOpenUpdateModal)
+    }
+
     const handleResetTab = () => setActiveTab(TABS[0])
-    const handleUpdateModalClick = () => setIsOpenUpdateModal(!isOpenUpdateModal)
     const handleCloseErrorModal = () => {
         deleteReport({ reportId })
         navigate('/', { replace: true })
@@ -175,13 +211,14 @@ export default function ReportPage() {
                 ) : (
                     <VideoSummary data={normalizedVideoData} />
                 )}
-                <Tabs tabs={TABS} activeTab={activeTab} onChangeTab={setActiveTab} />
+                <Tabs tabs={TABS} activeTab={activeTab} onChangeTab={handleTabChange} />
             </div>
 
             {/* 업데이트 모달 */}
             {isOpenUpdateModal && (
                 <UpdateModal
                     videoId={videoId}
+                    reportId={reportId}
                     handleModalClick={handleUpdateModalClick}
                     handleResetTab={handleResetTab}
                 />

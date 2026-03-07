@@ -8,6 +8,7 @@ import { useAuthStore } from '../../../stores/authStore'
 import type { BriefReport, VideoType } from '../../../types/report/all'
 import { useDeleteMyReport } from '../../../hooks/report/useDeleteMyReport'
 import { ReportSkeleton } from './ReportSkeleton'
+import { trackEvent } from '../../../utils/analytics'
 
 export default function ReportTab() {
     const navigate = useNavigate()
@@ -38,6 +39,18 @@ export default function ReportTab() {
         deleteReport({ reportId })
     }
 
+    const handleSubTabChange = (type: VideoType) => {
+        if (type === subTab) return
+
+        trackEvent({
+            category: 'Library',
+            action: 'Switch Report Sub Tab',
+            label: type === 'LONG' ? 'Video' : 'Shorts',
+        })
+
+        setSubTab(type)
+    }
+
     useEffect(() => {
         setPage(1)
         setStartPage(1)
@@ -51,18 +64,16 @@ export default function ReportTab() {
             <div className="flex justify-between items-center mb-6">
                 <div className="flex gap-2">
                     <button
-                        className={`px-4 cursor-pointer py-2 rounded-lg  transition-all duration-300 ${
-                            isVideo ? 'bg-primary-500 font-body-16b' : 'bg-gray-100 font-body-16m'
-                        }`}
-                        onClick={() => setSubTab('LONG')}
+                        className={`px-4 cursor-pointer py-2 rounded-lg  transition-all duration-300 ${isVideo ? 'bg-primary-500 font-body-16b' : 'bg-gray-100 font-body-16m'
+                            }`}
+                        onClick={() => handleSubTabChange('LONG')}
                     >
                         동영상
                     </button>
                     <button
-                        className={`px-4 cursor-pointer py-2 rounded-lg transition-all duration-300 ${
-                            !isVideo ? 'bg-primary-500 font-body-16b' : 'bg-gray-100 font-body-16m'
-                        }`}
-                        onClick={() => setSubTab('SHORTS')}
+                        className={`px-4 cursor-pointer py-2 rounded-lg transition-all duration-300 ${!isVideo ? 'bg-primary-500 font-body-16b' : 'bg-gray-100 font-body-16m'
+                            }`}
+                        onClick={() => handleSubTabChange('SHORTS')}
                     >
                         Shorts
                     </button>

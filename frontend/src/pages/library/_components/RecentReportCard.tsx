@@ -2,6 +2,7 @@ import { memo, type MouseEvent } from 'react'
 import X from '../../../assets/icons/X.svg?react'
 import type { BriefReport } from '../../../types/report/all'
 import { formatRelativeTime, formatSimpleDate } from '../../../utils/format'
+import { trackEvent } from '../../../utils/analytics'
 
 interface RecentReportCardProps {
     item: BriefReport
@@ -12,7 +13,24 @@ interface RecentReportCardProps {
 export default memo(function RecentReportCard({ item, onDelete, handleClick }: RecentReportCardProps) {
     const handleDeleteClick = (e: MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation()
+
+        trackEvent({
+            category: 'Library',
+            action: 'Delete Report',
+            label: `Report: ${item.reportId}, Type: Video`,
+        })
+
         onDelete?.()
+    }
+
+    const handleCardClick = () => {
+        trackEvent({
+            category: 'Library',
+            action: 'Click Report Card',
+            label: `Report: ${item.reportId}, Type: Video`,
+        })
+
+        handleClick()
     }
 
     return (
@@ -30,7 +48,7 @@ export default memo(function RecentReportCard({ item, onDelete, handleClick }: R
                     </button>
                 </div>
 
-                <div onClick={handleClick} className="w-full aspect-[141/79] rounded-lg overflow-hidden shrink-0">
+                <div onClick={handleCardClick} className="w-full aspect-[141/79] rounded-lg overflow-hidden shrink-0">
                     <img src={item.videoThumbnailUrl} alt={item.videoTitle} className="w-full h-full object-cover" />
                 </div>
             </div>

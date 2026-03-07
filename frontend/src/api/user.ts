@@ -33,3 +33,8 @@ export const fetchMyProfile = async () => {
     const { data } = await axiosInstance.get('/members')
     return data
 }
+
+export const withdrawMember = async () => {
+    const { data } = await axiosInstance.delete('/members/withdraw')
+    return data
+}

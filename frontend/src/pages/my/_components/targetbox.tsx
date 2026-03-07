@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { EditButton } from '../../../components/EditButton'
 import { useUpdateChannelTarget } from '../../../hooks/channel/useUpdateIdentity'
 import { useAuthStore } from '../../../stores/authStore'
+import { trackEvent } from '../../../utils/analytics'
 
 type Mode = 'VIEW' | 'EDIT' | 'ACTIVE_COMPLETE'
 
@@ -22,7 +23,13 @@ const Targetbox = ({ targetValue, setTargetValue }: TargetboxProps) => {
         ['VIEW']: {
             label: '수정',
             buttonColor: 'text-gray-900',
-            onClick: () => setMode('EDIT'),
+            onClick: () => {
+                trackEvent({
+                    category: 'My Channel',
+                    action: 'Start Edit Target',
+                })
+                setMode('EDIT')
+            },
         },
         ['EDIT']: {
             label: '완료',
@@ -39,9 +46,18 @@ const Targetbox = ({ targetValue, setTargetValue }: TargetboxProps) => {
                     { channelId, target: targetValue },
                     {
                         onSuccess: (res) => {
+                            trackEvent({
+                                category: 'My Channel',
+                                action: 'Update Target Success',
+                            })
                             setTargetValue(res.updatedTarget)
                         },
-                        onError: () => {
+                        onError: (error) => {
+                            trackEvent({
+                                category: 'My Channel',
+                                action: 'Update Target Error',
+                                label: error?.message || 'Unknown error',
+                            })
                             alert(' 타겟 저장 실패 ')
                         },
                     }

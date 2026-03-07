@@ -4,24 +4,28 @@ interface TextareaWithLimitProps {
     id: string
     value: string // textarea의 값
     onChange: (value: string) => void // 사용자가 입력한 텍스트가 변경될 때 호출되는 함수
+    onLimitChange: (value: boolean) => void
     title: string
     placeholder?: string
     initialRows?: number // row 개수로 textarea 박스의 초기 높이를 지정할 수 있습니다. 디폴트는 1
     disabled?: boolean
     classOfTextarea?: string
     limitLength?: number
+    onFocus?: () => void
 }
 
 const TextareaWithLimit = ({
     id,
     value,
     onChange,
+    onLimitChange,
     title,
     placeholder,
     initialRows = 1,
     disabled = false,
     limitLength = 25,
     classOfTextarea,
+    onFocus,
 }: PropsWithChildren<TextareaWithLimitProps>) => {
     const [isFocused, setIsFocused] = useState(false)
     const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -30,6 +34,11 @@ const TextareaWithLimit = ({
 
     const onInputHandler = (value: string) => {
         setInputCount(value.length)
+    }
+
+    const handleFocus = () => {
+        setIsFocused(true)
+        onFocus?.()
     }
 
     const errorMessage = `${title}는 최대 ${limitLength}자까지 입력할 수 있어요. (현재 글자 수: ${inputCount}자)`
@@ -54,10 +63,12 @@ const TextareaWithLimit = ({
                 value={value}
                 disabled={disabled}
                 onChange={(e) => {
-                    onChange(e.target.value)
-                    onInputHandler(e.target.value)
+                    const newValue = e.target.value
+                    onChange(newValue)
+                    onInputHandler(newValue)
+                    onLimitChange(newValue.length > limitLength)
                 }}
-                onFocus={() => setIsFocused(true)}
+                onFocus={handleFocus}
                 onBlur={() => setIsFocused(false)}
                 rows={initialRows}
                 placeholder={placeholder}

@@ -2,6 +2,7 @@ import type { Video } from '../../../types/profile'
 import { useState } from 'react'
 import { formatKoreanNumber, formatRelativeTime } from '../../../utils/format'
 import MyReportModal from '../../../components/MyReportModal'
+import { trackEvent } from '../../../utils/analytics'
 
 interface MyVideoCardProps {
     video: Video
@@ -10,9 +11,18 @@ interface MyVideoCardProps {
 export default function MyVideoCard({ video }: MyVideoCardProps) {
     const [open, setOpen] = useState(false)
 
+    const handleClick = () => {
+        trackEvent({
+            category: 'My Channel',
+            action: 'Click Video Card',
+            label: `Video: ${video.id}`,
+        })
+        setOpen(true)
+    }
+
     return (
         <>
-            <div className="flex flex-col h-full items-center gap-[8px] " onClick={() => setOpen(true)}>
+            <div className="flex flex-col h-full items-center gap-[8px] " onClick={handleClick}>
                 <div className="w-full aspect-[141/79] shrink-0 rounded-[8px] overflow-hidden">
                     <img src={video.thumbnailUrl} alt={video.title} className="w-full h-full object-cover" />
                 </div>

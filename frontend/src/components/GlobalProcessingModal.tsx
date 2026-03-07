@@ -184,7 +184,7 @@ export const GlobalProcessingModal = () => {
     if (reports.length === 0) return null
 
     return (
-        <div className="fixed bottom-2 tablet:bottom-8 tablet:right-8 z-50 flex flex-col-reverse gap-2 tablet:gap-4">
+        <div className="fixed right-0 bottom-2 tablet:bottom-8 tablet:right-8 z-50 flex flex-col-reverse gap-2 tablet:gap-4">
             {reports.map((report) => {
                 // 현재 보고 있는 리포트 페이지의 모달은 숨김
                 const isCurrentPage = pathname.includes(`/report/${report.reportId}`)
