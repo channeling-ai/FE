@@ -3,7 +3,7 @@ import { ViewerExitAnalysis } from './ViewerExitAnalysis'
 import { Skeleton } from './Skeleton'
 import useGetReportAnalysis from '../../../../hooks/report/useGetReportAnalysis'
 import { useGetDummyAnalysis } from '../../../../hooks/report/useGetDummyReport'
-import { useReportStore } from '../../../../stores/reportStore'
+import { useReportStatus } from '../../../../hooks/report'
 import { trackEvent } from '../../../../utils/analytics'
 import { useScrollTracking } from '../../../../hooks/useScrollTracking'
 
@@ -13,8 +13,8 @@ interface TabAnalysisProps {
 }
 
 export const TabAnalysis = ({ reportId, isDummy = false }: TabAnalysisProps) => {
-    const analysisStatus = useReportStore((state) => state.statuses[reportId]?.analysisStatus)
-    const isCompleted = analysisStatus === 'COMPLETED'
+    const { rawResult, isLoading: isStatusLoading } = useReportStatus(reportId)
+    const isCompleted = rawResult?.analysisStatus === 'COMPLETED'
 
     const { data: realData, isLoading: isRealLoading } = useGetReportAnalysis({
         reportId,
@@ -27,7 +27,7 @@ export const TabAnalysis = ({ reportId, isDummy = false }: TabAnalysisProps) => 
     })
 
     const analysisData = isDummy ? dummyData : realData
-    const isLoading = isDummy ? isDummyLoading : !isCompleted || isRealLoading
+    const isLoading = isDummy ? isDummyLoading : isStatusLoading || !isCompleted || isRealLoading
 
     useScrollTracking({
         containerId: 'scroll-container',

@@ -5,7 +5,7 @@ import ErrorIcon from '../../../assets/icons/error.svg?react'
 import { useUrlInput } from '../../../hooks/main/useUrlInput'
 import ArrowButton from '../../../components/ArrowButton'
 import { ErrorToast } from './ErrorToast'
-import useGetVideoData from '../../../hooks/report/useGetVideoData'
+import { useGetVideoData } from '../../../hooks/report'
 import { trackEvent } from '../../../utils/analytics'
 
 export const UrlInputForm = () => {
@@ -51,8 +51,9 @@ export const UrlInputForm = () => {
                     )}
                 >
                     <ErrorIcon
-                        className={`ml-2 transition-opacity duration-300 ${error ? 'opacity-100 max-w-6' : 'opacity-0 max-w-0'
-                            }`}
+                        className={`ml-2 transition-opacity duration-300 ${
+                            error ? 'opacity-100 max-w-6' : 'opacity-0 max-w-0'
+                        }`}
                     />
                     <input
                         {...register('url')}

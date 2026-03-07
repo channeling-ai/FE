@@ -17,6 +17,7 @@ import type {
     ReportStatusDto,
     ResponseReportById,
     ResponseReportByUrl,
+    ResponseReportStatus,
 } from '../types/report/new'
 
 // URL로 리포트 분석 요청
@@ -60,7 +61,7 @@ export const getReportComments = async ({ reportId, type }: ReportCommentsDto): 
 }
 
 // 리포트 분석 상태 조회
-export const getReportStatus = async ({ reportId }: ReportStatusDto) => {
+export const getReportStatus = async ({ reportId }: ReportStatusDto): Promise<ResponseReportStatus> => {
     const { data } = await axiosInstance.get(`/reports/${reportId}/status`)
     return data
 }
