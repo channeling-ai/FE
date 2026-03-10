@@ -13,7 +13,7 @@ interface TabAnalysisProps {
 }
 
 export const TabAnalysis = ({ reportId, isDummy = false }: TabAnalysisProps) => {
-    const { rawResult, isLoading: isStatusLoading } = useReportStatus(reportId)
+    const { rawResult, isLoading: isStatusLoading } = useReportStatus(reportId, isDummy)
     const isCompleted = rawResult?.analysisStatus === 'COMPLETED'
 
     const { data: realData, isLoading: isRealLoading } = useGetReportAnalysis({
