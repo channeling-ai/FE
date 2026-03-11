@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getReportStatus } from '../../api/report'
 import { useMemo } from 'react'
 
-export const useReportStatus = (reportId: number) => {
+export const useReportStatus = (reportId: number, isDummy: boolean = false) => {
     const {
         data: statusData,
         isLoading,
@@ -12,10 +12,11 @@ export const useReportStatus = (reportId: number) => {
         queryFn: () => getReportStatus({ reportId }),
         staleTime: 0,
         retry: false,
-        enabled: !!reportId,
+        enabled: !!reportId && !isDummy,
         refetchInterval: (query) => {
-            const data = query.state.data
+            if (isDummy) return false
 
+            const data = query.state.data
             if (!data) return false
 
             const result = data?.result
@@ -40,6 +41,7 @@ export const useReportStatus = (reportId: number) => {
     })
 
     const serverStatus = useMemo(() => {
+        if (isDummy) return 'COMPLETED'
         if (isLoading) return 'LOADING'
         if (isError) return 'FAILED'
 
@@ -52,7 +54,7 @@ export const useReportStatus = (reportId: number) => {
         if (overviewStatus === 'COMPLETED' && analysisStatus === 'COMPLETED') return 'COMPLETED'
 
         return 'PROCESSING'
-    }, [statusData, isLoading, isError])
+    }, [isDummy, statusData, isLoading, isError])
 
     return {
         status: serverStatus, // 'LOADING' | 'PROCESSING' | 'COMPLETED' | 'FAILED'
