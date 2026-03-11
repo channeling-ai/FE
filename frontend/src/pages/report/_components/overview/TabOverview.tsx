@@ -15,7 +15,7 @@ interface TabOverviewProps {
 }
 
 export const TabOverview = ({ reportId, isDummy = false }: TabOverviewProps) => {
-    const { rawResult, isLoading: isStatusLoading } = useReportStatus(reportId)
+    const { rawResult, isLoading: isStatusLoading } = useReportStatus(reportId, isDummy)
     const isCompleted = rawResult?.overviewStatus === 'COMPLETED'
 
     const { data: realData, isLoading: isRealLoading } = useGetReportOverview({
